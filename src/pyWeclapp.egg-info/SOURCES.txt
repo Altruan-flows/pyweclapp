@@ -8,9 +8,7 @@ src/pyWeclapp.egg-info/dependency_links.txt
 src/pyWeclapp.egg-info/requires.txt
 src/pyWeclapp.egg-info/top_level.txt
 src/pyWeclapp/customAttributes/__init__.py
-src/pyWeclapp/customAttributes/article.py
-src/pyWeclapp/customAttributes/contract.py
-src/pyWeclapp/customAttributes/task.py
+src/pyWeclapp/customAttributes/citty.py
 src/pyWeclapp/timeFunctions/__init__.py
 src/pyWeclapp/timeFunctions/localizedTime.py
 src/pyWeclapp/weclapp/__init__.py
@@ -38,4 +36,3 @@ src/pyWeclapp/weclappClasses/weclappClassBlueprint/__init__.py
 src/pyWeclapp/weclappClasses/weclappClassBlueprint/weclappClassCustomAtt.py
 src/pyWeclapp/weclappDoc/__init__.py
 src/pyWeclapp/weclappDoc/docDescription.py
-src/pyWeclapp/weclappDoc/document.py

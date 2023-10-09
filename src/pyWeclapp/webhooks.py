@@ -1,8 +1,6 @@
 from . import weclapp
-
 import logging
-
-import time
+from jsonschema import validate
 
 
 class HookRequest:
@@ -15,7 +13,7 @@ class HookRequest:
         }"""
         try:
             logging.info(webhook)
-            webhook = util.cleanAndValidateDictWithJsonSchema(retrievedObject=webhook, pathToJsonSchema='jsonSchemas/weclapp-webhook/schema')
+            webhook = self.cleanAndValidateDictWithJsonSchema(retrievedObject=webhook)
             self.entityId = webhook.get('entityId')
             self.entityName = webhook.get('entityName')
             self.action = webhook.get('type')
@@ -23,9 +21,48 @@ class HookRequest:
             self.toUpdate = {}
 
         except Exception as e:
-            graph.Graph().addWebhookMessage(channel='error', message=f"Webhook was not parsed properly", facts={'error': e}, send=True)
+            logging.error(channel='error', message=f"Webhook was not parsed properly", facts={'error': e}, send=True)
+            
+    @staticmethod
+    def cleanAndValidateDictWithJsonSchema(retrievedObject: dict,  log:bool=True) -> dict:
+        if log:
+            logging.info("---util.cleanAndValidateDictWithJsonSchema()---")
+        try:
+            jsonSchema = {
+                "$schema": "http://json-schema.org/schema#",
+                "type": "object",
+                "properties": {
+                    "entityId": {
+                        "type": "string"
+                    },
+                    "entityName": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "entityId",
+                    "entityName",
+                    "type"
+                ]
+            }
 
-    
+            validate(instance=retrievedObject, schema=jsonSchema)
+            toReturn = {}
+            
+            for line in jsonSchema["required"]:
+                toReturn[line] = retrievedObject[line]
+                
+            return toReturn
+        except Exception as e:
+            logging.error(f'---shema Validation failed--- >>>{e}<<<')
+            raise ValueError(f'---shema Validation failed--- >>>{e}<<<')
+        
+        
+        
+        
     # ask weclapp to return the full object
     def getObject(self, query:dict=None, timeLimitS:int=30, turnOffLoopPrevention:bool=False):
         # minAge = round((time.time() - int(timeLimitS)) * 1000)
@@ -42,7 +79,7 @@ class HookRequest:
                     assert "customAttributes" in value, f"customAttributes must be included when using properties for Loop prevention"
             queryParams.update(query)
         logging.info(f"{queryParams}")
-        answer = weclapp.askWeclapp(method="GET", endpoint=self.entityName, query_params=queryParams)
+        answer = weclapp.GET(entityName=self.entityName, query_params=queryParams)
         logging.info(f"{answer=}")
         result = answer['result']
         logging.info(f"{len(result)=}")

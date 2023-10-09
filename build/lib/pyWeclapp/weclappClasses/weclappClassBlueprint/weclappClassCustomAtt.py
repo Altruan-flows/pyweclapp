@@ -24,8 +24,11 @@ class WeclappMetaData(BaseModel):
                 valueName = key
                 value = data.get(key)
                 break
-
-        super().__init__(attributeDefinitionId=attributeDefinitionId, valueName=valueName, value=value, originalValue=value)
+        try:
+            super().__init__(attributeDefinitionId=attributeDefinitionId, valueName=valueName, value=value, originalValue=value)
+        except Exception as e:
+            logging.error(f"Error in WeclappMetaData {attributeDefinitionId}: {e}")
+            raise e
     
 
         
@@ -205,7 +208,7 @@ class WeclappMetaData(BaseModel):
         if self.valueName == "numberValue":
             if isinstance(value, float):
                 return str(round(value, 2))
-            assert str(value).replace('.', '').isnumeric(), f"Error in cAtt.setValue(): Given Value ({str(value)} in object {self.setValue}) is not nummeric"
+            assert str(value).replace('.', '').strip('-').isnumeric(), f"Error in cAtt.setValue(): Given Value ({str(value)} in object {self.setValue}) is not nummeric"
             return str(value)
 
         # insert booleans

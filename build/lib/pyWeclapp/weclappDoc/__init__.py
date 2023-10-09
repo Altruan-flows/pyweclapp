@@ -2,7 +2,7 @@ from .docDescription import DocDescription, ALLOWED_DOC_FORMATS, ALLOWED_DOC_FOR
 from .document import Document
 from typing import *
 import logging
-import fitz
+# import fitz
 import io
 from .. import weclapp
 import time
@@ -29,21 +29,21 @@ class DocManager:
         name = f"{docType}-{fullName}.{docFormat}"
         return name, description
     
-    @classmethod
-    def convertPdfToTiff(cls, docs:List[io.BytesIO], names:List[str]) -> Tuple[List[io.BytesIO], List[str]]:
-        logging.info('converting pdf to tiff')
-        img_list = []
-        name_list = []
-        for doc, name in zip(docs, names):
-            doc = fitz.open(stream=doc.read(), filetype="pdf")
-            for i, page in enumerate(doc):
-                pix = page.get_pixmap(alpha=False)
-                img_bytes = io.BytesIO(pix.tobytes('tiff'))
-                img_list.append(img_bytes)
-                nameRaw = str(name).split('.')[0]
-                name_list.append(f"{nameRaw}-{i}.tiff")
-            doc.close()
-        return img_list, name_list
+    # @staticmethod
+    # def convertPdfToTiff(docs:List[io.BytesIO], names:List[str]) -> Tuple[List[io.BytesIO], List[str]]:
+    #     logging.info('converting pdf to tiff')
+    #     img_list = []
+    #     name_list = []
+    #     for doc, name in zip(docs, names):
+    #         doc = fitz.open(stream=doc.read(), filetype="pdf")
+    #         for i, page in enumerate(doc):
+    #             pix = page.get_pixmap(alpha=False)
+    #             img_bytes = io.BytesIO(pix.tobytes('tiff'))
+    #             img_list.append(img_bytes)
+    #             nameRaw = str(name).split('.')[0]
+    #             name_list.append(f"{nameRaw}-{i}.tiff")
+    #         doc.close()
+    #     return img_list, name_list
     
     
     @classmethod

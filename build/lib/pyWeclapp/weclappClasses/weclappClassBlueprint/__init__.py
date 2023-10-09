@@ -51,26 +51,16 @@ class Blueprint:
                 if addToMetaData:
                     self.customAttributes.append(item)
                 return item
-        # try:
-            
-
-        #     for el in self.customAttributes:
-        #         if el.name == value:
-        #             return el
-        #     raise KeyError(f"Custom Attribute {value} not found")
-
-        # except KeyError as e:
-        #     if raiseError:
-        #         raise e
-        #     else:
-        #         # create Custom Attribute
-        #         item = WeclappMetaData(attributeDefinitionId=value)
-        #         if addToMetaData:
-        #             self.customAttributes.append(item)
-        #         return item
             
             
-            
+    
+    def qmd(self, value, raiseError:bool = True, addToMetaData:bool=False) -> WeclappMetaData:
+        """short Version for queryMetaData Function"""
+        return self.queryMetaData(value=value, raiseError=raiseError, addToMetaData=addToMetaData)
+    
+    
+    
+    
     def query(self, key:str, value:Any, entity:str, raiseError:bool = True):
         try:
             if hasattr(self, entity):
@@ -107,12 +97,6 @@ class Blueprint:
                 raise e
             else:
                 return None
-    
-    
-    
-    def qmd(self, value, raiseError:bool = True, addToMetaData:bool=False) -> WeclappMetaData:
-        """short Version for queryMetaData Function"""
-        return self.queryMetaData(value=value, raiseError=raiseError, addToMetaData=addToMetaData)
     
     
     
@@ -360,26 +344,12 @@ class Blueprint:
                      
                      
                             
-    def refreshVersion2(self):
+    def refreshVersion(self):
         """Refreshes the version and updates Changes from weclapp and includes changes if they are not critical; else raises Error
         """
         logging.warning(f"Refreshing Version of {type(self).__name__}")
-        currentEntity = type(self).fromWeclapp2(entityId=self.id)
+        currentEntity = type(self).fromWeclapp(entityId=self.id)
         self.assesChanges(self, currentEntity)
-            
-    def refreshVersion(self):
-        currentEntity:dict = weclapp.GET(entityName=self.__entityName__, query={"properties":f"id,version,{self.ITEMS_NAME}.version,{self.ITEMS_NAME}.id", "id-eq":self.id})[0]
-        realVersion = currentEntity['version']
-        self.version = realVersion
-        # update Versions of items...
-        
-        newItemsVersion = {str(item.get('id')): str(int(item.get('version'))) for item in currentEntity.get(self.ITEMS_NAME, [])}
-        for item in getattr(self, self.ITEMS_NAME):
-            if hasattr(item, "version"):
-                item.version = newItemsVersion.get(item.id), False
-            elif isinstance(item, dict) and "version" in item and "id" in item:
-                relalItemsVersion = newItemsVersion.get(item.get('id'))
-                item["version"] = relalItemsVersion
             
             
             
@@ -429,21 +399,9 @@ class Blueprint:
             raise AssertionError('No Matching entity Provided to update the self')
 
     
-    
+
+
     def updateWeclapp(self, updateType:Literal['full', 'used', "used+"]='full', setLoopVersion:bool=False, entityName:str=None) -> dict:
-        # if entityName is None:
-        #     entityName = self.__entityName__
-        # try:
-        #     if setLoopVersion:
-        #         self.queryMetaData("14568660", raiseError=False).setValue(value=str(int(float(self.version))+1), valueName='stringValue')
-        # except:
-        #     logging.warning('loop Verion could not be set')
-        # return weclapp.updateWeclapp(entityName=entityName, entityId=self.id, body=self.getUpdateDict(updateType=updateType))
-        logging.warning(f"updateWeclapp is deprecated; use updateWeclapp2 instead")
-        return self.updateWeclapp2(updateType=updateType, setLoopVersion=setLoopVersion, entityName=entityName)
-
-
-    def updateWeclapp2(self, updateType:Literal['full', 'used', "used+"]='full', setLoopVersion:bool=False, entityName:str=None) -> dict:
         if entityName is None:
             entityName = self.__entityName__
         try:
@@ -464,16 +422,8 @@ class Blueprint:
     
     
     
-    
     @classmethod
-    def fromWeclapp(cls, entityName:str, entityId:str):
-        # response = weclapp.askWeclapp(method="GET", endpoint=f"{entityName}/id/{entityId}")
-        # return cls(**response)
-        logging.warning(f"fromWeclapp is deprecated; use fromWeclapp2 instead")
-        return cls.fromWeclapp2(entityId=entityId)
-    
-    @classmethod
-    def fromWeclapp2(cls, entityId:str):
+    def fromWeclapp(cls, entityId:str):
         entityName = cls.__name__
         entityName = entityName[:1].lower() + entityName[1:]
         response = weclapp.GET(entityName=entityName, entityId=entityId, asType=dict)

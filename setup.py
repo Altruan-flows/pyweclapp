@@ -23,7 +23,8 @@ setup(
     install_requires=["urllib3<2.0",
                       "requests>=2.28.2",
                       "pydantic>=1.10.4",
-                      "pymupdf>=1.21.1",
+                      "jsonschema>=4.17.3",
+                      # "pymupdf>=1.21.1",
                       "pytz>=2022.7.1"],
     extras_require={
         "dev": ["twine>=4.0.2"],

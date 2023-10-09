@@ -5,8 +5,8 @@ from typing import *
 
 ALLOWED_DOC_TYPES = ['anlage2', 'anlage4', 'signature', 'pod', 'reciept', 'tzmo_LS', 'reciept2', '-', "kkDoc", "abrechnung"]
 ALLOWED_DOC_TYPES_LITERAL = Literal['anlage2', 'anlage4', 'signature', 'pod', 'reciept', 'tzmo_LS', 'reciept2', '-', "kkDoc", "abrechnung"]
-ALLOWED_DOC_FORMATS = ['pdf', 'png', 'tiff', "txt"]
-ALLOWED_DOC_FORMATS_LITERAL = Literal['pdf', 'png', 'tiff', "txt"]
+ALLOWED_DOC_FORMATS = ['pdf', 'png', 'tiff', "txt", 'jpg']
+ALLOWED_DOC_FORMATS_LITERAL = Literal['pdf', 'png', 'tiff', "txt", 'jpg']
 
 
 
@@ -72,7 +72,7 @@ class DocDescription:
                 
     def setValue(self, key, value, to:Type[datetime.datetime]=str):
         if to == datetime.datetime:
-            value = timeFunctions.localeDatetimeToStr(value, to="utcDate")
+            value = timeFunctions.toStr(value, to="utcDate")
         setattr(self, key, str(value))
     
     def getDescriptionAsString(self) -> str:

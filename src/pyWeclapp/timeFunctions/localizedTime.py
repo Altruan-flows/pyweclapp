@@ -9,7 +9,7 @@ from dateutil.relativedelta import relativedelta
 
     
 
-def parseLocalizedDatetimes(time: Union[time.time, datetime.date, datetime.datetime, str, int, float], raiseError: bool = True) -> datetime.datetime:
+def parse(time: Union[time.time, datetime.date, datetime.datetime, str, int, float]=time.time()*1000) -> datetime.datetime:
     try:
         tz = pytz.timezone('CET')
         relevantTime = time
@@ -26,13 +26,8 @@ def parseLocalizedDatetimes(time: Union[time.time, datetime.date, datetime.datet
                 try:
                     relevantTime = dateutil.parser.parse(time, fuzzy=True)
                 except:
-                    if raiseError:
-                        raise ValueError(f'Invaild locale time format >> {time} <<')
-                    else:
-                        return time
-        # else:
-        #     logging.warning(f"datetime found")
-        #     return time
+                    raise ValueError(f'Invaild locale time format >> {time} <<')
+
         if relevantTime.year < 1901:
 
             relevantTime = datetime.datetime(year=1901, month=1, day=1)
@@ -47,52 +42,49 @@ def parseLocalizedDatetimes(time: Union[time.time, datetime.date, datetime.datet
         raise OverflowError(f"{of}, {time} in parser")
     
     
-def localeDatetimeToStr(timestemp:Union[time.time, datetime.date, datetime.datetime, str]=datetime.datetime.now(), 
-                        to:Literal["unix", "wooMeta", "weclapp", "utc", "mip", "utcDate", "docName", "ads", "emailDate", "dateHour"] = "unix", raiseError:bool=True) -> str:
+def toStr(time:Union[time.time, datetime.date, datetime.datetime, str, int, float]=time.time()*1000,
+          to:Literal["unix", "wooMeta", "weclapp", "utc", "mip", "utcDate", "docName", "ads", "emailDate", "dateHour"] = "unix") -> str:
+
+
+    time = parse(time=time)
+
 
     try:
-        timestemp = parseLocalizedDatetimes(time=timestemp)
-    except ValueError as e:
-        if raiseError:
-            raise e
-        else:
-            return ""
-    try:
         if to == "unix":
-            return int(timestemp.timestamp())
+            return int(time.timestamp())
         elif to == "weclapp":
-            return int(timestemp.timestamp())*1000
+            return int(time.timestamp())*1000
         
         # used for email generation
         elif to == 'wooMeta' or to == "emailDate":
-            return str(timestemp.strftime("%d.%m.%Y"))
+            return str(time.strftime("%d.%m.%Y"))
         
         elif to == 'dateHour':    # woo = old
-            return str(timestemp.strftime("%d.%m.%Y %H:%M"))
+            return str(time.strftime("%d.%m.%Y %H:%M"))
         
         elif to == 'utc' or to ==  "woo":    # woo = old
-            return str(timestemp.strftime("%Y-%m-%dT%H:%M:%S"))
+            return str(time.strftime("%Y-%m-%dT%H:%M:%S"))
         elif to == 'utcDate':
-            return str(timestemp.strftime("%Y-%m-%d"))
+            return str(time.strftime("%Y-%m-%d"))
         elif to == 'mip':
-            return str(timestemp.strftime("%Y-%m-%d"))
+            return str(time.strftime("%Y-%m-%d"))
         elif to == "docName":
-            return str(timestemp.strftime("%b-%Y"))
+            return str(time.strftime("%b-%Y"))
         elif to == "month":
-            return str(timestemp.strftime("%Y-%b"))
+            return str(time.strftime("%Y-%b"))
         elif to == "ads":
             # 2022-12-04 11:11:11-01:00
             timezone = datetime.datetime.now(datetime.timezone.utc).astimezone()
-            awareTime = datetime.datetime(timestemp.year, timestemp.month, timestemp.day, timestemp.hour, timestemp.minute, timestemp.second, tzinfo=timezone.tzinfo)
+            awareTime = datetime.datetime(time.year, time.month, time.day, time.hour, time.minute, time.second, tzinfo=timezone.tzinfo)
             # logging.info(f"{awareTime=}, {timestemp=}")
             return str(awareTime.isoformat().replace('T', ' '))
             # timezone = int(datetime.datetime.now(datetime.timezone.utc).astimezone().utcoffset().seconds / 3600)
             # part1 = str(timestemp.strftime("%Y-%m-%d %H:%M:%S"))
             # return f"{part1}+01:00"
         else: 
-            return timestemp
+            return time
     except OverflowError as of:
-        raise OverflowError(f"{of}, {timestemp} while transforming to string")
+        raise OverflowError(f"{of}, {time} while transforming to string")
     
     
     
@@ -108,7 +100,7 @@ def add(startTime: Union[time.time, datetime.date, datetime.datetime, str, int, 
         datetime.datetime: Localized and timezone normalized datetime object
     """
     try:
-        startTime = parseLocalizedDatetimes(time=startTime)
+        startTime = parse(time=startTime)
     except ValueError:
         raise ValueError(f'---util.convertDateTimeTo()--- -> >>{startTime}<< not a datetimeobject')
 
@@ -120,3 +112,12 @@ def add(startTime: Union[time.time, datetime.date, datetime.datetime, str, int, 
                  hour=hour, minute=minute, second=second, microsecond=microsecond)
     return startTime.tzinfo.normalize(newDate)
     
+    
+# Shorter Function Names
+
+def toUnix(time: Union[time.time, datetime.date, datetime.datetime, str, int, float]=time.time()*1000) -> int:
+    return int(toStr(timestemp=time, to="weclapp"))
+    
+    
+def now() -> datetime.datetime:
+    return parse(time=time.time()*1000, raiseError=True)
