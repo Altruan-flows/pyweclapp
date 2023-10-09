@@ -24,7 +24,7 @@ def getWeclappHeaders(apiKey:AVAILABEL_APIKEYS = "key0"):
 
 def getWeclappDomain():
     url = os.environ.get("weclappDomain", None)
-    assert url is not None, f"weclappApiUrl not found in environment variables. Please add it."
+    assert url is not None, f'weclappDomain not found in environment variables. Please set it using os.environ["weclappDomain"] = "yourDomain.weclapp.com"'
     return url
     
 def getWeclappQueries(query:dict):

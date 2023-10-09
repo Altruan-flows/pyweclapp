@@ -1,5 +1,5 @@
 import logging
-from .weclappRequests import GET
+from . import GET
 from typing import *
 
 

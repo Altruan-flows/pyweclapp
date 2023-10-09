@@ -1,0 +1,216 @@
+from .docDescription import DocDescription, ALLOWED_DOC_FORMATS, ALLOWED_DOC_FORMATS_LITERAL, ALLOWED_DOC_TYPES, ALLOWED_DOC_TYPES_LITERAL
+from .document import Document
+from typing import *
+import logging
+import fitz
+import io
+from .. import weclapp
+import time
+import base64
+
+
+
+
+
+class DocManager:
+    
+    @classmethod  
+    def documentNamingConvention(cls, docType:ALLOWED_DOC_TYPES_LITERAL,
+                                docFormat:ALLOWED_DOC_FORMATS_LITERAL,
+                                fullName:str):
+        """Debricated! used the one from Document!!!
+
+        """
+        assert docType in ALLOWED_DOC_TYPES, f"documentNamingConvention: No convention for {docType}"
+        assert docFormat in ALLOWED_DOC_FORMATS, f"documentNamingConvention: No Doctype for {docType}"
+
+        description = docType
+        fullName = str(fullName).split('.')[0].replace(' ', '-')
+        name = f"{docType}-{fullName}.{docFormat}"
+        return name, description
+    
+    @classmethod
+    def convertPdfToTiff(cls, docs:List[io.BytesIO], names:List[str]) -> Tuple[List[io.BytesIO], List[str]]:
+        logging.info('converting pdf to tiff')
+        img_list = []
+        name_list = []
+        for doc, name in zip(docs, names):
+            doc = fitz.open(stream=doc.read(), filetype="pdf")
+            for i, page in enumerate(doc):
+                pix = page.get_pixmap(alpha=False)
+                img_bytes = io.BytesIO(pix.tobytes('tiff'))
+                img_list.append(img_bytes)
+                nameRaw = str(name).split('.')[0]
+                name_list.append(f"{nameRaw}-{i}.tiff")
+            doc.close()
+        return img_list, name_list
+    
+    
+    @classmethod
+    def downloadDocById(cls, docId) -> io.BytesIO:
+        content = weclapp.GET(entityName="document",
+                            entityId=f"{docId}/download", 
+                            asType=bytes)
+        file = io.BytesIO()
+        file.write(content)
+        file.seek(0)
+        return file
+        
+        
+    
+    
+    def __init__(self, entityName, entityId) -> None:
+        self.entityName = entityName
+        self.entityId = entityId
+        self.documents: List[Document] = []
+
+        
+        
+    def getDocuments(self) -> List[Document]:
+        response = weclapp.GET(entityName="document",
+                                query={
+                                    "entityName": self.entityName, 
+                                    "entityId": self.entityId})
+        for doc in response:
+            self.documents.append(Document(**doc))
+        
+        return self.documents
+    
+    def setDescriptionOfLatestDocument(self, docType:ALLOWED_DOC_TYPES_LITERAL):
+        
+        docsWithoutDescription = [doc for doc in self.getDocuments() if not doc.description]
+        if docsWithoutDescription:
+            latestDoc = max(docsWithoutDescription, key=lambda x: x.createdDate)
+            logging.info(f"found document without description {latestDoc.id}")
+            latestDoc.setDescription(docType=docType)
+            latestDoc.updateDescription()
+        else:
+            logging.error('No Document found!!!')
+            
+            
+    def queryDoc(self, value:str, key:str="docType", raiseError:bool=True) -> Document:
+        if not self.documents:
+            self.getDocuments()
+        for doc in self.documents:
+            if key in ["id", "version", "createdDate", "description", "lastModifiedDate", "mediaType", "name", "userId", "versions"]:
+                if hasattr(doc, key) and getattr(doc, key) == value:
+                    return doc
+            elif doc.description:
+                if hasattr(doc.description, key) and getattr(doc.description, key) == value:
+                    return doc
+        if raiseError:
+            raise AssertionError('Document not found')
+        return None
+
+
+    def queryDocDescription(self, value:str, key:str="docType", raiseError:bool=True) -> DocDescription:
+        if not self.documents:
+            self.getDocuments()
+        for doc in self.documents:
+            if doc.description:
+                if hasattr(doc.description, key) and getattr(doc.description, key) == value:
+                    return doc.description
+        if raiseError:
+            raise AssertionError('Description not found')
+        
+        
+    def uploadFile(self, name:str, 
+                   docType:ALLOWED_DOC_TYPES_LITERAL, 
+                   file:bytes= None, 
+                   base64Content:str = None, 
+                   buffer:io.BytesIO = None, 
+                   docFormat:ALLOWED_DOC_FORMATS_LITERAL = 'pdf',  
+                   demo:bool = False,
+                   tryToUpdateFirst:bool=False) -> Document:
+        logging.info('---weclapp.uploadFile()---')
+        if file:
+            file = file
+        if base64Content:
+            file = base64.b64decode(base64Content.encode())
+        
+        elif buffer:
+            file = buffer.read()
+
+        name, docType = Document.documentNamingConvention(docType=docType, docFormat=docFormat, fullName=name)
+        
+        if tryToUpdateFirst:
+            existingDoc = self.queryDoc(value=docType, raiseError=False)
+            if isinstance(existingDoc, Document):
+                existingDoc.updateFile(file)
+                logging.info(f"UPDATED EXISTING DOCUMENT {existingDoc.id}")
+                try:
+                    weclapp.PUT(entityName="document", entityId=existingDoc.id, body={"name": name})
+                except Exception as e:
+                    logging.warning(f"Document Name could not be updated {e}")
+                return existingDoc
+            
+        try:
+            response = weclapp.POST(entityName="document/upload",
+                                    query={
+                                        "entityName": self.entityName, 
+                                        "entityId": self.entityId, 
+                                        "name": name},
+                                    body=file)
+        except weclapp.WeclappError as e:
+            if e.isOptimisticLoc:
+                logging.error(f"Optimistic Locking Error while uploading File {name}... retrying")
+                time.sleep(1)
+                response = weclapp.POST(entityName="document/upload",
+                        query={
+                            "entityName": self.entityName, 
+                            "entityId": self.entityId, 
+                            "name": name},
+                        body=file)
+            else:
+                raise e
+
+        # update Description
+        doc = Document(**response)
+        doc.setDescription(docType=docType)
+        doc.updateDescription()
+        return doc
+    
+    
+    def getDocumentFiles(self,
+                   docType: ALLOWED_DOC_TYPES_LITERAL,
+                   docFormat: ALLOWED_DOC_FORMATS,
+                   by:Literal['all', 'latest']) -> Tuple[List[io.BytesIO], List[str]]:
+        # ensure Nameing Convention
+        _, docType = self.documentNamingConvention(docType=docType, docFormat=docFormat, fullName='')
+        logging.info(f"Getting Document files {docType=} {docFormat=} {by=}")
+        # get All documents
+        if not self.documents:
+            self.getDocuments()
+        
+        relevantDocs:List[Document] = []
+        latestDoc = None
+        for doc in self.documents:
+            # check if format specified
+            if docFormat in doc.name and doc.description and doc.description.docType == docType:
+                logging.info(f"doument found Document name={doc.name}")
+                if by == 'all':
+                    relevantDocs.append(doc)
+                    
+                elif by == 'latest':
+                    if latestDoc is None or latestDoc.createdDate < doc.createdDate:
+                        logging.info(f"doument found Document name={doc.name}")
+                        latestDoc = doc
+
+            # else:
+            #     logging.warning(f"doument found with invalid docType {docFormat=} =! name={doc.name}")
+
+        if by == 'latest' and latestDoc:
+            relevantDocs.append(latestDoc)
+            
+        documents = []
+        names = []
+        logging.info('downloading Documents')
+        for doc in relevantDocs:
+            documents.append(doc.downloadDoc())
+            names.append(doc.name)
+            
+        return documents, names
+
+    
+        
+        

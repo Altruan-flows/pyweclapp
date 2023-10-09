@@ -1,3 +1,4 @@
 requests
 pydantic
-fitz
+pymupdf
+pytz

@@ -17,3 +17,13 @@ set the default token as "Weclapp_AuthenticationToken0" via os.environ["Weclapp_
 For some applications it is usefull to set multiple tokens from different users. Please index them e.g. "Weclapp_AuthenticationToken1", "Weclapp_AuthenticationToken2"
 the Api Key can be referenced in selected functions via it's short name key0 or key1  or ...; key0=default
 
+
+
+
+
+
+
+
+
+
+create wheel with comand >python setup.py bdist_wheel sdist

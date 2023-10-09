@@ -10,7 +10,6 @@ from .weclappResponseProcessing import AVAILABEL_APIKEYS, getWeclappHeaders, get
 
 
 
-
 def GET(entityName:Literal["salesOrder", "shipment", "salesInvoice", "contract", "article", "quotation", "customer", "ticket"], 
         entityId:str= None, 
         query:dict={},

@@ -1,7 +1,7 @@
-from util import weclapp, graph
-import azure.functions as func
+from . import weclapp
+
 import logging
-import util
+
 import time
 
 
@@ -72,7 +72,6 @@ class HookRequest:
     
     # ads an element to self.toUpdate
     def addUpdateElement(self, body:dict):
-        util.functionCall()
 
         if body:
             self.toUpdate = self.update(body, self.toUpdate)
@@ -150,7 +149,7 @@ class HookRequest:
                     }
                 ]})
                 logging.info(f"{self.toUpdate=}")
-                return weclapp.updateWeclapp(entityName=self.entityName,
+                return weclapp.PUT(entityName=self.entityName,
                                         entityId=self.entityId, 
                                         body=self.toUpdate)
             else:

@@ -36,3 +36,12 @@ the Api Key can be referenced in selected functions via it's short name key0 or 
 
 
 
+
+
+
+
+
+
+
+create wheel with comand >python setup.py bdist_wheel sdist
+

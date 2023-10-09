@@ -1,5 +1,1 @@
-customAttributes
-timeFunctions
-weclapp
-weclappClasses
-weclappDoc
+pyWeclapp

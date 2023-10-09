@@ -20,8 +20,11 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Operating System :: OS Independent",
     ],
-    install_requires=["requests>=2.28.2",
-                      "pydantic>=1.10.4"],
+    install_requires=["urllib3<2.0",
+                      "requests>=2.28.2",
+                      "pydantic>=1.10.4",
+                      "pymupdf>=1.21.1",
+                      "pytz>=2022.7.1"],
     extras_require={
         "dev": ["twine>=4.0.2"],
     },
