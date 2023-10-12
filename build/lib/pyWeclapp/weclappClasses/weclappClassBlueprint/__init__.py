@@ -117,6 +117,7 @@ class Blueprint:
         Raises: KeyError if not found
         """
         try:
+            assert hasattr(self, self.ITEMS_NAME), f"Attribute {self.ITEMS_NAME=} not found or invalid"
             for el in getattr(self,self.ITEMS_NAME):
                 if getattr(el, key) == value:
                     if justParentItems:

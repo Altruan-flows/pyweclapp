@@ -49,7 +49,7 @@ class WeclappClassCreator:
                     fileContent += f"\t{key}: List[{childName}] = []\n"
                         
                 if key == self.itemsNames.get(entityName, None):
-                    itemsName = key
+                    itemsName = f'"{key}"'
                     
             elif isinstance(value, dict):
                 childName = self.createclassTemplates(key, value)
@@ -59,14 +59,15 @@ class WeclappClassCreator:
             else:
                 attributeType = type(value)
                 if attributeType.__name__ == "NoneType":
-                    logging.warning(f"Attribute {key} of {entityName} is NoneType -> estimating type as str -> please check manually")
-                    fileContent += f"\t{key}:str = None\n"
+                    estimatedType = "int" if "date" in str(key).lower() else "str"
+                    logging.warning(f"Attribute {key} of {entityName} is NoneType -> estimating type as {estimatedType} -> please check manually")
+                    fileContent += f"\t{key}:{estimatedType} = None # type Estimated as str\n"
                 else:
                     fileContent += f"\t{key}: {attributeType.__name__} = None\n"
                     
         # AutomationData
-        fileContent += f"\n\n\n\t# AutomationData"
-        fileContent += f'\tITEMS_NAME: str = "{itemsName}"\n'
+        fileContent += f"\n\n\n\t# AutomationData\n"
+        fileContent += f'\tITEMS_NAME: str = {itemsName}\n'
         fileContent += f"\tUSED_ATTRIBUTES: dict = dict()\n"
         fileContent += f"\t__setattr__ = Blueprint.__setattr__\n\n\n"
 
