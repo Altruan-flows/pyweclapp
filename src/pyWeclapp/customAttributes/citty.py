@@ -27,20 +27,48 @@ class CITTY_Generator:
         }
         return a[attributeType]
     
+    # @staticmethod
+    # def getFieldName(input_string) -> str:
+    #     # Use a regular expression to match non-alphanumeric characters (except underscore)
+    #     # and replace them with an underscore '_'
+    #     assert len(input_string) > 0, "Input String is empty"
+    #     modified_string = re.sub(r'[^a-zA-Z0-9_]', '', input_string)
+        
+    #     # Use another regular expression to extract the value inside parentheses
+    #     match = re.search(r'\((.*?)\)', input_string)
+    #     returnString = match.group(1) if match else modified_string
+    #     if not returnString or not returnString[0].isalpha():
+    #         return "X" + returnString
+    #     return returnString
+    
     @staticmethod
     def getFieldName(input_string) -> str:
-        # Use a regular expression to match non-alphanumeric characters (except underscore)
-        # and replace them with an underscore '_'
+        # Ensure the input string is not empty
         assert len(input_string) > 0, "Input String is empty"
-        modified_string = re.sub(r'[^a-zA-Z0-9_]', '', input_string)
         
-        # Use another regular expression to extract the value inside parentheses
+        # Use a regular expression to extract the value inside parentheses
         match = re.search(r'\((.*?)\)', input_string)
-        returnString = match.group(1) if match else modified_string
-        if not returnString or not returnString[0].isalpha():
-            return "X" + returnString
-        return returnString
+        if match:
+            # If there's a match, take the value inside the parentheses
+            extracted_string = match.group(1)
+        else:
+            # Otherwise, use the entire input string
+            extracted_string = input_string
         
+        # Use a regular expression to keep only valid Python variable characters
+        valid_string = re.sub(r'[^a-zA-Z0-9_]', '', extracted_string)
+        
+        # Ensure the resulting string starts with a valid character
+        if not valid_string or not (valid_string[0].isalpha() or valid_string[0] == '_'):
+            return "X" + valid_string
+        return valid_string
+
+
+
+
+
+
+
         
     @classmethod
     def fromWeclapp(cls, catId:str, catName:str=None):

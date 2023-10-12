@@ -2,6 +2,7 @@ from .. import weclapp
 import logging
 import json
 from .citty import CITTY_Generator
+import os
 
 
 class CAT_Generator:
@@ -15,9 +16,16 @@ class CAT_Generator:
         self.entity = weclapp.GET(entityName=entityName, entityId=entityId)
         self.customAttributes = set()
         self.groupedCatInfo = list()
-        self.findAllCATs(self.entity)
         self.blackDict = blackDict
         logging.info(f"Found {len(self.customAttributes)} Custom Attributes")
+        self.main()
+        
+        
+    def main(self):
+        self.findAllCATs(self.entity)
+        self.parse()
+        self.save()
+        self.updateSuperClass()
     
     def findAllCATs(self, d):
         if isinstance(d, dict):
@@ -50,7 +58,11 @@ class CAT_Generator:
             
     def save(self, filetype="py"):
         self.newJson = {}
-        self.file = f'import json\nfrom collections import namedtuple\n\nclass CAT_{self.name}:\n\n\t@staticmethod\n\tdef is_namedtuple(obj):\n\t\ttry:\n\t\t\treturn isinstance(obj, tuple) and hasattr(obj, "_fields")\n\t\texcept:\n\t\t\treturn False\n\n\tdef __init__(self, data:dict=None):\n\t\tif data is None:\n\t\t\twith open("{self.targetDirectory}/customAttributes/catData_{self.name}.json", "r") as f:\n\t\t\t\tdata = json.load(f)\n\n'
+        self.file = f'import json\n'
+        self.file += f'from collections import namedtuple\n\n'
+        self.file += f'class CAT_{self.name}:\n\n'
+        self.file += f'\t@staticmethod\n\tdef is_namedtuple(obj):\n\t\ttry:\n\t\t\treturn isinstance(obj, tuple) and hasattr(obj, "_fields")\n\t\texcept:\n\t\t\treturn False\n\n'
+        self.file += f'\tdef __init__(self, data:dict=None):\n\t\tif data is None:\n\t\t\twith open("{self.targetDirectory}/catData_{self.name}.json", "r") as f:\n\t\t\t\tdata = json.load(f)\n\n'
 
         lastGroupName = None
         for citty in sorted(self.groupedCatInfo, key=lambda x: x.groupName):
@@ -82,5 +94,49 @@ class CAT_Generator:
         with open(f"{self.targetDirectory}/cat_{self.name}.{filetype}", 'w+') as f:
             f.write(self.file)
             
-    def updateInitFile(self):
+    def createCatSettings(self):
         pass
+    
+    def estimateClassName(self, fileName:str):
+        return fileName.replace("cat", "CAT")
+        
+        
+    def updateSuperClass(self):
+
+        # List all files in the directory
+        all_files = os.listdir(self.targetDirectory)
+
+        # Filter out files that are not Python files or are the __init__.py file
+        python_files = [f for f in all_files if f.endswith('.py') and f not in ['__init__.py', "cat.py"]]
+
+        # Extract names without the .py extension
+        module_names = [os.path.splitext(f)[0] for f in python_files]
+
+        # Generate import statements
+        import_statements = [f"from . import {module}" for module in module_names]
+        import_statements.append("import json")
+        # import_statements.append("import os")
+        
+        model = ", ".join([f"{module}.{self.estimateClassName(module)}" for module in module_names])
+
+        fileContent = "\n".join(import_statements)
+        fileContent += f"\n\n\n\nclass CAT({model}):\n"
+        fileContent += f"\tdef __init__(self):\n"
+        # fileContent += f"\t\tcurrent_directory = os.path.dirname(os.path.abspath(__file__))\n"
+        # fileContent += f'\t\tfile_path = os.path.join(current_directory, "allCatData.json")\n'
+        fileContent += f"\t\twith open(\"{self.targetDirectory}/allCatData.json\", \"r\") as f:\n"
+        fileContent += f"\t\t\tself.data = json.load(f)\n"
+        fileContent += f"\t\tsuper().__init__(self.data)\n"
+        
+        with open(f"{self.targetDirectory}/cat.py", "w+") as file:
+            file.write(fileContent)
+            
+        # update Init.py dile
+        module_names.append("cat")
+        
+        currentImports = [f"from .{fileName} import *" for fileName in module_names]
+            
+        with open(f"{self.targetDirectory}/__init__.py", "w+") as file:
+            currentImports.insert(0, "# dynamic File please do not edit\n")
+            file.write("\n".join(currentImports))
+

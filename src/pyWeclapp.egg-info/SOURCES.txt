@@ -27,12 +27,8 @@ src/pyWeclapp/weclappClasses/salesInvoice.py
 src/pyWeclapp/weclappClasses/salesOrder.py
 src/pyWeclapp/weclappClasses/shipment.py
 src/pyWeclapp/weclappClasses/ticket.py
-src/pyWeclapp/weclappClasses/templates/__init__.py
-src/pyWeclapp/weclappClasses/templates/addresses.py
-src/pyWeclapp/weclappClasses/templates/blueprintTemplate.py
-src/pyWeclapp/weclappClasses/templates/customer.py
-src/pyWeclapp/weclappClasses/templates/salesOrder.py
 src/pyWeclapp/weclappClasses/weclappClassBlueprint/__init__.py
 src/pyWeclapp/weclappClasses/weclappClassBlueprint/weclappClassCustomAtt.py
 src/pyWeclapp/weclappDoc/__init__.py
 src/pyWeclapp/weclappDoc/docDescription.py
+src/pyWeclapp/weclappDoc/document.py

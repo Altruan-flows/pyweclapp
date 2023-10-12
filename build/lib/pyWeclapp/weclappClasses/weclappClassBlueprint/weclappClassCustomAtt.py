@@ -10,7 +10,7 @@ from ... import weclapp, timeFunctions
 
 class WeclappMetaData(BaseModel):
     attributeDefinitionId:str
-    valueName:Literal["selectedValueId", "stringValue", "booleanValue", "dateValue", "selectedValues", "entityId", "entityReferences", "numberValue"] = None
+    valueName:Union[Literal["selectedValueId", "stringValue", "booleanValue", "dateValue", "selectedValues", "entityId", "entityReferences", "numberValue"],None] = None
     originalValue: Any = None
     value: Any = None
     reset:bool = False
@@ -304,6 +304,7 @@ class WeclappMetaData(BaseModel):
         
         
     def getUpdateDict(self, updateType:Literal['full', 'used']='used'):
+        updateType = updateType if updateType != "used+" else 'used'
         if self.updated or updateType == 'full': 
             answer=  {"attributeDefinitionId": self.attributeDefinitionId}
             if not self.reset and self.valueName is not None:

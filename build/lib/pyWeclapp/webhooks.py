@@ -1,6 +1,5 @@
 from . import weclapp
 import logging
-import json
 from jsonschema import validate
 
 
