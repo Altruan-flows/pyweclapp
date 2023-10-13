@@ -80,11 +80,12 @@ otherhwise invalid characters will be removed and a "X" will be added if the sta
 #### CAUTION this may overwrite changes you made in your module. 
 #### Setup Example
     from pyWeclapp.customAttributes import CAT_Generator
-    CAT_Generator("ticket", "74344116", "util/cat").main()
+    # create an empyt folder as targetDirectory
+    CAT_Generator(entityName="ticket", entityId="74344116", targetDirectory="util/cat").main()
 
 #### Usage Example
-    from pyWeclapp.examples import cat
-    citty = cat.CAT() # initialises all attributes that are paresed so far
+    from yourTaregtDirectory import CAT
+    citty = CAT() # initialises all attributes that are paresed so far
     citty.exampleAttribute.id # "1234"
     citty.exampleAttribute.valueName # selectedValues
     citty.exampleAttribute.MySelectableOption # "5678"
@@ -107,6 +108,9 @@ Allows to:
     -> set Description -> .setDescription() 
     -> update Description -> .updateDescription()
 
+#### Example
+    docManger = pyWeclapp.weclappDoc.DocManager("shipment", "74433425")
+    availableDocs = docManger.getDocuments()
 
 
 # timeFunctions
