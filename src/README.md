@@ -73,7 +73,7 @@ otherhwise invalid characters will be removed and a "X" will be added if the sta
 #### CAUTION this may overwrite changes you made in your module. 
 e.g.: CAT_Generator("salesOrder", entityId="73454749", targetDirectory="example/cat").main()
 
-use:
+#### Example
     cat.CAT() # initialises all attributes that are paresed so far
     cat.exampleAttribute.id # "1234"
     cat.exampleAttribute.valueName # selectedValues
