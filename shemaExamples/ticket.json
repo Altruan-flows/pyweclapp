@@ -1,0 +1,78 @@
+{
+    "id": "string",
+    "version": "string",
+    "assignedUserId": "string",
+    "billable": true,
+    "billableStatus": true,
+    "ccEmailAddresses": "string",
+    "contactId": "string",
+    "contractId": "string",
+    "createdDate": 0,
+    "customAttributes": [
+      {
+        "attributeDefinitionId": "string",
+        "booleanValue": true,
+        "dateValue": 0,
+        "entityId": "string",
+        "entityReferences": [
+          {
+            "entityId": "string",
+            "entityName": "string"
+          }
+        ],
+        "numberValue": "string",
+        "selectedValueId": "string",
+        "selectedValues": [
+          {
+            "id": "string"
+          }
+        ],
+        "stringValue": "string"
+      }
+    ],
+    "description": "string",
+    "disableEmailTemplates": true,
+    "email": "string",
+    "entityReferences": [
+      {
+        "entityId": "string",
+        "entityName": "string"
+      }
+    ],
+    "finishedDate": 0,
+    "firstName": "string",
+    "followUpDate": 0,
+    "invoicingStatus": "INVOICED",
+    "language": "string",
+    "lastModifiedDate": 0,
+    "lastName": "string",
+    "legacyArticleId": "string",
+    "legacyTimeAndMaterialTicket": true,
+    "mail2TicketId": "string",
+    "mobilePhoneNumber": "string",
+    "note": "string",
+    "partyId": "string",
+    "performanceRecordedStatus": "NOT_PERFORMANCE_RECORDED",
+    "phoneNumber": "string",
+    "publicPageExpirationDate": 0,
+    "publicPageUuid": "string",
+    "resolvedYourIssue": true,
+    "responsibleUserId": "string",
+    "room": "string",
+    "salesOrderId": "string",
+    "solutionDueDate": 0,
+    "subject": "string",
+    "tags": [
+      "string"
+    ],
+    "ticketCategoryId": "string",
+    "ticketChannelId": "string",
+    "ticketNumber": "string",
+    "ticketPriorityId": "string",
+    "ticketRating": "STARS_1",
+    "ticketRatingComment": "string",
+    "ticketRatingDate": 0,
+    "ticketServiceLevelAgreementId": "string",
+    "ticketStatusId": "string",
+    "ticketTypeId": "string"
+  }

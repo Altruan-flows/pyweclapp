@@ -51,13 +51,15 @@ salesOrder.postNewEntity()
 
 ### Createing a new class Template
 Sometimes you may want to create a new weclappClass that does not exist yet or update an old one.
-weclappClasses.WeclappClassCreator().createPythonFile() offers a convenient way to do this.
+from pyWeclapp.weclappClasses.weclappClassBlueprint.weclappClassCreator import WeclappClassCreator
+WeclappClassCreator().createPythonFile() offers a convenient way to do this.
 just specify a  entityName -> "salesOrder", "shipment", "contract", "article", "etc."
                 expamleEntityId -> to estimate the types
                 targetDirectory -> where the generaed files should be placed
                 entity -> overwirtes the starting dictionary (Optional)
 
 This will create the templates for the weclappclass as well as a init file.
+if you need supproperties make sure the example entity contains example of this. Oherwhise it will only be an enpty list without model
 #### CATION may overwrite existing files -> choose an empty directory
 
 
@@ -81,12 +83,25 @@ use:
 
 # weclappDoc
 ### allows you to upload, download or modify documents
-### DocManager(entityName, entityId) -> get all documents of a entity, or uploads to it...
+it autosets a description (DocDescription class) in json format to make documents identifiable via code
+### DocManager(entityName, entityId) 
+    -> get all documents of a entity: .getDocuments()
+    -> Upload a file -> .uploadFile()
+    -> download a file -> .getDocumentFiles()
+
+### Document
+behaives like a weclapp class -> Document.fromWeclapp()
+Allows to:
+    -> update -> .updateFile()
+    -> download -> .downloadDoc()
+    -> set Description -> .setDescription() 
+    -> update Description -> .updateDescription()
+
 
 
 # timeFunctions
 ### higher level functions for working with dates in different formats
-optimesed for woring with weclapp
+optimised for woring with weclapp
 
 
 

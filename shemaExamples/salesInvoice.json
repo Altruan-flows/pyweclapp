@@ -1,0 +1,288 @@
+{
+    "id": "string",
+    "version": "string",
+    "cancellationDate": 0,
+    "cancellationNumber": "string",
+    "collectiveInvoicePositionPrintType": "ORDER_POSITION_GROUP",
+    "commercialLanguage": "string",
+    "commission": "string",
+    "commissionSalesPartners": [
+      {
+        "id": "string",
+        "version": "string",
+        "commissionFix": "string",
+        "commissionPercentage": "string",
+        "commissionType": "FIX",
+        "createdDate": 0,
+        "lastModifiedDate": 0,
+        "salesPartnerSupplierId": "string",
+        "salesPartnerSupplierNumber": "string"
+      }
+    ],
+    "createdDate": 0,
+    "currencyConversionDate": 0,
+    "currencyConversionRate": "string",
+    "customAttributes": [
+      {
+        "attributeDefinitionId": "string",
+        "booleanValue": true,
+        "dateValue": 0,
+        "entityId": "string",
+        "entityReferences": [
+          {
+            "entityId": "string",
+            "entityName": "string"
+          }
+        ],
+        "numberValue": "string",
+        "selectedValueId": "string",
+        "selectedValues": [
+          {
+            "id": "string"
+          }
+        ],
+        "stringValue": "string"
+      }
+    ],
+    "customerHabitualExporterLetterOfIntentId": "string",
+    "customerId": "string",
+    "customerNumber": "string",
+    "deliveryAddress": {
+      "city": "string",
+      "company": "string",
+      "company2": "string",
+      "countryCode": "string",
+      "firstName": "string",
+      "globalLocationNumber": "string",
+      "lastName": "string",
+      "middleName": "string",
+      "phoneNumber": "string",
+      "postOfficeBoxCity": "string",
+      "postOfficeBoxNumber": "string",
+      "postOfficeBoxZipCode": "string",
+      "salutation": "COMPANY",
+      "state": "string",
+      "street1": "string",
+      "street2": "string",
+      "title": "string",
+      "titleId": "string",
+      "zipcode": "string"
+    },
+    "deliveryDate": 0,
+    "description": "string",
+    "disableEmailTemplate": true,
+    "dispatchCountryCode": "string",
+    "dueDate": 0,
+    "factoring": true,
+    "grossAmount": "string",
+    "grossAmountInCompanyCurrency": "string",
+    "headerDiscount": "string",
+    "headerSurcharge": "string",
+    "invoiceDate": 0,
+    "invoiceNumber": "string",
+    "lastModifiedDate": 0,
+    "netAmount": "string",
+    "netAmountInCompanyCurrency": "string",
+    "nonStandardTaxId": "string",
+    "nonStandardTaxName": "string",
+    "orderNumberAtCustomer": "string",
+    "paid": true,
+    "paymentMethodId": "string",
+    "paymentMethodName": "string",
+    "paymentStatus": "CLEARED_WITH_CREDIT_NOTE",
+    "precedingSalesInvoiceId": "string",
+    "pricingDate": 0,
+    "recordAddress": {
+      "city": "string",
+      "company": "string",
+      "company2": "string",
+      "countryCode": "string",
+      "firstName": "string",
+      "globalLocationNumber": "string",
+      "lastName": "string",
+      "middleName": "string",
+      "phoneNumber": "string",
+      "postOfficeBoxCity": "string",
+      "postOfficeBoxNumber": "string",
+      "postOfficeBoxZipCode": "string",
+      "salutation": "COMPANY",
+      "state": "string",
+      "street1": "string",
+      "street2": "string",
+      "title": "string",
+      "titleId": "string",
+      "zipcode": "string"
+    },
+    "recordComment": "string",
+    "recordCurrencyId": "string",
+    "recordCurrencyName": "string",
+    "recordEmailAddresses": {
+      "bccAddresses": "string",
+      "ccAddresses": "string",
+      "toAddresses": "string"
+    },
+    "recordFreeText": "string",
+    "recordOpening": "string",
+    "responsibleUserId": "string",
+    "responsibleUserUsername": "string",
+    "salesChannel": "string",
+    "salesInvoiceItems": [
+      {
+        "id": "string",
+        "version": "string",
+        "accountId": "string",
+        "accountNumber": "string",
+        "addPageBreakBefore": true,
+        "articleId": "string",
+        "articleNumber": "string",
+        "commissionSalesPartners": [
+          {
+            "id": "string",
+            "version": "string",
+            "commissionFix": "string",
+            "commissionPercentage": "string",
+            "commissionType": "FIX",
+            "createdDate": 0,
+            "lastModifiedDate": 0,
+            "salesPartnerSupplierId": "string",
+            "salesPartnerSupplierNumber": "string"
+          }
+        ],
+        "costCenterItems": [
+          {
+            "id": "string",
+            "version": "string",
+            "costCenterId": "string",
+            "costCenterNumber": "string",
+            "createdDate": 0,
+            "distributionPercentage": "string",
+            "lastModifiedDate": 0
+          }
+        ],
+        "createdDate": 0,
+        "creditedInvoiceItemId": "string",
+        "customAttributes": [
+          {
+            "attributeDefinitionId": "string",
+            "booleanValue": true,
+            "dateValue": 0,
+            "entityId": "string",
+            "entityReferences": [
+              {
+                "entityId": "string",
+                "entityName": "string"
+              }
+            ],
+            "numberValue": "string",
+            "selectedValueId": "string",
+            "selectedValues": [
+              {
+                "id": "string"
+              }
+            ],
+            "stringValue": "string"
+          }
+        ],
+        "description": "string",
+        "descriptionFixed": true,
+        "discountPercentage": "string",
+        "freeTextItem": true,
+        "grossAmount": "string",
+        "grossAmountInCompanyCurrency": "string",
+        "groupName": "string",
+        "lastModifiedDate": 0,
+        "manualQuantity": true,
+        "manualUnitCost": true,
+        "manualUnitPrice": true,
+        "netAmount": "string",
+        "netAmountForStatistics": "string",
+        "netAmountForStatisticsInCompanyCurrency": "string",
+        "netAmountInCompanyCurrency": "string",
+        "note": "string",
+        "parentItemId": "string",
+        "positionNumber": 0,
+        "quantity": "string",
+        "reductionAdditionItems": [
+          {
+            "position": 0,
+            "source": "ARTICLE",
+            "type": "ADDITION_ABSOLUTE",
+            "value": "string"
+          }
+        ],
+        "salesInvoiceItemRelationship": [
+          {
+            "performanceRecordItemId": "string",
+            "quantity": "string",
+            "salesInvoiceItemId": "string",
+            "salesOrderItemId": "string",
+            "shipmentItemId": "string"
+          }
+        ],
+        "serialNumbers": [
+          "string"
+        ],
+        "servicePeriodFrom": 0,
+        "servicePeriodTo": 0,
+        "taxId": "string",
+        "taxName": "string",
+        "title": "string",
+        "unitCost": "string",
+        "unitCostInCompanyCurrency": "string",
+        "unitId": "string",
+        "unitName": "string",
+        "unitPrice": "string",
+        "unitPriceInCompanyCurrency": "string"
+      }
+    ],
+    "salesInvoiceType": "ADVANCE_PAYMENT_INVOICE",
+    "salesOrderId": "string",
+    "salesOrderNumber": "string",
+    "salesOrders": [
+      {
+        "id": "string"
+      }
+    ],
+    "sentToRecipient": true,
+    "servicePeriodFrom": 0,
+    "servicePeriodTo": 0,
+    "shipmentMethodId": "string",
+    "shipmentMethodName": "string",
+    "shippingCostItems": [
+      {
+        "id": "string",
+        "version": "string",
+        "articleId": "string",
+        "articleNumber": "string",
+        "createdDate": 0,
+        "grossAmount": "string",
+        "grossAmountInCompanyCurrency": "string",
+        "lastModifiedDate": 0,
+        "manualUnitCost": true,
+        "manualUnitPrice": true,
+        "netAmount": "string",
+        "netAmountInCompanyCurrency": "string",
+        "taxId": "string",
+        "taxName": "string",
+        "unitCost": "string",
+        "unitCostInCompanyCurrency": "string",
+        "unitPrice": "string",
+        "unitPriceInCompanyCurrency": "string"
+      }
+    ],
+    "shippingDate": 0,
+    "status": "CANCELLED",
+    "statusHistory": [
+      {
+        "status": "CANCELLED",
+        "statusDate": 0,
+        "userId": "string"
+      }
+    ],
+    "tags": [
+      "string"
+    ],
+    "termOfPaymentId": "string",
+    "termOfPaymentName": "string",
+    "vatRegistrationNumber": "string"
+  }

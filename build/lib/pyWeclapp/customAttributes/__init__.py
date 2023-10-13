@@ -26,6 +26,7 @@ class CAT_Generator:
         self.parse()
         self.save()
         self.updateSuperClass()
+        self.createCatSettings()
     
     def findAllCATs(self, d):
         if isinstance(d, dict):
@@ -59,10 +60,11 @@ class CAT_Generator:
     def save(self, filetype="py"):
         self.newJson = {}
         self.file = f'import json\n'
+        self.file += f'from . import cat_Settings\n'
         self.file += f'from collections import namedtuple\n\n'
-        self.file += f'class CAT_{self.name}:\n\n'
+        self.file += f'class CAT_{self.name}(cat_Settings.CAT_Settings):\n\n'
         self.file += f'\t@staticmethod\n\tdef is_namedtuple(obj):\n\t\ttry:\n\t\t\treturn isinstance(obj, tuple) and hasattr(obj, "_fields")\n\t\texcept:\n\t\t\treturn False\n\n'
-        self.file += f'\tdef __init__(self, data:dict=None):\n\t\tif data is None:\n\t\t\twith open("{self.targetDirectory}/catData_{self.name}.json", "r") as f:\n\t\t\t\tdata = json.load(f)\n\n'
+        self.file += f'\tdef __init__(self, data:dict=None):\n\t\tsuper().__init__()\n\t\tif data is None:\n\t\t\twith open("{self.targetDirectory}/catData_{self.name}.json", "r") as f:\n\t\t\t\tdata = json.load(f)\n\n'
 
         lastGroupName = None
         for citty in sorted(self.groupedCatInfo, key=lambda x: x.groupName):
@@ -95,7 +97,15 @@ class CAT_Generator:
             f.write(self.file)
             
     def createCatSettings(self):
-        pass
+        fileContent = f"class CAT_Settings:\n"
+        fileContent += f"\tdef __init__(self, data:dict=None):\n"
+        fileContent += f"\t\t# You can place global cat settings here. they will not be modified\n"
+        fileContent += f"\t\tpass\n"
+        
+        if not os.path.exists(f"{self.targetDirectory}/cat_Settings.py"):
+            with open(f"{self.targetDirectory}/cat_Settings.py", "w+") as file:
+                file.write(fileContent)
+
     
     def estimateClassName(self, fileName:str):
         return fileName.replace("cat", "CAT")
@@ -120,6 +130,7 @@ class CAT_Generator:
         model = ", ".join([f"{module}.{self.estimateClassName(module)}" for module in module_names])
 
         fileContent = "\n".join(import_statements)
+        fileContent += "\n# dynamic File please do not edit\n"
         fileContent += f"\n\n\n\nclass CAT({model}):\n"
         fileContent += f"\tdef __init__(self):\n"
         # fileContent += f"\t\tcurrent_directory = os.path.dirname(os.path.abspath(__file__))\n"
@@ -127,6 +138,7 @@ class CAT_Generator:
         fileContent += f"\t\twith open(\"{self.targetDirectory}/allCatData.json\", \"r\") as f:\n"
         fileContent += f"\t\t\tself.data = json.load(f)\n"
         fileContent += f"\t\tsuper().__init__(self.data)\n"
+        fileContent += f"\n\n\n\n"
         
         with open(f"{self.targetDirectory}/cat.py", "w+") as file:
             file.write(fileContent)

@@ -6,14 +6,19 @@ Home-page: https://github.com/AltruanGmbH/weclappFunctions
 Author: Altruan gmbh
 Author-email: jakob.goesswald@altruan.de
 License: MIT
-Platform: UNKNOWN
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Programming Language :: Python :: 3.10
 Classifier: Operating System :: OS Independent
 Requires-Python: >=3.9
 Description-Content-Type: text/markdown
-Provides-Extra: dev
 License-File: LICENSE
+Requires-Dist: urllib3<2.0
+Requires-Dist: requests>=2.28.2
+Requires-Dist: pydantic>=1.10.4
+Requires-Dist: jsonschema>=4.17.3
+Requires-Dist: pytz>=2022.7.1
+Provides-Extra: dev
+Requires-Dist: twine>=4.0.2; extra == "dev"
 
 # pyWeclapp - Methods, classes and class builders for interacting with the weclapp aoi
 
@@ -35,13 +40,93 @@ For some applications it is usefull to set multiple tokens from different users.
 the Api Key can be referenced in selected functions via it's short name key0 or key1  or ...; key0=default
 
 
+# weclapp
+### Provides basic function for quering the Weclapp API (GET, PUT, POST and DELETE)
+You can specify with asType the desired datatype of the response, so that for example the "result" attribte gets removed when asking for e.g. all orders
+in these functions will throw a specialized weclappError if they fail.
+PUT function uses the query Parmateter "justUsedProperties" by default to allow for updates with only changes
+
+
+# weclappClasses
+### Provides a nested pydantic dataModel for the most used classes with update tracking and metaData handling
+to initialise use .fromWeclapp -> e.g. weclappClasses.SalesOrder.fromWeclapp("yourWeclappSalesOrderId")
+to retrieve the dictionary again use .getUpdateDict("used+") with updateType:
+     "full" -> complete Dict, 
+     "used+" -> just changes with version included or 
+     "used" -> just changes
+to directly Update use .updateWeclapp(), .updateEntity() functions
+
+
+### Creating Neu class Instances in weclapp
+the class also provides you with a template to create an emptyClass. In this case please use the fromBlank() classmethod.
+after that all attributes will be set to None, lists or empyt subclasses, that you can modify or append to.
+after compleetion call the postNewEntity() method to post it to weclapp. Please do not set "id" or "verion"
+e.g. 
+salesOrder = weclappClasses.SalesOrder.fromBlank()
+salesOrder.customerId = "1234"  
+salesOrder.invoiceAddress.firstName = "Max"
+salesOrder.qmd("1234", addToMetaData=True).booleanValue = True  # Adds a custom Attribute
+orderItem = weclappClasses.OrderItems.fromBlank()
+orderItem.articleId = "1234"
+salesOrder.orderItems.append(orderItem)
+salesOrder.postNewEntity()
+
+### Createing a new class Template
+Sometimes you may want to create a new weclappClass that does not exist yet or update an old one.
+from pyWeclapp.weclappClasses.weclappClassBlueprint.weclappClassCreator import WeclappClassCreator
+WeclappClassCreator().createPythonFile() offers a convenient way to do this.
+just specify a  entityName -> "salesOrder", "shipment", "contract", "article", "etc."
+                expamleEntityId -> to estimate the types
+                targetDirectory -> where the generaed files should be placed
+                entity -> overwirtes the starting dictionary (Optional)
+
+This will create the templates for the weclappclass as well as a init file.
+if you need supproperties make sure the example entity contains example of this. Oherwhise it will only be an enpty list without model
+#### CATION may overwrite existing files -> choose an empty directory
+
+
+# CustomAttributes
+when working with customAttribes a way of nameing them is important. However the ids vary form system to system
+the CAT classes (CustomATtributes) will generate the a classtemplate like in examples.
+ater that the attributes will be accessable with their weclappSystemNames with suggesions
+selectableElements will also be parsed. use bracets in description to choose a different system Name e.g.: "this is a selectable - Option (MySelectableOption)" -> Name will be "MySelectableOption"
+otherhwise invalid characters will be removed and a "X" will be added if the startincharacter is invalid
+
+#### CAUTION this may overwrite changes you made in your module. 
+e.g.: CAT_Generator("salesOrder", entityId="73454749", targetDirectory="example/cat").main()
+
+use:
+    cat.CAT() # initialises all attributes that are paresed so far
+    cat.exampleAttribute.id # "1234"
+    cat.exampleAttribute.valueName # selectedValues
+    cat.exampleAttribute.MySelectableOption # "5678"
+
+#### if you only need attribtes for specific entity please use the more specific and lightweight subclasses like cat_SalesOrder
+
+# weclappDoc
+### allows you to upload, download or modify documents
+it autosets a description (DocDescription class) in json format to make documents identifiable via code
+### DocManager(entityName, entityId) 
+    -> get all documents of a entity: .getDocuments()
+    -> Upload a file -> .uploadFile()
+    -> download a file -> .getDocumentFiles()
+
+### Document
+behaives like a weclapp class -> Document.fromWeclapp()
+Allows to:
+    -> update -> .updateFile()
+    -> download -> .downloadDoc()
+    -> set Description -> .setDescription() 
+    -> update Description -> .updateDescription()
 
 
 
+# timeFunctions
+### higher level functions for working with dates in different formats
+optimised for woring with weclapp
 
 
 
 
 
 create wheel with comand >python setup.py bdist_wheel sdist
-

@@ -5,7 +5,7 @@ import os
 
 import logging
 from .weclappResponseProcessing import AVAILABEL_APIKEYS, getWeclappHeaders, getWeclappQueries, weclappResponse, getWeclappDomain
-
+from .weclappError import WeclappError
 
 
 

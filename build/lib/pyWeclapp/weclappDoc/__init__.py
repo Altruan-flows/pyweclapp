@@ -2,7 +2,6 @@ from .docDescription import DocDescription, ALLOWED_DOC_FORMATS, ALLOWED_DOC_FOR
 from .document import Document
 from typing import *
 import logging
-# import fitz
 import io
 from .. import weclapp
 import time
@@ -11,43 +10,33 @@ import base64
 
 
 
-
 class DocManager:
     
-    @classmethod  
-    def documentNamingConvention(cls, docType:ALLOWED_DOC_TYPES_LITERAL,
-                                docFormat:ALLOWED_DOC_FORMATS_LITERAL,
-                                fullName:str):
-        """Debricated! used the one from Document!!!
 
-        """
-        assert docType in ALLOWED_DOC_TYPES, f"documentNamingConvention: No convention for {docType}"
-        assert docFormat in ALLOWED_DOC_FORMATS, f"documentNamingConvention: No Doctype for {docType}"
-
-        description = docType
-        fullName = str(fullName).split('.')[0].replace(' ', '-')
-        name = f"{docType}-{fullName}.{docFormat}"
-        return name, description
-    
-    # @staticmethod
-    # def convertPdfToTiff(docs:List[io.BytesIO], names:List[str]) -> Tuple[List[io.BytesIO], List[str]]:
-    #     logging.info('converting pdf to tiff')
-    #     img_list = []
-    #     name_list = []
-    #     for doc, name in zip(docs, names):
-    #         doc = fitz.open(stream=doc.read(), filetype="pdf")
-    #         for i, page in enumerate(doc):
-    #             pix = page.get_pixmap(alpha=False)
-    #             img_bytes = io.BytesIO(pix.tobytes('tiff'))
-    #             img_list.append(img_bytes)
-    #             nameRaw = str(name).split('.')[0]
-    #             name_list.append(f"{nameRaw}-{i}.tiff")
-    #         doc.close()
-    #     return img_list, name_list
+    @staticmethod
+    def convertPdfToTiff(docs:List[io.BytesIO], names:List[str]) -> Tuple[List[io.BytesIO], List[str]]:
+        try:
+            import fitz
+        except ImportError:
+            logging.error('Special Functionality requires fitz module to manually install (pip install PyMuPDF)')
+            raise AssertionError('Special Functionality requires fitz module to manually install (pip install PyMuPDF)')
+        logging.info('converting pdf to tiff')
+        img_list = []
+        name_list = []
+        for doc, name in zip(docs, names):
+            doc = fitz.open(stream=doc.read(), filetype="pdf")
+            for i, page in enumerate(doc):
+                pix = page.get_pixmap(alpha=False)
+                img_bytes = io.BytesIO(pix.tobytes('tiff'))
+                img_list.append(img_bytes)
+                nameRaw = str(name).split('.')[0]
+                name_list.append(f"{nameRaw}-{i}.tiff")
+            doc.close()
+        return img_list, name_list
     
     
-    @classmethod
-    def downloadDocById(cls, docId) -> io.BytesIO:
+    @staticmethod
+    def downloadDocById(docId) -> io.BytesIO:
         content = weclapp.GET(entityName="document",
                             entityId=f"{docId}/download", 
                             asType=bytes)
@@ -67,6 +56,7 @@ class DocManager:
         
         
     def getDocuments(self) -> List[Document]:
+        """Gets a list of weclapp Documents as Document class for the given entity"""
         response = weclapp.GET(entityName="document",
                                 query={
                                     "entityName": self.entityName, 
@@ -89,6 +79,7 @@ class DocManager:
             
             
     def queryDoc(self, value:str, key:str="docType", raiseError:bool=True) -> Document:
+        """Searches the entity for a document with a specified doctype and returns it"""
         if not self.documents:
             self.getDocuments()
         for doc in self.documents:
@@ -122,6 +113,7 @@ class DocManager:
                    docFormat:ALLOWED_DOC_FORMATS_LITERAL = 'pdf',  
                    demo:bool = False,
                    tryToUpdateFirst:bool=False) -> Document:
+        """Uploads a file to the entity and returns the document class"""
         logging.info('---weclapp.uploadFile()---')
         if file:
             file = file
@@ -175,8 +167,9 @@ class DocManager:
                    docType: ALLOWED_DOC_TYPES_LITERAL,
                    docFormat: ALLOWED_DOC_FORMATS,
                    by:Literal['all', 'latest']) -> Tuple[List[io.BytesIO], List[str]]:
+        """downloads all documents of a given type and format and returns them as a list of BytesIO objects"""
         # ensure Nameing Convention
-        _, docType = self.documentNamingConvention(docType=docType, docFormat=docFormat, fullName='')
+        _, docType = Document.documentNamingConvention(docType=docType, docFormat=docFormat, fullName='')
         logging.info(f"Getting Document files {docType=} {docFormat=} {by=}")
         # get All documents
         if not self.documents:

@@ -1,0 +1,339 @@
+{
+    "id": "string",
+    "version": "string",
+    "advancePaymentStatus": "OPEN",
+    "availability": "COMPLETELY_AVAILABLE",
+    "availabilityForAllWarehouses": "COMPLETELY_AVAILABLE",
+    "cashAccountId": "string",
+    "commercialLanguage": "string",
+    "commission": "string",
+    "commissionSalesPartners": [
+      {
+        "id": "string",
+        "version": "string",
+        "commissionFix": "string",
+        "commissionPercentage": "string",
+        "commissionType": "FIX",
+        "createdDate": 0,
+        "lastModifiedDate": 0,
+        "salesPartnerSupplierId": "string",
+        "salesPartnerSupplierNumber": "string"
+      }
+    ],
+    "createdDate": 0,
+    "currencyConversionDate": 0,
+    "currencyConversionRate": "string",
+    "customAttributes": [
+      {
+        "attributeDefinitionId": "string",
+        "booleanValue": true,
+        "dateValue": 0,
+        "entityId": "string",
+        "entityReferences": [
+          {
+            "entityId": "string",
+            "entityName": "string"
+          }
+        ],
+        "numberValue": "string",
+        "selectedValueId": "string",
+        "selectedValues": [
+          {
+            "id": "string"
+          }
+        ],
+        "stringValue": "string"
+      }
+    ],
+    "customerHabitualExporterLetterOfIntentId": "string",
+    "customerId": "string",
+    "customerNumber": "string",
+    "defaultShippingCarrierId": "string",
+    "defaultShippingCarrierName": "string",
+    "defaultShippingReturnCarrierId": "string",
+    "defaultShippingReturnCarrierName": "string",
+    "deliveryAddress": {
+      "city": "string",
+      "company": "string",
+      "company2": "string",
+      "countryCode": "string",
+      "firstName": "string",
+      "globalLocationNumber": "string",
+      "lastName": "string",
+      "middleName": "string",
+      "phoneNumber": "string",
+      "postOfficeBoxCity": "string",
+      "postOfficeBoxNumber": "string",
+      "postOfficeBoxZipCode": "string",
+      "salutation": "COMPANY",
+      "state": "string",
+      "street1": "string",
+      "street2": "string",
+      "title": "string",
+      "titleId": "string",
+      "zipcode": "string"
+    },
+    "deliveryEmailAddresses": {
+      "bccAddresses": "string",
+      "ccAddresses": "string",
+      "toAddresses": "string"
+    },
+    "description": "string",
+    "disableEmailTemplate": true,
+    "dispatchCountryCode": "string",
+    "ecommerceOrder": {
+      "ecommerceId": "string",
+      "externalConnectionId": "string"
+    },
+    "factoring": true,
+    "fulfillmentProviderId": "string",
+    "grossAmount": "string",
+    "grossAmountInCompanyCurrency": "string",
+    "headerDiscount": "string",
+    "headerSurcharge": "string",
+    "invoiceAddress": {
+      "city": "string",
+      "company": "string",
+      "company2": "string",
+      "countryCode": "string",
+      "firstName": "string",
+      "globalLocationNumber": "string",
+      "lastName": "string",
+      "middleName": "string",
+      "phoneNumber": "string",
+      "postOfficeBoxCity": "string",
+      "postOfficeBoxNumber": "string",
+      "postOfficeBoxZipCode": "string",
+      "salutation": "COMPANY",
+      "state": "string",
+      "street1": "string",
+      "street2": "string",
+      "title": "string",
+      "titleId": "string",
+      "zipcode": "string"
+    },
+    "invoiceRecipientId": "string",
+    "invoiced": true,
+    "lastModifiedDate": 0,
+    "netAmount": "string",
+    "netAmountInCompanyCurrency": "string",
+    "nonStandardTaxId": "string",
+    "nonStandardTaxName": "string",
+    "onlyServices": true,
+    "orderDate": 0,
+    "orderItems": [
+      {
+        "id": "string",
+        "version": "string",
+        "addPageBreakBefore": true,
+        "articleId": "string",
+        "articleNumber": "string",
+        "availability": "COMPLETELY_AVAILABLE",
+        "availabilityForAllWarehouses": "COMPLETELY_AVAILABLE",
+        "commissionSalesPartners": [
+          {
+            "id": "string",
+            "version": "string",
+            "commissionFix": "string",
+            "commissionPercentage": "string",
+            "commissionType": "FIX",
+            "createdDate": 0,
+            "lastModifiedDate": 0,
+            "salesPartnerSupplierId": "string",
+            "salesPartnerSupplierNumber": "string"
+          }
+        ],
+        "createdDate": 0,
+        "customAttributes": [
+          {
+            "attributeDefinitionId": "string",
+            "booleanValue": true,
+            "dateValue": 0,
+            "entityId": "string",
+            "entityReferences": [
+              {
+                "entityId": "string",
+                "entityName": "string"
+              }
+            ],
+            "numberValue": "string",
+            "selectedValueId": "string",
+            "selectedValues": [
+              {
+                "id": "string"
+              }
+            ],
+            "stringValue": "string"
+          }
+        ],
+        "description": "string",
+        "descriptionFixed": true,
+        "discountPercentage": "string",
+        "ecommerceOrderItemId": "string",
+        "freeTextItem": true,
+        "grossAmount": "string",
+        "grossAmountInCompanyCurrency": "string",
+        "groupName": "string",
+        "invoicedQuantity": "string",
+        "invoicingType": "EFFORT",
+        "lastModifiedDate": 0,
+        "manualPlannedWorkingTimePerUnit": true,
+        "manualQuantity": true,
+        "manualUnitCost": true,
+        "manualUnitPrice": true,
+        "netAmount": "string",
+        "netAmountForStatistics": "string",
+        "netAmountForStatisticsInCompanyCurrency": "string",
+        "netAmountInCompanyCurrency": "string",
+        "note": "string",
+        "parentItemId": "string",
+        "pickBatchNumber": "string",
+        "pickSerialNumbers": [
+          "string"
+        ],
+        "pickStoragePlaceId": "string",
+        "plannedShippingDate": 0,
+        "plannedWorkingTimePerUnit": "string",
+        "positionNumber": 0,
+        "quantity": "string",
+        "reductionAdditionItems": [
+          {
+            "position": 0,
+            "source": "ARTICLE",
+            "type": "ADDITION_ABSOLUTE",
+            "value": "string"
+          }
+        ],
+        "returnedQuantity": "string",
+        "serviceItem": true,
+        "servicePeriodFrom": 0,
+        "servicePeriodTo": 0,
+        "shipped": true,
+        "shippedQuantity": "string",
+        "tasks": [
+          {
+            "id": "string"
+          }
+        ],
+        "taxId": "string",
+        "taxName": "string",
+        "title": "string",
+        "unitCost": "string",
+        "unitCostInCompanyCurrency": "string",
+        "unitId": "string",
+        "unitName": "string",
+        "unitPrice": "string",
+        "unitPriceInCompanyCurrency": "string"
+      }
+    ],
+    "orderNumber": "string",
+    "orderNumberAtCustomer": "string",
+    "paid": true,
+    "paymentMethodId": "string",
+    "paymentMethodName": "string",
+    "plannedDeliveryDate": 0,
+    "plannedProjectEndDate": 0,
+    "plannedProjectStartDate": 0,
+    "plannedShippingDate": 0,
+    "pricingDate": 0,
+    "projectGoals": "string",
+    "projectMembers": [
+      {
+        "id": "string",
+        "version": "string",
+        "createdDate": 0,
+        "hourlyCost": "string",
+        "lastModifiedDate": 0,
+        "teamRole": "MANAGER",
+        "userId": "string"
+      }
+    ],
+    "projectModeActive": true,
+    "quotationId": "string",
+    "quotationNumber": "string",
+    "recordAddress": {
+      "city": "string",
+      "company": "string",
+      "company2": "string",
+      "countryCode": "string",
+      "firstName": "string",
+      "globalLocationNumber": "string",
+      "lastName": "string",
+      "middleName": "string",
+      "phoneNumber": "string",
+      "postOfficeBoxCity": "string",
+      "postOfficeBoxNumber": "string",
+      "postOfficeBoxZipCode": "string",
+      "salutation": "COMPANY",
+      "state": "string",
+      "street1": "string",
+      "street2": "string",
+      "title": "string",
+      "titleId": "string",
+      "zipcode": "string"
+    },
+    "recordComment": "string",
+    "recordCurrencyId": "string",
+    "recordCurrencyName": "string",
+    "recordEmailAddresses": {
+      "bccAddresses": "string",
+      "ccAddresses": "string",
+      "toAddresses": "string"
+    },
+    "recordFreeText": "string",
+    "recordOpening": "string",
+    "responsibleUserId": "string",
+    "responsibleUserUsername": "string",
+    "salesChannel": "string",
+    "salesInvoiceEmailAddresses": {
+      "bccAddresses": "string",
+      "ccAddresses": "string",
+      "toAddresses": "string"
+    },
+    "salesOrderPaymentType": "ADVANCE_PAYMENT",
+    "sentToRecipient": true,
+    "servicePeriodFrom": 0,
+    "servicePeriodTo": 0,
+    "servicesFinished": true,
+    "shipmentMethodId": "string",
+    "shipmentMethodName": "string",
+    "shipped": true,
+    "shippingCostItems": [
+      {
+        "id": "string",
+        "version": "string",
+        "articleId": "string",
+        "articleNumber": "string",
+        "createdDate": 0,
+        "grossAmount": "string",
+        "grossAmountInCompanyCurrency": "string",
+        "lastModifiedDate": 0,
+        "manualUnitCost": true,
+        "manualUnitPrice": true,
+        "netAmount": "string",
+        "netAmountInCompanyCurrency": "string",
+        "taxId": "string",
+        "taxName": "string",
+        "unitCost": "string",
+        "unitCostInCompanyCurrency": "string",
+        "unitPrice": "string",
+        "unitPriceInCompanyCurrency": "string"
+      }
+    ],
+    "shippingLabelsCount": 0,
+    "status": "CANCELLED",
+    "statusHistory": [
+      {
+        "status": "CANCELLED",
+        "statusDate": 0,
+        "userId": "string"
+      }
+    ],
+    "tags": [
+      "string"
+    ],
+    "termOfPaymentId": "string",
+    "termOfPaymentName": "string",
+    "warehouseId": "string",
+    "warehouseName": "string"
+  }

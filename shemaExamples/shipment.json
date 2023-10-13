@@ -1,0 +1,224 @@
+{
+    "id": "string",
+    "version": "string",
+    "additionalDeliveryInformation": "string",
+    "availability": "COMPLETELY_AVAILABLE",
+    "availabilityForAllWarehouses": "COMPLETELY_AVAILABLE",
+    "commercialLanguage": "string",
+    "consolidationStoragePlaceId": "string",
+    "createdDate": 0,
+    "customAttributes": [
+      {
+        "attributeDefinitionId": "string",
+        "booleanValue": true,
+        "dateValue": 0,
+        "entityId": "string",
+        "entityReferences": [
+          {
+            "entityId": "string",
+            "entityName": "string"
+          }
+        ],
+        "numberValue": "string",
+        "selectedValueId": "string",
+        "selectedValues": [
+          {
+            "id": "string"
+          }
+        ],
+        "stringValue": "string"
+      }
+    ],
+    "customerPurchaseOrderNumber": "string",
+    "declaredValueAmount": "string",
+    "declaredValueAmountCurrencyId": "string",
+    "declaredValueAmountCurrencyName": "string",
+    "deliveryDate": 0,
+    "description": "string",
+    "destinationStoragePlaceId": "string",
+    "destinationWarehouseId": "string",
+    "destinationWarehouseName": "string",
+    "disableEmailTemplate": true,
+    "invoiceAddress": {
+      "city": "string",
+      "company": "string",
+      "company2": "string",
+      "countryCode": "string",
+      "firstName": "string",
+      "globalLocationNumber": "string",
+      "lastName": "string",
+      "middleName": "string",
+      "phoneNumber": "string",
+      "postOfficeBoxCity": "string",
+      "postOfficeBoxNumber": "string",
+      "postOfficeBoxZipCode": "string",
+      "salutation": "COMPANY",
+      "state": "string",
+      "street1": "string",
+      "street2": "string",
+      "title": "string",
+      "titleId": "string",
+      "zipcode": "string"
+    },
+    "invoiceRecipientId": "string",
+    "lastModifiedDate": 0,
+    "packageHeight": 0,
+    "packageLength": 0,
+    "packageReferenceNumber": "string",
+    "packageReturnTrackingNumber": "string",
+    "packageReturnTrackingUrl": "string",
+    "packageTrackingNumber": "string",
+    "packageTrackingUrl": "string",
+    "packageWeight": "string",
+    "packageWidth": 0,
+    "pickingInstructions": "string",
+    "picksComplete": true,
+    "purchaseOrders": [
+      {
+        "id": "string"
+      }
+    ],
+    "recipientAddress": {
+      "city": "string",
+      "company": "string",
+      "company2": "string",
+      "countryCode": "string",
+      "firstName": "string",
+      "globalLocationNumber": "string",
+      "lastName": "string",
+      "middleName": "string",
+      "phoneNumber": "string",
+      "postOfficeBoxCity": "string",
+      "postOfficeBoxNumber": "string",
+      "postOfficeBoxZipCode": "string",
+      "salutation": "COMPANY",
+      "state": "string",
+      "street1": "string",
+      "street2": "string",
+      "title": "string",
+      "titleId": "string",
+      "zipcode": "string"
+    },
+    "recipientCustomerNumber": "string",
+    "recipientPartyId": "string",
+    "recipientSupplierNumber": "string",
+    "recordComment": "string",
+    "recordEmailAddresses": {
+      "bccAddresses": "string",
+      "ccAddresses": "string",
+      "toAddresses": "string"
+    },
+    "recordFreeText": "string",
+    "recordOpening": "string",
+    "responsibleUserId": "string",
+    "salesInvoiceEmailAddresses": {
+      "bccAddresses": "string",
+      "ccAddresses": "string",
+      "toAddresses": "string"
+    },
+    "salesOrderId": "string",
+    "salesOrderNumber": "string",
+    "sentToRecipient": true,
+    "shipmentItems": [
+      {
+        "id": "string",
+        "version": "string",
+        "addPageBreakBefore": true,
+        "articleId": "string",
+        "articleNumber": "string",
+        "availability": "COMPLETELY_AVAILABLE",
+        "availabilityForAllWarehouses": "COMPLETELY_AVAILABLE",
+        "createdDate": 0,
+        "customAttributes": [
+          {
+            "attributeDefinitionId": "string",
+            "booleanValue": true,
+            "dateValue": 0,
+            "entityId": "string",
+            "entityReferences": [
+              {
+                "entityId": "string",
+                "entityName": "string"
+              }
+            ],
+            "numberValue": "string",
+            "selectedValueId": "string",
+            "selectedValues": [
+              {
+                "id": "string"
+              }
+            ],
+            "stringValue": "string"
+          }
+        ],
+        "description": "string",
+        "descriptionFixed": true,
+        "freeTextItem": true,
+        "groupName": "string",
+        "lastModifiedDate": 0,
+        "manualQuantity": true,
+        "note": "string",
+        "parentItemId": "string",
+        "positionNumber": 0,
+        "purchaseOrderItemId": "string",
+        "quantity": "string",
+        "returnAssessmentId": "string",
+        "returnAssessmentName": "string",
+        "returnDescription": "string",
+        "returnErrorId": "string",
+        "returnErrorName": "string",
+        "returnReasonId": "string",
+        "returnReasonName": "string",
+        "returnRectificationId": "string",
+        "returnRectificationName": "string",
+        "salesOrderItemId": "string",
+        "title": "string",
+        "unitId": "string",
+        "unitName": "string"
+      }
+    ],
+    "shipmentMethodId": "string",
+    "shipmentMethodName": "string",
+    "shipmentNumber": "string",
+    "shipmentType": "CONSIGNMENT",
+    "shippedFromAddress": {
+      "city": "string",
+      "company": "string",
+      "company2": "string",
+      "countryCode": "string",
+      "firstName": "string",
+      "globalLocationNumber": "string",
+      "lastName": "string",
+      "middleName": "string",
+      "phoneNumber": "string",
+      "postOfficeBoxCity": "string",
+      "postOfficeBoxNumber": "string",
+      "postOfficeBoxZipCode": "string",
+      "salutation": "COMPANY",
+      "state": "string",
+      "street1": "string",
+      "street2": "string",
+      "title": "string",
+      "titleId": "string",
+      "zipcode": "string"
+    },
+    "shippingCarrierId": "string",
+    "shippingCarrierName": "string",
+    "shippingDate": 0,
+    "shippingLabelsCount": 0,
+    "shippingReturnCarrierId": "string",
+    "shippingReturnCarrierName": "string",
+    "status": "CANCELLED",
+    "statusHistory": [
+      {
+        "status": "CANCELLED",
+        "statusDate": 0,
+        "userId": "string"
+      }
+    ],
+    "tags": [
+      "string"
+    ],
+    "warehouseId": "string",
+    "warehouseName": "string"
+  }

@@ -47,8 +47,12 @@ class Document(BaseModel):
     def documentNamingConvention(cls, docType:ALLOWED_DOC_TYPES_LITERAL,
                                 docFormat:ALLOWED_DOC_FORMATS_LITERAL,
                                 fullName:str):
-        assert docType in ALLOWED_DOC_TYPES, f"documentNamingConvention: No convention for {docType}"
-        assert docFormat in ALLOWED_DOC_FORMATS, f"documentNamingConvention: No Doctype for {docType}"
+        if docType not in ALLOWED_DOC_TYPES:
+            logging.warning(f"documentNamingConvention: No convention for {docType}")
+            # assert docType in ALLOWED_DOC_TYPES, f"documentNamingConvention: No convention for {docType}"
+        if docFormat not in ALLOWED_DOC_FORMATS:
+            logging.warning(f"documentNamingConvention: No Doctype for {docType}")
+            # assert docFormat in ALLOWED_DOC_FORMATS, f"documentNamingConvention: No Doctype for {docType}"
 
         description = docType
         fullName = str(fullName).split('.')[0].replace(' ', '-')
@@ -103,6 +107,7 @@ class Document(BaseModel):
                    file:bytes= None, 
                    base64Content:str = None, 
                    buffer:io.BytesIO = None):
+        """Updates the file content"""
         logging.info('---weclapp.uploadFile()---')
         if file:
             file = file
@@ -123,6 +128,7 @@ class Document(BaseModel):
         content = weclapp.GET(entityName="document",
                             entityId=f"{self.id}/download", 
                             asType=bytes)
+        """Downloads the file content as BytesIO"""
         file = io.BytesIO()
         file.write(content)
         file.seek(0)

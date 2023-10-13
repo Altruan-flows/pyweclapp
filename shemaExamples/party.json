@@ -1,0 +1,283 @@
+{
+    "id": "string",
+    "version": "string",
+    "addresses": [
+      {
+        "id": "string",
+        "version": "string",
+        "city": "string",
+        "company": "string",
+        "company2": "string",
+        "countryCode": "string",
+        "createdDate": 0,
+        "deliveryAddress": true,
+        "firstName": "string",
+        "globalLocationNumber": "string",
+        "invoiceAddress": true,
+        "lastModifiedDate": 0,
+        "lastName": "string",
+        "phoneNumber": "string",
+        "postOfficeBoxCity": "string",
+        "postOfficeBoxNumber": "string",
+        "postOfficeBoxZipCode": "string",
+        "primeAddress": true,
+        "salutation": "COMPANY",
+        "state": "string",
+        "street1": "string",
+        "street2": "string",
+        "title": "string",
+        "titleId": "string",
+        "zipcode": "string"
+      }
+    ],
+    "bankAccounts": [
+      {
+        "id": "string",
+        "version": "string",
+        "accountHolder": "string",
+        "accountNumber": "string",
+        "bankCode": "string",
+        "createdDate": 0,
+        "creditInstitute": "string",
+        "lastModifiedDate": 0,
+        "partyId": "string",
+        "primary": true
+      }
+    ],
+    "birthDate": 0,
+    "commercialLanguageId": "string",
+    "commissionSalesPartners": [
+      {
+        "id": "string",
+        "version": "string",
+        "commissionFix": "string",
+        "commissionPercentage": "string",
+        "commissionType": "FIX",
+        "createdDate": 0,
+        "lastModifiedDate": 0,
+        "salesPartnerSupplierId": "string",
+        "salesPartnerSupplierNumber": "string"
+      }
+    ],
+    "company": "string",
+    "company2": "string",
+    "companySizeId": "string",
+    "companySizeName": "string",
+    "competitor": true,
+    "contacts": [
+      {
+        "id": "string"
+      }
+    ],
+    "createdDate": 0,
+    "currencyId": "string",
+    "currencyName": "string",
+    "customAttributes": [
+      {
+        "attributeDefinitionId": "string",
+        "booleanValue": true,
+        "dateValue": 0,
+        "entityId": "string",
+        "entityReferences": [
+          {
+            "entityId": "string",
+            "entityName": "string"
+          }
+        ],
+        "numberValue": "string",
+        "selectedValueId": "string",
+        "selectedValues": [
+          {
+            "id": "string"
+          }
+        ],
+        "stringValue": "string"
+      }
+    ],
+    "customer": true,
+    "customerAmountInsured": "string",
+    "customerAnnualRevenue": "string",
+    "customerBlockNotice": "string",
+    "customerBlocked": true,
+    "customerBusinessType": "B2B",
+    "customerCategoryId": "string",
+    "customerCategoryName": "string",
+    "customerCreditLimit": "string",
+    "customerCurrentSalesStageId": "string",
+    "customerCurrentSalesStageName": "string",
+    "customerDebtorAccountId": "string",
+    "customerDebtorAccountNumber": "string",
+    "customerDebtorAccountingCodeId": "string",
+    "customerDefaultHeaderDiscount": "string",
+    "customerDefaultHeaderSurcharge": "string",
+    "customerDefaultShippingCarrierId": "string",
+    "customerDeliveryBlock": true,
+    "customerInsolvent": true,
+    "customerInsured": true,
+    "customerInternalNote": "string",
+    "customerLossDescription": "string",
+    "customerLossReasonId": "string",
+    "customerLossReasonName": "string",
+    "customerNonStandardTaxId": "string",
+    "customerNumber": "string",
+    "customerNumberOld": "string",
+    "customerPaymentMethodId": "string",
+    "customerPaymentMethodName": "string",
+    "customerSalesChannel": "string",
+    "customerSalesOrderPaymentType": "ADVANCE_PAYMENT",
+    "customerSalesProbability": 0,
+    "customerSalesStageHistory": [
+      {
+        "id": "string",
+        "version": "string",
+        "createdDate": 0,
+        "lastModifiedDate": 0,
+        "salesStageId": "string",
+        "salesStageName": "string",
+        "userId": "string"
+      }
+    ],
+    "customerSatisfaction": "NEUTRAL",
+    "customerShipmentMethodId": "string",
+    "customerShipmentMethodName": "string",
+    "customerSupplierNumber": "string",
+    "customerTermOfPaymentId": "string",
+    "customerTermOfPaymentName": "string",
+    "customerUseCustomsTariffNumber": true,
+    "deliveryAddressId": "string",
+    "deliveryEmailAddressesId": "string",
+    "description": "string",
+    "dunningAddressId": "string",
+    "dunningEmailAddressesId": "string",
+    "email": "string",
+    "enableDropshippingInNewSupplySources": true,
+    "eoriNumber": "string",
+    "factoring": true,
+    "fax": "string",
+    "firstName": "string",
+    "fixPhone2": "string",
+    "fixedResponsibleUser": true,
+    "formerSalesPartner": true,
+    "habitualExporter": true,
+    "imageId": "string",
+    "invoiceAddressId": "string",
+    "invoiceBlock": true,
+    "invoiceRecipientId": "string",
+    "lastModifiedDate": 0,
+    "lastName": "string",
+    "leadRatingId": "string",
+    "leadRatingName": "string",
+    "leadSourceId": "string",
+    "leadSourceName": "string",
+    "leadStatus": "CONVERTED",
+    "legalFormId": "string",
+    "legalFormName": "string",
+    "middleName": "string",
+    "mobilePhone1": "string",
+    "mobilePhone2": "string",
+    "onlineAccounts": [
+      {
+        "id": "string",
+        "version": "string",
+        "accountName": "string",
+        "accountType": "AMAZON",
+        "createdDate": 0,
+        "lastModifiedDate": 0,
+        "url": "string"
+      }
+    ],
+    "optInEmail": true,
+    "optInLetter": true,
+    "optInPhone": true,
+    "optInSms": true,
+    "parentPartyId": "string",
+    "partyEmailAddresses": [
+      {
+        "id": "string",
+        "version": "string",
+        "bccAddresses": "string",
+        "ccAddresses": "string",
+        "createdDate": 0,
+        "lastModifiedDate": 0,
+        "toAddresses": "string"
+      }
+    ],
+    "partyHabitualExporterLettersOfIntent": [
+      {
+        "id": "string",
+        "version": "string",
+        "automaticallySuggestInInvoice": true,
+        "createdDate": 0,
+        "date": 0,
+        "fromSupplier": true,
+        "invoices": [
+          {
+            "id": "string"
+          }
+        ],
+        "lastModifiedDate": 0,
+        "numberDeclarer": "string",
+        "numberSupplier": "string",
+        "totalAmount": "string",
+        "type": "MULTIPLE_ACCOUNTING_EVENTS"
+      }
+    ],
+    "partyType": "ORGANIZATION",
+    "personCompany": "string",
+    "personDepartmentId": "string",
+    "personRoleId": "string",
+    "phone": "string",
+    "phoneHome": "string",
+    "primaryAddressId": "string",
+    "primaryContactId": "string",
+    "purchaseEmailAddressesId": "string",
+    "purchaseViaPlafond": true,
+    "quotationEmailAddressesId": "string",
+    "ratingId": "string",
+    "ratingName": "string",
+    "referenceNumber": "string",
+    "responsibleUserId": "string",
+    "responsibleUserUsername": "string",
+    "salesInvoiceEmailAddressesId": "string",
+    "salesOrderEmailAddressesId": "string",
+    "salesPartner": true,
+    "salesPartnerDefaultCommissionFix": "string",
+    "salesPartnerDefaultCommissionPercentage": "string",
+    "salesPartnerDefaultCommissionType": "FIX",
+    "salutation": "COMPANY",
+    "sectorId": "string",
+    "sectorName": "string",
+    "supplier": true,
+    "supplierCreditorAccountId": "string",
+    "supplierCreditorAccountNumber": "string",
+    "supplierCreditorAccountingCodeId": "string",
+    "supplierCustomerNumberAtSupplier": "string",
+    "supplierDefaultShippingCarrierId": "string",
+    "supplierInternalNote": "string",
+    "supplierMinimumPurchaseOrderAmount": "string",
+    "supplierNonStandardTaxId": "string",
+    "supplierNumber": "string",
+    "supplierNumberOld": "string",
+    "supplierOrderBlock": true,
+    "supplierPaymentMethodId": "string",
+    "supplierPaymentMethodName": "string",
+    "supplierShipmentMethodId": "string",
+    "supplierShipmentMethodName": "string",
+    "supplierTermOfPaymentId": "string",
+    "supplierTermOfPaymentName": "string",
+    "tags": [
+      "string"
+    ],
+    "taxId": "string",
+    "title": "string",
+    "titleId": "string",
+    "topics": [
+      {
+        "id": "string",
+        "name": "string"
+      }
+    ],
+    "vatIdentificationNumber": "string",
+    "website": "string",
+    "xRechnungLeitwegId": "string"
+  }

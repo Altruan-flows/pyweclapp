@@ -43,7 +43,7 @@ def parse(time: Union[time.time, datetime.date, datetime.datetime, str, int, flo
     
     
 def toStr(time:Union[time.time, datetime.date, datetime.datetime, str, int, float]=time.time()*1000,
-          to:Literal["unix", "wooMeta", "weclapp", "utc", "mip", "utcDate", "docName", "ads", "emailDate", "dateHour"] = "unix") -> str:
+          to:Literal["unix", "wooMeta", "weclapp", "utc", "mip", "utcDate", "docName", "ads", "emailDate", "dateHour"] = "weclapp") -> str:
 
 
     time = parse(time=time)

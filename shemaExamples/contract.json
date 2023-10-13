@@ -1,0 +1,332 @@
+{
+    "id": "string",
+    "version": "string",
+    "additionalAddresses": [
+      {
+        "id": "string",
+        "version": "string",
+        "address": {
+          "city": "string",
+          "company": "string",
+          "company2": "string",
+          "countryCode": "string",
+          "firstName": "string",
+          "globalLocationNumber": "string",
+          "lastName": "string",
+          "middleName": "string",
+          "phoneNumber": "string",
+          "postOfficeBoxCity": "string",
+          "postOfficeBoxNumber": "string",
+          "postOfficeBoxZipCode": "string",
+          "salutation": "COMPANY",
+          "state": "string",
+          "street1": "string",
+          "street2": "string",
+          "title": "string",
+          "titleId": "string",
+          "zipcode": "string"
+        },
+        "createdDate": 0,
+        "description": "string",
+        "lastModifiedDate": 0
+      }
+    ],
+    "authorizationUnitId": "string",
+    "automaticExtension": true,
+    "billUntil": "CURRENT_MONTH_1",
+    "billingDay": 0,
+    "billingTargetInvoiceStatus": "BOOKED",
+    "billingType": "INVOICE_AFTER",
+    "cancellationDate": 0,
+    "cancellationPeriodQuantity": 0,
+    "cancellationPeriodSoftframe": "CONTRACT_END",
+    "cancellationPeriodUnit": "DAY",
+    "commercialLanguage": "string",
+    "commission": "string",
+    "commissionSalesPartners": [
+      {
+        "id": "string",
+        "version": "string",
+        "commissionFix": "string",
+        "commissionPercentage": "string",
+        "commissionType": "FIX",
+        "createdDate": 0,
+        "lastModifiedDate": 0,
+        "salesPartnerSupplierId": "string",
+        "salesPartnerSupplierNumber": "string"
+      }
+    ],
+    "contractCostItems": [
+      {
+        "id": "string",
+        "version": "string",
+        "articleId": "string",
+        "createdDate": 0,
+        "description": "string",
+        "descriptionFixed": true,
+        "discountPercentage": "string",
+        "interval": "DAILY",
+        "intervalType": "NON_RECURRENT",
+        "lastModifiedDate": 0,
+        "manualUnitPrice": true,
+        "netAmount": "string",
+        "netAmountInCompanyCurrency": "string",
+        "note": "string",
+        "quantity": "string",
+        "servicePeriodFrom": 0,
+        "servicePeriodTo": 0,
+        "title": "string",
+        "unitId": "string",
+        "unitPrice": "string",
+        "unitPriceInCompanyCurrency": "string"
+      }
+    ],
+    "contractDate": 0,
+    "contractItems": [
+      {
+        "id": "string",
+        "version": "string",
+        "addPageBreakBefore": true,
+        "articleId": "string",
+        "articleNumber": "string",
+        "billingGroupId": "string",
+        "commissionSalesPartners": [
+          {
+            "id": "string",
+            "version": "string",
+            "commissionFix": "string",
+            "commissionPercentage": "string",
+            "commissionType": "FIX",
+            "createdDate": 0,
+            "lastModifiedDate": 0,
+            "salesPartnerSupplierId": "string",
+            "salesPartnerSupplierNumber": "string"
+          }
+        ],
+        "costTypeId": "string",
+        "createdDate": 0,
+        "customAttributes": [
+          {
+            "attributeDefinitionId": "string",
+            "booleanValue": true,
+            "dateValue": 0,
+            "entityId": "string",
+            "entityReferences": [
+              {
+                "entityId": "string",
+                "entityName": "string"
+              }
+            ],
+            "numberValue": "string",
+            "selectedValueId": "string",
+            "selectedValues": [
+              {
+                "id": "string"
+              }
+            ],
+            "stringValue": "string"
+          }
+        ],
+        "description": "string",
+        "descriptionFixed": true,
+        "discountPercentage": "string",
+        "freeTextItem": true,
+        "grossAmount": "string",
+        "grossAmountInCompanyCurrency": "string",
+        "groupName": "string",
+        "interval": "DAILY",
+        "intervalType": "NON_RECURRENT",
+        "lastModifiedDate": 0,
+        "manualQuantity": true,
+        "manualUnitPrice": true,
+        "netAmount": "string",
+        "netAmountForStatistics": "string",
+        "netAmountForStatisticsInCompanyCurrency": "string",
+        "netAmountInCompanyCurrency": "string",
+        "nextContractBillingDate": 0,
+        "note": "string",
+        "parentItemId": "string",
+        "positionNumber": 0,
+        "previousContractBillingDate": 0,
+        "quantity": "string",
+        "reductionAdditionItems": [
+          {
+            "position": 0,
+            "source": "ARTICLE",
+            "type": "ADDITION_ABSOLUTE",
+            "value": "string"
+          }
+        ],
+        "servicePeriodFromDate": 0,
+        "servicePeriodToDate": 0,
+        "taxId": "string",
+        "taxName": "string",
+        "title": "string",
+        "type": "COST",
+        "unitId": "string",
+        "unitName": "string",
+        "unitPrice": "string",
+        "unitPriceInCompanyCurrency": "string"
+      }
+    ],
+    "contractNumber": "string",
+    "contractNumberAtParty": "string",
+    "contractStatus": "ACTIVE",
+    "correspondenceAddress": {
+      "city": "string",
+      "company": "string",
+      "company2": "string",
+      "countryCode": "string",
+      "firstName": "string",
+      "globalLocationNumber": "string",
+      "lastName": "string",
+      "middleName": "string",
+      "phoneNumber": "string",
+      "postOfficeBoxCity": "string",
+      "postOfficeBoxNumber": "string",
+      "postOfficeBoxZipCode": "string",
+      "salutation": "COMPANY",
+      "state": "string",
+      "street1": "string",
+      "street2": "string",
+      "title": "string",
+      "titleId": "string",
+      "zipcode": "string"
+    },
+    "createdDate": 0,
+    "customAttributes": [
+      {
+        "attributeDefinitionId": "string",
+        "booleanValue": true,
+        "dateValue": 0,
+        "entityId": "string",
+        "entityReferences": [
+          {
+            "entityId": "string",
+            "entityName": "string"
+          }
+        ],
+        "numberValue": "string",
+        "selectedValueId": "string",
+        "selectedValues": [
+          {
+            "id": "string"
+          }
+        ],
+        "stringValue": "string"
+      }
+    ],
+    "deliveryAddress": {
+      "city": "string",
+      "company": "string",
+      "company2": "string",
+      "countryCode": "string",
+      "firstName": "string",
+      "globalLocationNumber": "string",
+      "lastName": "string",
+      "middleName": "string",
+      "phoneNumber": "string",
+      "postOfficeBoxCity": "string",
+      "postOfficeBoxNumber": "string",
+      "postOfficeBoxZipCode": "string",
+      "salutation": "COMPANY",
+      "state": "string",
+      "street1": "string",
+      "street2": "string",
+      "title": "string",
+      "titleId": "string",
+      "zipcode": "string"
+    },
+    "deliveryEmailAddresses": {
+      "bccAddresses": "string",
+      "ccAddresses": "string",
+      "toAddresses": "string"
+    },
+    "description": "string",
+    "differingCorrespondenceAddress": true,
+    "differingDeliveryAddress": true,
+    "differingInvoiceAddress": true,
+    "disableEmailTemplate": true,
+    "endDate": 0,
+    "extensionQuantity": 0,
+    "extensionUnit": "DAY",
+    "factoring": true,
+    "invoiceAddress": {
+      "city": "string",
+      "company": "string",
+      "company2": "string",
+      "countryCode": "string",
+      "firstName": "string",
+      "globalLocationNumber": "string",
+      "lastName": "string",
+      "middleName": "string",
+      "phoneNumber": "string",
+      "postOfficeBoxCity": "string",
+      "postOfficeBoxNumber": "string",
+      "postOfficeBoxZipCode": "string",
+      "salutation": "COMPANY",
+      "state": "string",
+      "street1": "string",
+      "street2": "string",
+      "title": "string",
+      "titleId": "string",
+      "zipcode": "string"
+    },
+    "invoiceRecipientId": "string",
+    "lastModifiedDate": 0,
+    "latestCancellationWarningQuantity": 0,
+    "latestCancellationWarningUnit": "DAY",
+    "latestPossibleTerminationDate": 0,
+    "name": "string",
+    "nextContractBillingDate": 0,
+    "nonStandardInputTaxId": "string",
+    "orderNumberAtCustomer": "string",
+    "partyId": "string",
+    "paymentMethodId": "string",
+    "pricingDate": 0,
+    "purchaseEmailAddresses": {
+      "bccAddresses": "string",
+      "ccAddresses": "string",
+      "toAddresses": "string"
+    },
+    "recordComment": "string",
+    "recordCurrencyId": "string",
+    "recordCurrencyName": "string",
+    "recordEmailAddresses": {
+      "bccAddresses": "string",
+      "ccAddresses": "string",
+      "toAddresses": "string"
+    },
+    "recordFreeText": "string",
+    "recordOpening": "string",
+    "reminderDate": 0,
+    "reminderSendType": "MAIL",
+    "reminderType": "AUTOMATIC_REMINDER",
+    "responsibleUserId": "string",
+    "salesChannel": "string",
+    "salesInvoiceEmailAddresses": {
+      "bccAddresses": "string",
+      "ccAddresses": "string",
+      "toAddresses": "string"
+    },
+    "salesOrderEmailAddresses": {
+      "bccAddresses": "string",
+      "ccAddresses": "string",
+      "toAddresses": "string"
+    },
+    "sentToRecipient": true,
+    "startDate": 0,
+    "tags": [
+      "string"
+    ],
+    "template": true,
+    "termOfPaymentId": "string",
+    "terminationReasonId": "string",
+    "ticketServiceLevelAgreementId": "string",
+    "types": [
+      {
+        "id": "string"
+      }
+    ],
+    "unlimited": true
+  }
