@@ -1,4 +1,4 @@
-from .. import timeFunctions
+from pyWeclapp import timeFunctions
 import logging,  json, datetime
 from typing import *
 

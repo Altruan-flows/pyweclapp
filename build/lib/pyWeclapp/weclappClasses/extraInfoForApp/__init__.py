@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from .. import weclapp
+from pyWeclapp import weclapp
 from ..import Article
 
 class ExtraInfoForApp(BaseModel):

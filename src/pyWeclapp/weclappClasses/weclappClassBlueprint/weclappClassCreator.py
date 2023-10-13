@@ -1,6 +1,6 @@
 from typing import *
 import logging
-from . import weclapp
+from pyWeclapp import weclapp
 
 
 

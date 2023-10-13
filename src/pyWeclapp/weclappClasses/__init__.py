@@ -1,4 +1,4 @@
-from .. import weclapp
+
 from .article_Model import *
 from .salesOrder_Model import *
 from .salesInvoice_Model import *

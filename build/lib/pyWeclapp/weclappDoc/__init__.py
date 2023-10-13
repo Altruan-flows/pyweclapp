@@ -3,7 +3,7 @@ from .document import Document
 from typing import *
 import logging
 import io
-from .. import weclapp
+from pyWeclapp import weclapp
 import time
 import base64
 

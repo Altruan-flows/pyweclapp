@@ -1,5 +1,4 @@
-from .. import weclapp
-from .. import timeFunctions
+from pyWeclapp import weclapp, timeFunctions
 import logging, io, base64
 from typing import *
 from pydantic import BaseModel

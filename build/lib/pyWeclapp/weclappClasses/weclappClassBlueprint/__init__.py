@@ -1,4 +1,4 @@
-from ... import weclapp
+from pyWeclapp import weclapp
 from .weclappClassCustomAtt import WeclappMetaData
 import logging
 from typing import *

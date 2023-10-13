@@ -2,7 +2,7 @@ from typing import *
 import logging
 from pydantic import BaseModel
 from datetime import datetime
-from ... import weclapp, timeFunctions
+from pyWeclapp import weclapp, timeFunctions
 
 
 

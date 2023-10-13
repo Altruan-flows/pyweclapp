@@ -1,4 +1,4 @@
-from pyWeclapp.weclappClasses import Blueprint, WeclappMetaData
+from .weclappClassBlueprint import Blueprint, WeclappMetaData
 from pydantic import BaseModel
 from typing import *
 
