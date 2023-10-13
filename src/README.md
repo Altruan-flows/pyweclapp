@@ -7,11 +7,10 @@ This Package contains methods to acess weclapp objects via the api.
     # set the weclappDomain to call to to environment variables:
     os.environ["weclappDomain"] = "yourCompany.weclapp.com"
 
-#### Spep2
-set the authenticationToken obtainable from weclapp via:
-your Account -> my settings -> API-Token
-the token should have the format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-#### SetAuthentication Token
+#### Spep2 SetAuthentication Token
+    # set the authenticationToken obtainable from weclapp via:
+    # your Account -> my settings -> API-Token
+    # the token should have the format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
     # set the default token as "Weclapp_AuthenticationToken0" via 
     os.environ["Weclapp_AuthenticationToken0"] = yourToken
 
@@ -55,7 +54,7 @@ after compleetion call the postNewEntity() method to post it to weclapp. Please 
 ### Createing a new class Template
 Sometimes you may want to create a new weclappClass that does not exist yet or update an old one.
 
-#### SetupExample
+#### Setup Example
     from pyWeclapp.weclappClasses.weclappClassBlueprint import weclappClassCreator
     weclappClassCreator.WeclappClassCreator(entityName="ticket", expamleEntityId="74344116", targetDirectory="util/weclappClasses").createPythonFile()
 
