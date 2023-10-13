@@ -18,9 +18,75 @@ For some applications it is usefull to set multiple tokens from different users.
 the Api Key can be referenced in selected functions via it's short name key0 or key1  or ...; key0=default
 
 
+# weclapp
+### Provides basic function for quering the Weclapp API (GET, PUT, POST and DELETE)
+You can specify with asType the desired datatype of the response, so that for example the "result" attribte gets removed when asking for e.g. all orders
+in these functions will throw a specialized weclappError if they fail.
+PUT function uses the query Parmateter "justUsedProperties" by default to allow for updates with only changes
 
 
+# weclappClasses
+### Provides a nested pydantic dataModel for the most used classes with update tracking and metaData handling
+to initialise use .fromWeclapp -> e.g. weclappClasses.SalesOrder.fromWeclapp("yourWeclappSalesOrderId")
+to retrieve the dictionary again use .getUpdateDict("used+") with updateType:
+     "full" -> complete Dict, 
+     "used+" -> just changes with version included or 
+     "used" -> just changes
+to directly Update use .updateWeclapp(), .updateEntity() functions
 
+
+### Creating Neu class Instances in weclapp
+the class also provides you with a template to create an emptyClass. In this case please use the fromBlank() classmethod.
+after that all attributes will be set to None, lists or empyt subclasses, that you can modify or append to.
+after compleetion call the postNewEntity() method to post it to weclapp. Please do not set "id" or "verion"
+e.g. 
+salesOrder = weclappClasses.SalesOrder.fromBlank()
+salesOrder.customerId = "1234"  
+salesOrder.invoiceAddress.firstName = "Max"
+salesOrder.qmd("1234", addToMetaData=True).booleanValue = True  # Adds a custom Attribute
+orderItem = weclappClasses.OrderItems.fromBlank()
+orderItem.articleId = "1234"
+salesOrder.orderItems.append(orderItem)
+salesOrder.postNewEntity()
+
+### Createing a new class Template
+Sometimes you may want to create a new weclappClass that does not exist yet or update an old one.
+weclappClasses.WeclappClassCreator().createPythonFile() offers a convenient way to do this.
+just specify a  entityName -> "salesOrder", "shipment", "contract", "article", "etc."
+                expamleEntityId -> to estimate the types
+                targetDirectory -> where the generaed files should be placed
+                entity -> overwirtes the starting dictionary (Optional)
+
+This will create the templates for the weclappclass as well as a init file.
+#### CATION may overwrite existing files -> choose an empty directory
+
+
+# CustomAttributes
+when working with customAttribes a way of nameing them is important. However the ids vary form system to system
+the CAT classes (CustomATtributes) will generate the a classtemplate like in examples.
+ater that the attributes will be accessable with their weclappSystemNames with suggesions
+selectableElements will also be parsed. use bracets in description to choose a different system Name e.g.: "this is a selectable - Option (MySelectableOption)" -> Name will be "MySelectableOption"
+otherhwise invalid characters will be removed and a "X" will be added if the startincharacter is invalid
+
+#### CAUTION this may overwrite changes you made in your module. 
+e.g.: CAT_Generator("salesOrder", entityId="73454749", targetDirectory="example/cat").main()
+
+use:
+    cat.CAT() # initialises all attributes that are paresed so far
+    cat.exampleAttribute.id # "1234"
+    cat.exampleAttribute.valueName # selectedValues
+    cat.exampleAttribute.MySelectableOption # "5678"
+
+#### if you only need attribtes for specific entity please use the more specific and lightweight subclasses like cat_SalesOrder
+
+# weclappDoc
+### allows you to upload, download or modify documents
+### DocManager(entityName, entityId) -> get all documents of a entity, or uploads to it...
+
+
+# timeFunctions
+### higher level functions for working with dates in different formats
+optimesed for woring with weclapp
 
 
 

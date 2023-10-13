@@ -344,6 +344,10 @@ class Blueprint:
             
         if 'USED_ATTRIBUTES' in data:
             del data["USED_ATTRIBUTES"]
+        
+        # remove version if mothing updated
+        if len(data) == 1 and "version" in data and updateType in ["used+", "used"]:
+            data = {}
         return data
     
 

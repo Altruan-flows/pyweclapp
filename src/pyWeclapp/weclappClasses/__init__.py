@@ -19,8 +19,8 @@ from typing import *
 
 
 class WeclappClassCreator:
-    def __init__(self, entityName:Literal["salesOrder", "shipment", "contract", "article", "etc."], expamleEntityId:str, targetDirectory:str):
-        self.entity = weclapp.GET(entityName, expamleEntityId, query={"serializeNulls": ""})
+    def __init__(self, entityName:Literal["salesOrder", "shipment", "contract", "article", "etc."], expamleEntityId:str, targetDirectory:str, entity:dict=None):
+        self.entity = weclapp.GET(entityName, expamleEntityId, query={"serializeNulls": ""}) if entity is None else entity
         self.entityName = entityName
         self.targetDirectory = targetDirectory
         self.itemsNames = {
