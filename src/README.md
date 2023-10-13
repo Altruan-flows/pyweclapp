@@ -39,7 +39,7 @@ to directly Update use .updateWeclapp(), .updateEntity() functions
 the class also provides you with a template to create an emptyClass. In this case please use the fromBlank() classmethod.
 after that all attributes will be set to None, lists or empyt subclasses, that you can modify or append to.
 after compleetion call the postNewEntity() method to post it to weclapp. Please do not set "id" or "verion"
-e.g. 
+#### Example
 salesOrder = weclappClasses.SalesOrder.fromBlank()
 salesOrder.customerId = "1234"  
 salesOrder.invoiceAddress.firstName = "Max"
@@ -51,8 +51,12 @@ salesOrder.postNewEntity()
 
 ### Createing a new class Template
 Sometimes you may want to create a new weclappClass that does not exist yet or update an old one.
-from pyWeclapp.weclappClasses.weclappClassBlueprint.weclappClassCreator import WeclappClassCreator
-WeclappClassCreator().createPythonFile() offers a convenient way to do this.
+
+#### SetupExample
+from pyWeclapp.weclappClasses.weclappClassBlueprint import weclappClassCreator
+weclappClassCreator.WeclappClassCreator(entityName="ticket", expamleEntityId="74344116", targetDirectory="util/weclappClasses").createPythonFile()
+
+offers a convenient way to do this.
 just specify a  entityName -> "salesOrder", "shipment", "contract", "article", "etc."
                 expamleEntityId -> to estimate the types
                 targetDirectory -> where the generaed files should be placed
@@ -71,9 +75,11 @@ selectableElements will also be parsed. use bracets in description to choose a d
 otherhwise invalid characters will be removed and a "X" will be added if the startincharacter is invalid
 
 #### CAUTION this may overwrite changes you made in your module. 
-e.g.: CAT_Generator("salesOrder", entityId="73454749", targetDirectory="example/cat").main()
+#### Setup Example
+from pyWeclapp.customAttributes import CAT_Generator
+CAT_Generator("ticket", "74344116", "util/cat").main()
 
-#### Example
+#### Usage Example
     cat.CAT() # initialises all attributes that are paresed so far
     cat.exampleAttribute.id # "1234"
     cat.exampleAttribute.valueName # selectedValues
