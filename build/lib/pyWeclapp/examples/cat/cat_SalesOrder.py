@@ -14,7 +14,7 @@ class CAT_SalesOrder(cat_Settings.CAT_Settings):
 	def __init__(self, data:dict=None):
 		super().__init__()
 		if data is None:
-			with open("src/pyWeclapp/examples/cat/catData_SalesOrder.json", "r") as f:
+			with open("pyWeclapp/examples/cat/catData_SalesOrder.json", "r") as f:
 				data = json.load(f)
 
 
