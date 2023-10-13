@@ -40,14 +40,14 @@ the class also provides you with a template to create an emptyClass. In this cas
 after that all attributes will be set to None, lists or empyt subclasses, that you can modify or append to.
 after compleetion call the postNewEntity() method to post it to weclapp. Please do not set "id" or "verion"
 #### Example
-salesOrder = weclappClasses.SalesOrder.fromBlank()
-salesOrder.customerId = "1234"  
-salesOrder.invoiceAddress.firstName = "Max"
-salesOrder.qmd("1234", addToMetaData=True).booleanValue = True  # Adds a custom Attribute
-orderItem = weclappClasses.OrderItems.fromBlank()
-orderItem.articleId = "1234"
-salesOrder.orderItems.append(orderItem)
-salesOrder.postNewEntity()
+    salesOrder = weclappClasses.SalesOrder.fromBlank()
+    salesOrder.customerId = "1234"  
+    salesOrder.invoiceAddress.firstName = "Max"
+    salesOrder.qmd("1234", addToMetaData=True).booleanValue = True  # Adds a custom Attribute
+    orderItem = weclappClasses.OrderItems.fromBlank()
+    orderItem.articleId = "1234"
+    salesOrder.orderItems.append(orderItem)
+    salesOrder.postNewEntity()
 
 ### Createing a new class Template
 Sometimes you may want to create a new weclappClass that does not exist yet or update an old one.
@@ -80,10 +80,11 @@ otherhwise invalid characters will be removed and a "X" will be added if the sta
     CAT_Generator("ticket", "74344116", "util/cat").main()
 
 #### Usage Example
-    cat.CAT() # initialises all attributes that are paresed so far
-    cat.exampleAttribute.id # "1234"
-    cat.exampleAttribute.valueName # selectedValues
-    cat.exampleAttribute.MySelectableOption # "5678"
+    from pyWeclapp.examples import cat
+    citty = cat.CAT() # initialises all attributes that are paresed so far
+    citty.exampleAttribute.id # "1234"
+    citty.exampleAttribute.valueName # selectedValues
+    citty.exampleAttribute.MySelectableOption # "5678"
 
 #### if you only need attribtes for specific entity please use the more specific and lightweight subclasses like cat_SalesOrder
 
