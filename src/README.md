@@ -4,14 +4,15 @@ This Package contains methods to acess weclapp objects via the api.
 
 ## Setup 
 #### Spep1
-set the weclappDomain to call to to environment variables:
+    # set the weclappDomain to call to to environment variables:
     os.environ["weclappDomain"] = "yourCompany.weclapp.com"
 
 #### Spep2
 set the authenticationToken obtainable from weclapp via:
 your Account -> my settings -> API-Token
 the token should have the format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-set the default token as "Weclapp_AuthenticationToken0" via 
+#### SetAuthentication Token
+    # set the default token as "Weclapp_AuthenticationToken0" via 
     os.environ["Weclapp_AuthenticationToken0"] = yourToken
 
 #### Spep3
