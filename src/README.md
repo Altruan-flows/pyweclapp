@@ -53,8 +53,8 @@ salesOrder.postNewEntity()
 Sometimes you may want to create a new weclappClass that does not exist yet or update an old one.
 
 #### SetupExample
-from pyWeclapp.weclappClasses.weclappClassBlueprint import weclappClassCreator
-weclappClassCreator.WeclappClassCreator(entityName="ticket", expamleEntityId="74344116", targetDirectory="util/weclappClasses").createPythonFile()
+    from pyWeclapp.weclappClasses.weclappClassBlueprint import weclappClassCreator
+    weclappClassCreator.WeclappClassCreator(entityName="ticket", expamleEntityId="74344116", targetDirectory="util/weclappClasses").createPythonFile()
 
 offers a convenient way to do this.
 just specify a  entityName -> "salesOrder", "shipment", "contract", "article", "etc."
@@ -76,8 +76,8 @@ otherhwise invalid characters will be removed and a "X" will be added if the sta
 
 #### CAUTION this may overwrite changes you made in your module. 
 #### Setup Example
-from pyWeclapp.customAttributes import CAT_Generator
-CAT_Generator("ticket", "74344116", "util/cat").main()
+    from pyWeclapp.customAttributes import CAT_Generator
+    CAT_Generator("ticket", "74344116", "util/cat").main()
 
 #### Usage Example
     cat.CAT() # initialises all attributes that are paresed so far
