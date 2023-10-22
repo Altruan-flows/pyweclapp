@@ -31,3 +31,5 @@ Autor: Markus Wals, Wals.pro
 
 ### Code
 - Ein Review pro Source-File befindet sich jeweils im Ordner der Datei unter <Dateiname>.review.md
+- Die Reviews und der Code wurden manuell geprüft um den Code im Detial kennenzulernen und zu verstehen.
+- Die Reviews wurden mit den beigelegten Scripts erzeugt, da eine derartige Menge Code nicht im Detail in so kurzer Zeit analysiert werden kann.
