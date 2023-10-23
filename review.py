@@ -3,7 +3,7 @@ import openai
 from pathlib import Path
 
 # Static Variables
-OPENAI_API_KEY = "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"
+OPENAI_API_KEY = "OPENAI_API_KEY"
 REVIEW_PROMPT = """Review the Python code provided and identify all negative aspects. The feedback should be formatted as markdown code. Only provide the feedback list; avoid including any introductory or concluding remarks. Organize your feedback as follows:
 
 Problem Title (without any prefix)
