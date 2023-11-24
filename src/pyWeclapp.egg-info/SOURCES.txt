@@ -43,7 +43,7 @@ src/pyWeclapp/weclappClasses/ticket_Model.py
 src/pyWeclapp/weclappClasses/extraInfoForApp/__init__.py
 src/pyWeclapp/weclappClasses/weclappClassBlueprint/__init__.py
 src/pyWeclapp/weclappClasses/weclappClassBlueprint/weclappClassCreator.py
-src/pyWeclapp/weclappClasses/weclappClassBlueprint/weclappClassCustomAtt.py
+src/pyWeclapp/weclappClasses/weclappClassBlueprint/weclappClassCustomAttribute.py
 src/pyWeclapp/weclappDoc/__init__.py
 src/pyWeclapp/weclappDoc/docDescription.py
 src/pyWeclapp/weclappDoc/document.py

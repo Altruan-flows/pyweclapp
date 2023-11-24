@@ -1,10 +1,9 @@
 from .weclappClassBlueprint import Blueprint, WeclappMetaData
-from pydantic import BaseModel
 from typing import *
 
 
 
-class ArticleAlternativeQuantities(BaseModel, Blueprint):
+class ArticleAlternativeQuantities(Blueprint):
 	id: str
 	version: str
 	createdDate: int
@@ -17,19 +16,9 @@ class ArticleAlternativeQuantities(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
 
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class ArticleCalculationPrices(BaseModel, Blueprint):
+class ArticleCalculationPrices(Blueprint):
 	id: str
 	version: str
 	articleCalculationPriceType: str = None
@@ -43,19 +32,8 @@ class ArticleCalculationPrices(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class ArticleImages(BaseModel, Blueprint):
+class ArticleImages(Blueprint):
 	id: str
 	version: str
 	createdDate: int
@@ -65,19 +43,9 @@ class ArticleImages(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
 
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class ReductionAdditions(BaseModel, Blueprint):
+class ReductionAdditions(Blueprint):
 	id: str
 	version: str
 	createdDate: int
@@ -88,19 +56,7 @@ class ReductionAdditions(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class ArticlePrices(BaseModel, Blueprint):
+class ArticlePrices(Blueprint):
 	id: str
 	version: str
 	createdDate: int
@@ -121,19 +77,7 @@ class ArticlePrices(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class CustomerArticleNumbers(BaseModel, Blueprint):
+class CustomerArticleNumbers(Blueprint):
 	id: str
 	version: str
 	createdDate: int
@@ -143,36 +87,12 @@ class CustomerArticleNumbers(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class DefaultStoragePlaces(BaseModel, Blueprint):
+class DefaultStoragePlaces(Blueprint):
 	id: str
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class PriceCalculationParameters(BaseModel, Blueprint):
+class PriceCalculationParameters(Blueprint):
 	id: str
 	version: str
 	createdDate: int
@@ -187,19 +107,7 @@ class PriceCalculationParameters(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class ProductionBillOfMaterialItems(BaseModel, Blueprint):
+class ProductionBillOfMaterialItems(Blueprint):
 	id: str
 	version: str
 	articleId: str = None
@@ -211,19 +119,7 @@ class ProductionBillOfMaterialItems(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class QuantityConversions(BaseModel, Blueprint):
+class QuantityConversions(Blueprint):
 	id: str
 	version: str
 	conversionQuantity: str = None
@@ -236,19 +132,7 @@ class QuantityConversions(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class SalesBillOfMaterialItems(BaseModel, Blueprint):
+class SalesBillOfMaterialItems(Blueprint):
 	id: str
 	version: str
 	articleId: str = None
@@ -260,19 +144,7 @@ class SalesBillOfMaterialItems(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class SupplySources(BaseModel, Blueprint):
+class SupplySources(Blueprint):
 	id: str
 	version: str
 	articleSupplySourceId: str = None
@@ -282,19 +154,7 @@ class SupplySources(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class Article(BaseModel, Blueprint):
+class Article(Blueprint):
 	id: str
 	version: str
 	accountId: str = None
@@ -398,13 +258,7 @@ class Article(BaseModel, Blueprint):
 
 	# AutomationData
 	ITEMS_NAME: str = "articlePrices"
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
 
 
 

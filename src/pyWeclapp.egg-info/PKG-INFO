@@ -6,7 +6,6 @@ Home-page: https://github.com/AltruanGmbH/weclappFunctions
 Author: Altruan gmbh
 Author-email: jakob.goesswald@altruan.de
 License: MIT
-Platform: UNKNOWN
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Programming Language :: Python :: 3.10
 Classifier: Operating System :: OS Independent
@@ -20,18 +19,19 @@ License-File: LICENSE
 This Package contains methods to acess weclapp objects via the api.
 
 ## Setup 
-#### Spep1
+#### Step1
     # set the weclappDomain to call to to environment variables:
+    import os
     os.environ["weclappDomain"] = "yourCompany.weclapp.com"
 
-#### Spep2 SetAuthentication Token
+    # SetAuthentication Token
     # set the authenticationToken obtainable from weclapp via:
     # your Account -> my settings -> API-Token
     # the token should have the format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
     # set the default token as "Weclapp_AuthenticationToken0" via 
     os.environ["Weclapp_AuthenticationToken0"] = yourToken
 
-#### Spep3
+#### Step2 (optional)
 For some applications it is usefull to set multiple tokens from different users. Please index them e.g. "Weclapp_AuthenticationToken1", "Weclapp_AuthenticationToken2"
 the Api Key can be referenced in selected functions via it's short name key0 or key1  or ...; key0=default
 
@@ -96,11 +96,12 @@ otherhwise invalid characters will be removed and a "X" will be added if the sta
 #### CAUTION this may overwrite changes you made in your module. 
 #### Setup Example
     from pyWeclapp.customAttributes import CAT_Generator
-    CAT_Generator("ticket", "74344116", "util/cat").main()
+    # create an empyt folder as targetDirectory
+    CAT_Generator(entityName="ticket", entityId="74344116", targetDirectory="util/cat").main()
 
 #### Usage Example
-    from pyWeclapp.examples import cat
-    citty = cat.CAT() # initialises all attributes that are paresed so far
+    from yourTaregtDirectory import CAT
+    citty = CAT() # initialises all attributes that are paresed so far
     citty.exampleAttribute.id # "1234"
     citty.exampleAttribute.valueName # selectedValues
     citty.exampleAttribute.MySelectableOption # "5678"
@@ -123,6 +124,9 @@ Allows to:
     -> set Description -> .setDescription() 
     -> update Description -> .updateDescription()
 
+#### Example
+    docManger = pyWeclapp.weclappDoc.DocManager("shipment", "74433425")
+    availableDocs = docManger.getDocuments()
 
 
 # timeFunctions
@@ -133,5 +137,4 @@ optimised for woring with weclapp
 
 
 
-create wheel with comand >python setup.py bdist_wheel sdist
-
+create wheel with comand >python3 setup.py bdist_wheel sdist

@@ -1,5 +1,6 @@
 from pyWeclapp import weclapp
-from .weclappClassCustomAtt import WeclappMetaData
+from pydantic import BaseModel
+from .weclappClassCustomAttribute import WeclappMetaData
 import logging
 from typing import *
 import json
@@ -7,13 +8,13 @@ import json
 
 
 
-class Blueprint:
+class Blueprint(BaseModel):
     USED_ATTRIBUTES:dict = dict()
+    ITEMS_NAME:Union[str, None] = None
     
     
-    def __init__(self, itemsName:str, usedAtts:dict=dict()):
-        self.ITEMS_NAME = itemsName
-        self.USED_ATTRIBUTES = usedAtts
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         
         
@@ -26,7 +27,6 @@ class Blueprint:
             logging.info(f"No Version Attribute found")
     
             
-    '''Dies Ist eine Klase, die nicht eigenständig vverwendet werden sollte'''
     def queryMetaData(self, value, raiseError:bool = True, addToMetaData:bool=False) -> WeclappMetaData:
         """Returns the first item customAttribute where a given attributeDefinitionId equals value 
 
@@ -37,30 +37,32 @@ class Blueprint:
 
         Raises: KeyError if not found
         """
-        try:
+        if hasattr(self, "customAttributes"):
             try:
-                # Intrgrate CAT more easily by directly inserting the named tuple
-                valueId = value
-                if isinstance(value, tuple) and hasattr(value, "_fields") and hasattr(value, "id"):
-                    valueId = value.id
-            except:
-                valueId = value
-            for el in self.customAttributes:
-                if el.name == valueId:
-                    return el
-            raise KeyError(f"Custom Attribute {value} not found")
+                try:
+                    # Intrgrate CAT more easily by directly inserting the named tuple
+                    valueId = value
+                    if isinstance(value, tuple) and hasattr(value, "_fields") and hasattr(value, "id"):
+                        valueId = value.id
+                except:
+                    valueId = value
+                for cAttribute in self.customAttributes:
+                    if isinstance(cAttribute, WeclappMetaData) and cAttribute.name == valueId:
+                        return cAttribute
+                raise KeyError(f"Custom Attribute {value} not found")
 
-        except KeyError as e:
-            if addToMetaData and hasattr(self, "customAttributes"):
-                item = WeclappMetaData(attributeDefinitionId=value)
-                self.customAttributes.append(item)
-                return item
-            elif raiseError:
-                raise e
-            else:
-                return WeclappMetaData(attributeDefinitionId=value)
+            except KeyError as e:
+                if addToMetaData and hasattr(self, "customAttributes"):
+                    item = WeclappMetaData(attributeDefinitionId=value)
+                    self.customAttributes.append(item)
+                    return item
+                elif raiseError:
+                    raise e
+                else:
+                    return WeclappMetaData(attributeDefinitionId=value)
             
-            
+        else:
+            raise KeyError(f"Attribute customAttributes not found in {type(self).__name__}")
     
     def qmd(self, value, raiseError:bool = True, addToMetaData:bool=False) -> WeclappMetaData:
         """short Version for queryMetaData Function. Returns the first item customAttribute where a given attributeDefinitionId equals value 
@@ -90,9 +92,12 @@ class Blueprint:
         """
         try:
             if hasattr(self, entity):
-                for el in getattr(self, entity):
-                    if getattr(el, key) == value:
-                        return el
+                listAttribute = getattr(self, entity)
+                if not isinstance(listAttribute, list):
+                    raise KeyError(f"Attribute >{entity}< is not a list")
+                for listItem in listAttribute:
+                    if getattr(listItem, key) == value:
+                        return listItem
                 raise KeyError(f"Item >{value}< not found in >{entity}<")
             else:
                 raise KeyError(f"Attribute >{entity}< not found")
@@ -105,7 +110,7 @@ class Blueprint:
            
            
             
-    def queryItems(self, key:str, value:Any, justParentItems:bool=True, raiseError:bool = True):
+    def queryItems(self, key:str, value:Any, raiseError:bool = True):
         """Returns the first item in the self.ITEMS_NAME (eg. orderItem) where a given key equals value (e.g. key='id', value='123')
             self.ITEMS_NAME is usually orderItems or a similar important list of items
 
@@ -117,16 +122,16 @@ class Blueprint:
         Raises: KeyError if not found
         """
         try:
-            assert hasattr(self, self.ITEMS_NAME), f"Attribute {self.ITEMS_NAME=} not found or invalid"
-            for el in getattr(self,self.ITEMS_NAME):
-                if getattr(el, key) == value:
-                    if justParentItems:
-                        if not hasattr(self, 'parentItemId'):
-                            return el
-                        else:
-                            raise KeyError(f"Attribute is not ParentArticle -> it is not recomendet to edit this articles; else set justParentItems=False")
-                    else:
-                        return el
+            if not hasattr(self, self.ITEMS_NAME):
+                raise KeyError(f"Attribute {self.ITEMS_NAME=} not found or invalid")
+            
+            listAttribute = getattr(self, self.ITEMS_NAME)
+            if not isinstance(listAttribute, list):
+                raise KeyError(f"Attribute >{self.ITEMS_NAME}< is not a list")
+            
+            for listItem in listAttribute:
+                if getattr(listItem, key) == value:
+                    return listItem
             raise KeyError(f"Item {value} not found")
 
         except KeyError as e:
@@ -154,11 +159,11 @@ class Blueprint:
         self.resetUsedAtts()
         for key, value in self.__dict__.items():
             if isinstance(value, list):
-                for el in value:
-                    if hasattr(el, "resetUsedAtts"):
-                        el.resetUsedAtts()
-                    elif hasattr(el, "updated") and getattr(el, "updated") is True:
-                        el.updated = False
+                for listItem in value:
+                    if hasattr(listItem, "resetUsedAtts"):
+                        listItem.resetUsedAtts()
+                    elif hasattr(listItem, "updated") and getattr(listItem, "updated") is True:
+                        listItem.updated = False
             elif hasattr(value, "resetUsedAtts"):
                 value.resetUsedAtts()
     
@@ -176,13 +181,15 @@ class Blueprint:
     
             
     def setValue(self, key, value):
-        assert hasattr(self, key), f"{type(self).__name__} has no attribute {key} -> check spelling, make sure it is included"
+        if not hasattr(self, key):
+            raise KeyError(f"{type(self).__name__} has no attribute {key} -> check spelling, make sure it is included")
         setattr(self, key, value)
         # self.USED_ATTRIBUTES[key] = value # -> not necessary because of __setattr__
         
 
     def restoreValue(self, key):
-        assert hasattr(self, key), f"{type(self).__name__} has no attribute {key} -> check spelling, make sure it is included"
+        if not hasattr(self, key):
+            raise KeyError(f"{type(self).__name__} has no attribute {key} -> check spelling, make sure it is included")
         value = self.USED_ATTRIBUTES.get(key)
         logging.warning(f"Restoring {key} to {value}")
         setattr(self, key, value)
@@ -259,15 +266,15 @@ class Blueprint:
                     # handl custom Attributes
                     if key == "customAttributes":
                         helper = []
-                        for el in value:
-                            if issubclass(type(el), WeclappMetaData):
-                                cat = el.getUpdateDict(updateType=updateType)
+                        for customAttribute in value:
+                            if issubclass(type(listItem), WeclappMetaData):
+                                cat = customAttribute.getUpdateDict(updateType=updateType)
                                 if updateType == 'full':
                                     helper.append(cat)
                                 elif cat:
                                     helper.append(cat)
-                            elif isinstance(el, dict) and hasattr(el, "attributeDefinitionId"):
-                                helper.append(el)
+                            elif isinstance(customAttribute, dict) and hasattr(customAttribute, "attributeDefinitionId"):
+                                helper.append(customAttribute)
                         if len(helper) > 0:
                             data[key] = helper
                             
@@ -275,35 +282,34 @@ class Blueprint:
                     elif isinstance(value, list) and self.__annotations__.get(key, list) != list:
                         helper = []
                         itemsUpdateNecessary = False
-                        for el in value:
-                            if issubclass(type(el), Blueprint):
+                        for listItem in value:
+                            if issubclass(type(listItem), Blueprint):
                                 if updateType == 'full':
-                                    helper.append(el.getUpdateDict(updateType=updateType))
+                                    helper.append(listItem.getUpdateDict(updateType=updateType))
                                 elif updateType == "used+":
-                                    oldUsedItems = el.USED_ATTRIBUTES
-                                    el.addUsedAtt("id")
-                                    el.addUsedAtt("version")
-                                    item = el.getUpdateDict(updateType="used+")
+                                    oldUsedItems = listItem.USED_ATTRIBUTES
+                                    listItem.addUsedAtt("id")
+                                    listItem.addUsedAtt("version")
+                                    item = listItem.getUpdateDict(updateType="used+")
                                     if len(item) > 2:
                                         itemsUpdateNecessary = True
                                     helper.append(item)
-                                    el.delUsedAttr("version", suppressWarning=True)
-                                    el.USED_ATTRIBUTES = oldUsedItems
+                                    listItem.delUsedAttr("version", suppressWarning=True)
+                                    listItem.USED_ATTRIBUTES = oldUsedItems
                                 elif updateType == "used":   
-                                    oldUsedItems = el.USED_ATTRIBUTES
-                                    el.addUsedAtt("id")
-                                    item = el.getUpdateDict(updateType="used")
+                                    oldUsedItems = listItem.USED_ATTRIBUTES
+                                    listItem.addUsedAtt("id")
+                                    item = listItem.getUpdateDict(updateType="used")
                                     # item = el.getUsedAttributes(add=['id'])
                                     if len(item) > 1:
                                         itemsUpdateNecessary = True
                                     helper.append(item)
-                                    el.USED_ATTRIBUTES = oldUsedItems
-                            elif isinstance(el, dict):
-                                helper.append(el)
+                                    listItem.USED_ATTRIBUTES = oldUsedItems
+                            elif isinstance(listItem, dict):
+                                helper.append(listItem)
                                 itemsUpdateNecessary = True
                         if len(helper) > 0:
                             if updateType in ['used', 'used+'] and not itemsUpdateNecessary:
-                                # logging.warning(f"Excluded items, because nothing updated")
                                 pass
                             else:
                                 # Update Type "full" or items changed
@@ -312,11 +318,11 @@ class Blueprint:
                     # handle list of dict
                     elif isinstance(value, list) and (updateType in ['full'] or key in self.USED_ATTRIBUTES):
                         helper = []
-                        for el in value:
-                            if isinstance(el, dict):
-                                helper.append(el)
+                        for listItem in value:
+                            if isinstance(listItem, dict):
+                                helper.append(listItem)
                             else:
-                                logging.error(f"handled Error: {el} is not a dict")
+                                logging.warning(f"handled Error: {listItem} is not a dict")
                         if len(helper) > 0:
                             data[key] = helper
 
@@ -331,11 +337,10 @@ class Blueprint:
                     elif key in self.USED_ATTRIBUTES or updateType == 'full' or (key in ["version"] and updateType== "used+"):
                         if value is not None:
                             if creationMode:
-                                assert key not in ["id", "version"], f"Can not post new Entity {type(self).__name__} -> id or version already set"
+                                if key in ["id", "version"]:
+                                    raise AssertionError(f"Can not post new Entity {type(self).__name__} -> id or version already set")
                             data[key] = value  
-                # except Exception as e:
-                #     logging.error(f'Error at key {key=}')
-                #     raise e
+
         if 'ITEMS_NAME' in data:
             del data["ITEMS_NAME"]
             
@@ -368,28 +373,29 @@ class Blueprint:
     
 
     @staticmethod
-    def assesChanges(first, other):
+    def assessChanges(first, other):
         """Updates recursively the first entity with the values of the second entity if they are not critical; else raises Error"""
         
         if hasattr(first, "USED_ATTRIBUTES") and hasattr(first, "version") and hasattr(other, "version") and issubclass(type(first), type(Blueprint)):
-            assert type(first) == type(other), f"{type(first)} and {type(other)} types are not equal"
+            if not type(first) == type(other):
+                raise AssertionError(f"{type(first)} and {type(other)} types are not equal")
             
             for key, value in first.__dict__.items():
                 if key not in ["USED_ATTRIBUTES", "ITEMS_NAME", "customAttributes", "version"]:
                     other_value = getattr(other, key)
                     if isinstance(value, list) :
-                        for el in value:
+                        for listItem in value:
                             try:
-                                if hasattr(el, "id"):
-                                    Blueprint.assesChanges(el, other.query(key='id', value=el.id, entity=key))
+                                if hasattr(listItem, "id"):
+                                    Blueprint.assessChanges(listItem, other.query(key='id', value=listItem.id, entity=key))
                                 else:
-                                    logging.warning(f"List Item {el} has no id -> can not be assesed")
+                                    logging.warning(f"List Item {listItem} has no id -> can not be assesed")
                             except AttributeError: 
                                 pass
                             except AssertionError as ae:
-                                logging.error(f"Error while assesing {key} {el.id}: {ae}")
+                                logging.error(f"Error while assesing {key}: {ae}")
                     elif issubclass(type(value), type(Blueprint)):
-                        Blueprint.assesChanges(value, other_value)
+                        Blueprint.assessChanges(value, other_value)
                         
                     elif not isinstance(value, dict):
                         if value != other_value:
@@ -411,7 +417,7 @@ class Blueprint:
         if hasattr(self, "id"):
             logging.warning(f"Refreshing Version of {type(self).__name__}")
             currentEntity = type(self).fromWeclapp(entityId=self.id)
-            self.assesChanges(self, currentEntity)
+            self.assessChanges(self, currentEntity)
         else:
             logging.warning(f"Can not refresh Version of {type(self).__name__} -> no id found")
             
@@ -438,17 +444,21 @@ class Blueprint:
         body = self.getUpdateDict(updateType=updateType)
         if len(body) == 0:
             logging.warning(f"No fields to update for {self.__entityName__}")
-        else:
+        elif hasattr(self, "id"):
             newEntity= weclapp.PUT(entityName=self.__entityName__, entityId=self.id, body=body)
             self.updateEntityFromNewEntity(newEntity=newEntity)
+        else:
+            raise KeyError(f"Can not update {self.__entityName__} -> no id found")
         
         
-    def refershEntity(self):
+    def refreshEntity(self):
         """Fetches changes that may have occured in weclapp
         """
-        response = weclapp.GET(entityName=self.__entityName__, entityId=self.id, asType=dict)
-        self.updateEntityFromNewEntity(newEntity=response)
-        logging.warning(f"{self.__entityName__} refreshed")
+        if hasattr(self, "id"):
+            response = weclapp.GET(entityName=self.__entityName__, entityId=self.id, asType=dict)
+            self.updateEntityFromNewEntity(newEntity=response)
+            logging.warning(f"{self.__entityName__} refreshed")
+        raise KeyError(f"Can not update {self.__entityName__} -> no id found")
             
             
             
@@ -471,7 +481,9 @@ class Blueprint:
     def updateWeclapp(self, updateType:Literal['full', 'used', "used+"]='full') -> dict:
         """Updates weclapp with the specified updateType, without updating self"""
         body = self.getUpdateDict(updateType=updateType)
-        return weclapp.PUT(entityName=self.__entityName__, entityId=self.id, body=body)
+        if hasattr(self, "id"):
+            return weclapp.PUT(entityName=self.__entityName__, entityId=self.id, body=body)
+        raise KeyError(f"Can not update {self.__entityName__} -> no id found")
     
     
     
@@ -532,6 +544,12 @@ class Blueprint:
             # add other blank types
             elif isinstance(fieldInfo.annotation, type) and issubclass(fieldInfo.annotation, Blueprint):
                 blankItem[att] = fieldInfo.annotation.fromBlank() # replace with .blank()
+                
+            # Handle Optional and Union fields -> inti with None
+            elif getattr(fieldInfo.annotation, '__origin__', None) in [Optional, Union]:
+                blankItem[att] = None
+                NoneAtts.append(att)
+            
             else:
                 print("other Att found !!!!!")
                 save = fieldInfo

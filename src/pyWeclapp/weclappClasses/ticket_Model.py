@@ -1,28 +1,15 @@
 from .weclappClassBlueprint import Blueprint, WeclappMetaData
-from pydantic import BaseModel
 from typing import *
 
 
 
-class EntityReferences(BaseModel, Blueprint):
+class EntityReferences( Blueprint):
 	entityId: str = None
 	entityName: str = None
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class Ticket(BaseModel, Blueprint):
+class Ticket(Blueprint):
 	id: str
 	version: str
 	assignedUserId: str = None
@@ -75,11 +62,4 @@ class Ticket(BaseModel, Blueprint):
 
 
 	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
+	ITEMS_NAME: str = 'entityReferences'

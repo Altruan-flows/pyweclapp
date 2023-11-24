@@ -1,10 +1,9 @@
 from .weclappClassBlueprint import Blueprint, WeclappMetaData
-from pydantic import BaseModel
 from typing import *
 
 
 
-class Addresses(BaseModel, Blueprint):
+class Addresses(Blueprint):
 	id: str
 	version: str
 	city: str = None
@@ -33,19 +32,8 @@ class Addresses(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class OnlineAccounts(BaseModel, Blueprint):
+class OnlineAccounts(Blueprint):
 	id: str
 	version: str
 	accountName: str = None
@@ -56,19 +44,9 @@ class OnlineAccounts(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
 
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class Contact(BaseModel, Blueprint):
+class Contact(Blueprint):
 	id: str
 	version: str
 	addresses: List[Addresses] = []
@@ -112,14 +90,7 @@ class Contact(BaseModel, Blueprint):
 
 
 	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
+	ITEMS_NAME: str = 'addresses'
 
 
 
