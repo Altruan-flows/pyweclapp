@@ -411,7 +411,7 @@ class Blueprint(BaseModel):
                      
                      
                             
-    def refreshVersion(self):
+    def refreshEntity(self):
         """Refreshes the version and updates Changes from weclapp and includes changes if they are not critical; else raises Error
         """
         if hasattr(self, "id"):
@@ -451,8 +451,8 @@ class Blueprint(BaseModel):
             raise KeyError(f"Can not update {self.__entityName__} -> no id found")
         
         
-    def refreshEntity(self):
-        """Fetches changes that may have occured in weclapp
+    def fetchEntity(self):
+        """Fetches changes that may have occured in weclapp (overwrites everything that was changed in self)
         """
         if hasattr(self, "id"):
             response = weclapp.GET(entityName=self.__entityName__, entityId=self.id, asType=dict)
