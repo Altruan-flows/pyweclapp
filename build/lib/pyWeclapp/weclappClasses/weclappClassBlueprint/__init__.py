@@ -544,6 +544,12 @@ class Blueprint(BaseModel):
             # add other blank types
             elif isinstance(fieldInfo.annotation, type) and issubclass(fieldInfo.annotation, Blueprint):
                 blankItem[att] = fieldInfo.annotation.fromBlank() # replace with .blank()
+                
+            # Handle Optional and Union fields -> inti with None
+            elif getattr(fieldInfo.annotation, '__origin__', None) in [Optional, Union]:
+                blankItem[att] = None
+                NoneAtts.append(att)
+            
             else:
                 print("other Att found !!!!!")
                 save = fieldInfo
