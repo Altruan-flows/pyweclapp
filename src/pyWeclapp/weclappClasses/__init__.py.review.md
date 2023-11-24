@@ -1,0 +1,1 @@
+The usage of wildcard "*"' to import all methods or properties is generally seen as a bad practice because it can cause confusion and ambiguity, especially in larger projects. It's usually better to import only what's needed or import the entire module and use its methods or properties with the module name as a prefix.

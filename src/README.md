@@ -121,4 +121,4 @@ optimised for woring with weclapp
 
 
 
-create wheel with comand >python setup.py bdist_wheel sdist
+create wheel with comand >python3 setup.py bdist_wheel sdist

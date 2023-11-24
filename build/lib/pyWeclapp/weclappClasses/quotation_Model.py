@@ -1,10 +1,9 @@
 from .weclappClassBlueprint import Blueprint, WeclappMetaData
-from pydantic import BaseModel
 from typing import *
 
 
 
-class CommissionSalesPartners(BaseModel, Blueprint):
+class CommissionSalesPartners(Blueprint):
 	id: str
 	version: str
 	commissionFix: str = None
@@ -17,19 +16,9 @@ class CommissionSalesPartners(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
 
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class DeliveryAddress(BaseModel, Blueprint):
+class DeliveryAddress(Blueprint):
 	city: str = None
 	company: str = None
 	company2: str = None
@@ -52,38 +41,17 @@ class DeliveryAddress(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
 
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class DeliveryEmailAddresses(BaseModel, Blueprint):
+class DeliveryEmailAddresses(Blueprint):
 	bccAddresses: str = None
 	ccAddresses: str = None
 	toAddresses: str = None
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class InvoiceAddress(BaseModel, Blueprint):
+class InvoiceAddress( Blueprint):
 	city: str = None
 	company: str = None
 	company2: str = None
@@ -106,19 +74,9 @@ class InvoiceAddress(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
 
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class CommissionSalesPartners(BaseModel, Blueprint):
+class CommissionSalesPartners(Blueprint):
 	id: str
 	version: str
 	commissionFix: str = None
@@ -131,19 +89,9 @@ class CommissionSalesPartners(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
 
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class ReductionAdditionItems(BaseModel, Blueprint):
+class ReductionAdditionItems(Blueprint):
 	position: int = None
 	source: str = None
 	type: str = None
@@ -151,19 +99,9 @@ class ReductionAdditionItems(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
 
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class QuotationItems(BaseModel, Blueprint):
+class QuotationItems(Blueprint):
 	id: str
 	version: str
 	addPageBreakBefore: bool
@@ -212,19 +150,8 @@ class QuotationItems(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class RecordAddress(BaseModel, Blueprint):
+class RecordAddress(Blueprint):
 	city: str = None
 	company: str = None
 	company2: str = None
@@ -247,76 +174,20 @@ class RecordAddress(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class RecordEmailAddresses(BaseModel, Blueprint):
+class EmailAddresses( Blueprint):
 	bccAddresses: str = None
 	ccAddresses: str = None
 	toAddresses: str = None
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
 
 
 
-class SalesInvoiceEmailAddresses(BaseModel, Blueprint):
-	bccAddresses: str = None
-	ccAddresses: str = None
-	toAddresses: str = None
 
 
-
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class SalesOrderEmailAddresses(BaseModel, Blueprint):
-	bccAddresses: str = None
-	ccAddresses: str = None
-	toAddresses: str = None
-
-
-
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class SalesStageHistory(BaseModel, Blueprint):
+class SalesStageHistory(Blueprint):
 	id: str
 	version: str
 	createdDate: int
@@ -327,19 +198,9 @@ class SalesStageHistory(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
 
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class ShippingCostItems(BaseModel, Blueprint):
+class ShippingCostItems(Blueprint):
 	id: str
 	version: str
 	articleId: str = None
@@ -361,38 +222,15 @@ class ShippingCostItems(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class StatusHistory(BaseModel, Blueprint):
+class StatusHistory( Blueprint):
 	status: str = None
 	statusDate: int = None
 	userId: str = None
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class Quotation(BaseModel, Blueprint):
+class Quotation(Blueprint):
 	id: str
 	version: str
 	activeVersion: bool
@@ -441,7 +279,7 @@ class Quotation(BaseModel, Blueprint):
 	recordComment: str = None
 	recordCurrencyId: str = None
 	recordCurrencyName: str = None
-	recordEmailAddresses: RecordEmailAddresses = RecordEmailAddresses.fromBlank()
+	recordEmailAddresses: EmailAddresses = EmailAddresses.fromBlank()
 	recordFreeText: str = None
 	recordOpening: str = None
 	rejectionReason: str = None
@@ -449,8 +287,8 @@ class Quotation(BaseModel, Blueprint):
 	responsibleUserId: str = None
 	responsibleUserUsername: str = None
 	salesChannel: str = None
-	salesInvoiceEmailAddresses: SalesInvoiceEmailAddresses = SalesInvoiceEmailAddresses.fromBlank()
-	salesOrderEmailAddresses: SalesOrderEmailAddresses = SalesOrderEmailAddresses.fromBlank()
+	salesInvoiceEmailAddresses: EmailAddresses = EmailAddresses.fromBlank()
+	salesOrderEmailAddresses: EmailAddresses = EmailAddresses.fromBlank()
 	salesProbability: int = None
 	salesStageHistory: List[SalesStageHistory] = []
 	salesStageId: str = None
@@ -475,14 +313,7 @@ class Quotation(BaseModel, Blueprint):
 
 
 	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
+	ITEMS_NAME: str = 'quotationItems'
 
 
 

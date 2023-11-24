@@ -1,10 +1,9 @@
 from .weclappClassBlueprint import Blueprint, WeclappMetaData
-from pydantic import BaseModel
+
 from typing import *
 
 
-
-class Addresses(BaseModel, Blueprint):
+class Addresses( Blueprint):
 	id: str
 	version: str
 	city: str = None
@@ -33,19 +32,8 @@ class Addresses(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class BankAccounts(BaseModel, Blueprint):
+class BankAccounts( Blueprint):
 	id: str
 	version: str
 	accountHolder: str = None
@@ -59,19 +47,8 @@ class BankAccounts(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class CommissionSalesPartners(BaseModel, Blueprint):
+class CommissionSalesPartners(Blueprint):
 	id: str
 	version: str
 	commissionFix: str = None
@@ -84,36 +61,17 @@ class CommissionSalesPartners(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
 
 
 
-class Contacts(BaseModel, Blueprint):
+class Contacts( Blueprint):
 	id: str
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
 
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class CustomerSalesStageHistory(BaseModel, Blueprint):
+class CustomerSalesStageHistory( Blueprint):
 	id: str
 	version: str
 	createdDate: int
@@ -124,19 +82,8 @@ class CustomerSalesStageHistory(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class OnlineAccounts(BaseModel, Blueprint):
+class OnlineAccounts(Blueprint):
 	id: str
 	version: str
 	accountName: str = None
@@ -147,19 +94,7 @@ class OnlineAccounts(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class PartyEmailAddresses(BaseModel, Blueprint):
+class PartyEmailAddresses(Blueprint):
 	id: str
 	version: str
 	bccAddresses: str = None
@@ -170,36 +105,15 @@ class PartyEmailAddresses(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class Invoices(BaseModel, Blueprint):
+class Invoices(Blueprint):
 	id: str
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
 
 
 
-class PartyHabitualExporterLettersOfIntent(BaseModel, Blueprint):
+class PartyHabitualExporterLettersOfIntent(Blueprint):
 	id: str
 	version: str
 	automaticallySuggestInInvoice: bool
@@ -215,37 +129,17 @@ class PartyHabitualExporterLettersOfIntent(BaseModel, Blueprint):
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
 
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class Topics(BaseModel, Blueprint):
+class Topics(Blueprint):
 	id: str
 	name: str = None
 
 
 
-	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
 
 
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
-
-
-
-class Party(BaseModel, Blueprint):
+class Party( Blueprint):
 	id: str
 	version: str
 	addresses: List[Addresses] = []
@@ -397,14 +291,7 @@ class Party(BaseModel, Blueprint):
 
 
 	# AutomationData
-	ITEMS_NAME: str = None
-	USED_ATTRIBUTES: dict = dict()
-	__setattr__ = Blueprint.__setattr__
-
-
-	def __init__(self, **kwargs):
-		BaseModel.__init__(self, **kwargs)
-		Blueprint.__init__(self, self.ITEMS_NAME, self.USED_ATTRIBUTES)
+	ITEMS_NAME: str = 'addresses'
 
 
 
