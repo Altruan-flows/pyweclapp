@@ -43,7 +43,7 @@ def parse(time: Union[time.time, datetime.date, datetime.datetime, str, int, flo
     
     
 def toStr(time:Union[time.time, datetime.date, datetime.datetime, str, int, float]=time.time()*1000,
-          to:Literal["unix", "wooMeta", "weclapp", "utc", "mip", "utcDate", "docName", "ads", "emailDate", "dateHour"] = "weclapp") -> str:
+          to:Literal["unix", "wooMeta", "weclapp", "utc", "mip", "utcDate", "docName", "ads", "emailDate", "dateHour"] = "weclapp") -> Union[str, int]:
 
 
     time = parse(time=time)
@@ -116,7 +116,8 @@ def add(startTime: Union[time.time, datetime.date, datetime.datetime, str, int, 
 # Shorter Function Names
 
 def toUnix(time: Union[time.time, datetime.date, datetime.datetime, str, int, float]=time.time()*1000) -> int:
-    return int(toStr(timestemp=time, to="weclapp"))
+    '''returns the unix timestemp in milliseconds (weclapp Format)'''
+    return int(toStr(time=time, to="weclapp"))
     
     
 def now() -> datetime.datetime:
