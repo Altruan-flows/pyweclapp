@@ -1,2 +1,5 @@
 just4testing.ipynb
 .venv/
+.python-version
+.vscode/
+.gitignore
