@@ -121,4 +121,4 @@ def toUnix(time: Union[time.time, datetime.date, datetime.datetime, str, int, fl
     
     
 def now() -> datetime.datetime:
-    return parse(time=time.time()*1000, raiseError=True)
+    return parse(time=time.time()*1000)
