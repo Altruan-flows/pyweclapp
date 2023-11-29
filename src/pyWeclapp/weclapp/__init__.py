@@ -96,3 +96,66 @@ def DELETE(entityName:Literal["salesOrder", "shipment", "salesInvoice", "contrac
     logging.info(f'Item deleted {URL}')
     assert response.ok, f"item {entityId} could not be deleted {response.text}"
 
+
+
+
+
+def iterator(entityName: Literal["salesOrder", "shipment", "article", "contract", "ticket", "party", "salesInvoice", "purchaseOrder", "customer"], 
+             query: dict = None, 
+             enableLogging:bool=True, 
+             startPage:int=1, 
+             pageSize:int=100,
+             maxEntities:int=None) -> dict:
+    '''Yields all items (dict) of an entityName, that satisfy the query.
+        - entityName: the weclapp EntityName of the entity to iterate over
+        - query: the query to filter the items. If None, all items will be returned
+        - enableLogging: if True, the iterator will log the page number and the number of items on the page
+        - pageSize: the number of items per page. Minimum is 1, maximum is 1000
+        - maxEntities: if None, the iterator will run until the last available Entity. Minimum is 1'''
+    
+    # check input
+    if not 0 < pageSize <= 1000:
+        raise ValueError(f"pageSize must be 0 < pageSize <= 1000, but is {pageSize}")
+    
+    if maxEntities is not None and int(maxEntities) < 1:
+        maxEntities = 1
+    
+    if enableLogging:
+        logging.info(f"---starting iterating over {entityName}---")
+
+    proccessedItems = 0
+    page = startPage
+    query = query.copy() or {}
+    query['pageSize'] = pageSize
+
+    while True:
+        # prepare Querys
+        query['page'] = page
+        weclappObjList = GET(entityName=entityName, query=query, asType=list)
+        
+        # check Result
+        if not isinstance(weclappObjList, list):
+            raise ValueError(f"List Item Expected from => {entityName}: got {type(weclappObjList).__name__}")
+        
+        entitiesFound = len(weclappObjList)
+        if entitiesFound <= 0:
+            break
+        
+        if enableLogging:
+            logging.warning(f'--------PAGE {page}--------- {entitiesFound=}')
+        
+        # yield all purchases of customer
+        for obj in weclappObjList:
+            proccessedItems += 1
+            if maxEntities is not None:
+                if maxEntities < proccessedItems:
+                    break
+            yield obj
+        
+        page += 1
+        if maxEntities is not None:
+            if maxEntities < proccessedItems:
+                break
+    if enableLogging:
+        logging.info(f"---finished iterating over {entityName}---")
+        

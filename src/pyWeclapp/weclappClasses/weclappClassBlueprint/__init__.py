@@ -417,7 +417,7 @@ class Blueprint(BaseModel):
         if hasattr(self, "id"):
             logging.warning(f"Refreshing Version of {type(self).__name__}")
             currentEntity = type(self).fromWeclapp(entityId=self.id)
-            self.assessChanges(self, currentEntity)
+            self.assessChanges(self, currentEntity)                                 # Custom error Type when changes are deteced!!
         else:
             logging.warning(f"Can not refresh Version of {type(self).__name__} -> no id found")
             
