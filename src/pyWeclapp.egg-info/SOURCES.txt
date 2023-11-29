@@ -27,7 +27,7 @@ src/pyWeclapp/examples/weclappClassExamples/ticket_Model.py
 src/pyWeclapp/timeFunctions/__init__.py
 src/pyWeclapp/timeFunctions/localizedTime.py
 src/pyWeclapp/weclapp/__init__.py
-src/pyWeclapp/weclapp/iterator.py
+src/pyWeclapp/weclapp/config.py
 src/pyWeclapp/weclapp/weclappError.py
 src/pyWeclapp/weclapp/weclappResponseProcessing.py
 src/pyWeclapp/weclappClasses/__init__.py

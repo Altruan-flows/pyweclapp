@@ -1,48 +1,58 @@
 import requests, os, logging
 from .weclappError import WeclappError
-from typing import Union, Literal
+from typing import Union
+from . import config
 
 
-
-AVAILABEL_APIKEYS = Literal["key0", "key1"]
-
-
-
-def getWeclappHeaders(apiKey:AVAILABEL_APIKEYS = "key0"):
-    assert "key" in apiKey, f"apiKey must be one of {AVAILABEL_APIKEYS}"
-    apiKeyName = "Weclapp_AuthenticationToken" + apiKey.strip()[-1]
-    authenticationToken = os.environ.get(apiKeyName, None)
-    assert authenticationToken is not None, f"Authentication Token {apiKeyName} for weclapp not found in environment variables. Please add it."
-    assert isinstance(authenticationToken, str), f"Authentication Token {apiKeyName} for weclapp is not a string. Please check it."
-    assert len(authenticationToken) > 0, f"Authentication Token {apiKeyName} for weclapp is empty. Please check it."
-    assert len(authenticationToken.split('-')) == 5, f"Authentication Token {apiKeyName} for weclapp is not valid. Please check it."
-    return {
-        "AuthenticationToken": authenticationToken,
-        'Content-Type': 'application/json'
-    }
         
-
-def getWeclappDomain():
-    url = os.environ.get("weclappDomain", None)
-    assert url is not None, f'weclappDomain not found in environment variables. Please set it using os.environ["weclappDomain"] = "yourDomain.weclapp.com"'
-    return url
+def getWeclappHeaders(apiKey: config.AVAILABLE_APIKEYS = "key0") -> dict:
+    # Check if apiKey is valid
+    if "key" not in apiKey:
+        raise ValueError(f"apiKey must be one of {config.AVAILABLE_APIKEYS}")
     
+    apiKeyName = config.ENV_AUTHENTICATION_TOKEN_NAME_BASE + apiKey.strip()[-1]
+    authenticationToken = os.environ.get(apiKeyName, None)
+
+    # Check if the authentication token is found
+    if authenticationToken is None:
+        raise ValueError(f"Authentication Token {apiKeyName} for weclapp not found in environment variables. Please add it.")
+
+    # Check if the authentication token is a string and not empty
+    if not isinstance(authenticationToken, str) or len(authenticationToken) == 0:
+        raise TypeError(f"Authentication Token {apiKeyName} for weclapp is not a valid string. Please check it.")
+
+    # Check if the authentication token has a valid format
+    if len(authenticationToken.split('-')) != 5:
+        raise ValueError(f"Authentication Token {apiKeyName} for weclapp is not valid. Please check it.")
+
+    return {
+        config.AUTHENTICATION_TOKEN_NAME: authenticationToken,
+        'Content-Type': config.DEFAULT_CONTENT_TYPE
+    }
+
+
+def getWeclappDomain() -> str:
+    url = os.environ.get(config.ENV_DOMAIN_NAME, None)
+    if url is None:
+        raise ValueError(f'weclappDomain not found in environment variables. Please set it using os.environ["{config.ENV_DOMAIN_NAME}"] = "yourDomain.weclapp.com"')
+    url = str(url).strip()
+    if not url.endswith(".weclapp.com"):
+        raise ValueError(f'weclappDomain {url} is not valid. Please set it using os.environ["{config.ENV_DOMAIN_NAME}"] = "yourDomain.weclapp.com"')
+    return url
+
+
 def getWeclappQueries(query:dict):
-    exceptions = ["properties", "entityId", "entityName", "name", "description", "pageSize", "page", "additionalProperties", "includeReferencedEntities", "serializeNulls", "sort"]  
     for key in query:
-        if key not in exceptions:
-            assert "-" in str(key), f"Query _{key}_ in weclapp need to contain one of -eq, -ne, -le, -ge, -in, -ilike, -like, ..."
+        if key not in config.ODATA_EXCEPTIONS and "-" not in str(key):
+            raise ValueError(f"Query >> {key} << in weclapp need to contain one of -eq, -ne, -le, -ge, -in, -ilike, -like, ...")
     return query
-    # for key in query:
-    #     if any([el not in str(key) for el in ["properties", "entityId", "entityName", "name", "description"]]):
-    #         assert "-" in str(key), f"Query _{key}_ in weclapp need to contain one of -eq, -ne, -le, -ge, -in, -ilike, -like, ..."
-    # return query
+
 
 
 
 def weclappResponse(response:requests.Response, asType:Union[dict, bytes, list]=dict, includeResult:bool=False) -> Union[dict, list, bytes, int]:
     if response.ok:
-        if "/count" in response.url:
+        if config.COUNT_REQUEST_IDENTIFIER in response.url:
             obj = response.json()
             logging.warning("A count request was sent to Weclapp returning int")
             if isinstance(obj['result'], int):
@@ -50,7 +60,7 @@ def weclappResponse(response:requests.Response, asType:Union[dict, bytes, list]=
             return weclappResponse(response, dict)
         elif asType == dict:
             obj = response.json()
-            if 'result' in obj and not includeResult:
+            if config.DEFAULT_RESPONSE_CONTAINER in obj and not includeResult:
                 result = obj['result']
                 if isinstance(result, list):
                     logging.warning("A list object was returned by Weclapp")
@@ -59,7 +69,7 @@ def weclappResponse(response:requests.Response, asType:Union[dict, bytes, list]=
                 return obj
         elif asType == list:
             obj = response.json()
-            if 'result' in obj:
+            if config.DEFAULT_RESPONSE_CONTAINER in obj:
                 result = obj['result']
                 if not isinstance(result, list):
                     logging.info("Not a list object was returned by Weclapp -> turned it into List")
@@ -71,7 +81,6 @@ def weclappResponse(response:requests.Response, asType:Union[dict, bytes, list]=
         elif asType == bytes:
             return response.content
         else:
-            raise AssertionError("asType must be one of dict, list, bytes")
+            raise TypeError("asType must be one of dict, list, bytes")
     else:
-        # logging.error(f"{response.url=}")
         raise WeclappError(response)

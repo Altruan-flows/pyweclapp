@@ -20,6 +20,7 @@ This Package contains methods to acess weclapp objects via the api.
 
 ## Setup 
 #### Step1
+```{python}
     # set the weclappDomain to call to to environment variables:
     import os
     os.environ["weclappDomain"] = "yourCompany.weclapp.com"
@@ -30,6 +31,7 @@ This Package contains methods to acess weclapp objects via the api.
     # the token should have the format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
     # set the default token as "Weclapp_AuthenticationToken0" via 
     os.environ["Weclapp_AuthenticationToken0"] = yourToken
+```
 
 #### Step2 (optional)
 For some applications it is usefull to set multiple tokens from different users. Please index them e.g. "Weclapp_AuthenticationToken1", "Weclapp_AuthenticationToken2"
