@@ -1,4 +1,4 @@
-# pyWeclapp - Methods, classes and class builders for interacting with the weclapp aoi
+# pyWeclapp - Methods, classes and class builders for interacting with the weclapp api
 
 This Package contains methods to acess weclapp objects via the api.
 

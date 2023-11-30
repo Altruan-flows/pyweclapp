@@ -23,7 +23,6 @@ def GET(entityName:config.ENTITY_NAMES,
     
         
     response = requests.get(URL, headers=getWeclappHeaders(apiKey=apiKey), params=getWeclappQueries(query=query))
-    print(response.url)
     return weclappResponse(response, asType=asType, includeResult=includeResult)
 
 
