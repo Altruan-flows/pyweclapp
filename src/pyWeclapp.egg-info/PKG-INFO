@@ -1,9 +1,9 @@
 Metadata-Version: 2.1
 Name: pyWeclapp
 Version: 0.0.1
-Summary: Provides methods, classes and classbuildes to integrate with th eWeclapp API
+Summary: Provides methods, classes and classbuilders to integrate with the Weclapp API
 Home-page: https://github.com/AltruanGmbH/weclappFunctions
-Author: Altruan gmbh
+Author: Altruan GmbH
 Author-email: jakob.goesswald@altruan.de
 License: MIT
 Classifier: License :: OSI Approved :: MIT License
