@@ -322,7 +322,9 @@ class Blueprint(BaseModel):
                             if isinstance(listItem, dict):
                                 helper.append(listItem)
                             else:
-                                logging.warning(f"handled Error: {listItem} is not a dict")
+                                if key not in  ['tags']:
+                                    logging.warning(f"handled Error: {listItem} is not a dict")
+                                helper.append(listItem)
                         if len(helper) > 0:
                             data[key] = helper
 
