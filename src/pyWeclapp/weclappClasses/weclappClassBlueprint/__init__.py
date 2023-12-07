@@ -267,7 +267,7 @@ class Blueprint(BaseModel):
                     if key == "customAttributes":
                         helper = []
                         for customAttribute in value:
-                            if issubclass(type(listItem), WeclappMetaData):
+                            if issubclass(type(customAttribute), WeclappMetaData):
                                 cat = customAttribute.getUpdateDict(updateType=updateType)
                                 if updateType == 'full':
                                     helper.append(cat)
@@ -510,9 +510,13 @@ class Blueprint(BaseModel):
     def fromWeclapp(cls, entityId:str):
         """initializes the class from a weclapp entity
         """
+        if entityId is None:
+            raise AssertionError(f"EntityId in .fromWeclapp() is None. Please provide a valid id.")
         entityName = cls.__name__
         entityName = entityName[:1].lower() + entityName[1:]
         response = weclapp.GET(entityName=entityName, entityId=entityId, asType=dict)
+        if not isinstance(response, dict):
+            raise AssertionError(f"Response from weclapp is not a dict, but a {type(response).__name__}")
         return cls(**response)
     
     

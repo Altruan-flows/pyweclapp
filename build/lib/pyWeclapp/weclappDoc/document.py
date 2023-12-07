@@ -2,8 +2,8 @@ from pyWeclapp import weclapp, timeFunctions
 import logging, io, base64
 from typing import *
 from pydantic import BaseModel
-from .docDescription import DocDescription, ALLOWED_DOC_FORMATS, ALLOWED_DOC_FORMATS_LITERAL, ALLOWED_DOC_TYPES, ALLOWED_DOC_TYPES_LITERAL
-
+from .docDescription import DocDescription
+from . import config
 
 
 
@@ -27,7 +27,7 @@ class Document(BaseModel):
                 self.description = DocDescription.fromString(self.description)
                 assert self.description.docId == self.id, f"document id in description is not equal to actual Id"
             # handl old format
-            else:
+            elif str(self.description) in config.ALLOWED_DOC_TYPES:
                 self.description = DocDescription(docType=self.description.strip(), docId=self.id)
                 self.updateDescription()
                 logging.warning('old document description found and updated')
@@ -43,13 +43,13 @@ class Document(BaseModel):
 
 
     @classmethod  
-    def documentNamingConvention(cls, docType:ALLOWED_DOC_TYPES_LITERAL,
-                                docFormat:ALLOWED_DOC_FORMATS_LITERAL,
+    def documentNamingConvention(cls, docType:config.ALLOWED_DOC_TYPES_LITERAL,
+                                docFormat:config.ALLOWED_DOC_FORMATS_LITERAL,
                                 fullName:str):
-        if docType not in ALLOWED_DOC_TYPES:
+        if docType not in config.ALLOWED_DOC_TYPES:
             logging.warning(f"documentNamingConvention: No convention for {docType}")
             # assert docType in ALLOWED_DOC_TYPES, f"documentNamingConvention: No convention for {docType}"
-        if docFormat not in ALLOWED_DOC_FORMATS:
+        if docFormat not in config.ALLOWED_DOC_FORMATS:
             logging.warning(f"documentNamingConvention: No Doctype for {docType}")
             # assert docFormat in ALLOWED_DOC_FORMATS, f"documentNamingConvention: No Doctype for {docType}"
 
@@ -89,7 +89,7 @@ class Document(BaseModel):
         else:
             logging.warning('no Document description found to update')
 
-    def setDescription(self, docType:ALLOWED_DOC_TYPES_LITERAL, startdate:str=None, enddate:str=None):
+    def setDescription(self, docType:config.ALLOWED_DOC_TYPES_LITERAL, startdate:str=None, enddate:str=None):
         if not self.description:
             self.description = DocDescription(docType=docType, docId=self.id)
         else:

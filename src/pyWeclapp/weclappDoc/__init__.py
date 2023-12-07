@@ -1,4 +1,4 @@
-from .docDescription import DocDescription, ALLOWED_DOC_FORMATS, ALLOWED_DOC_FORMATS_LITERAL, ALLOWED_DOC_TYPES, ALLOWED_DOC_TYPES_LITERAL
+from .docDescription import DocDescription
 from .document import Document
 from typing import *
 import logging
@@ -6,8 +6,7 @@ import io
 from pyWeclapp import weclapp
 import time
 import base64
-
-
+from . import config
 
 
 class DocManager:
@@ -66,7 +65,7 @@ class DocManager:
         
         return self.documents
     
-    def setDescriptionOfLatestDocument(self, docType:ALLOWED_DOC_TYPES_LITERAL):
+    def setDescriptionOfLatestDocument(self, docType:config.ALLOWED_DOC_TYPES_LITERAL):
         
         docsWithoutDescription = [doc for doc in self.getDocuments() if not doc.description]
         if docsWithoutDescription:
@@ -106,11 +105,11 @@ class DocManager:
         
         
     def uploadFile(self, name:str, 
-                   docType:ALLOWED_DOC_TYPES_LITERAL, 
+                   docType:config.ALLOWED_DOC_TYPES_LITERAL, 
                    file:bytes= None, 
                    base64Content:str = None, 
                    buffer:io.BytesIO = None, 
-                   docFormat:ALLOWED_DOC_FORMATS_LITERAL = 'pdf',  
+                   docFormat:config.ALLOWED_DOC_FORMATS_LITERAL = 'pdf',  
                    demo:bool = False,
                    tryToUpdateFirst:bool=False) -> Document:
         """Uploads a file to the entity and returns the document class"""
@@ -164,8 +163,8 @@ class DocManager:
     
     
     def getDocumentFiles(self,
-                   docType: ALLOWED_DOC_TYPES_LITERAL,
-                   docFormat: ALLOWED_DOC_FORMATS,
+                   docType: config.ALLOWED_DOC_TYPES_LITERAL,
+                   docFormat: config.ALLOWED_DOC_FORMATS,
                    by:Literal['all', 'latest']) -> Tuple[List[io.BytesIO], List[str]]:
         """downloads all documents of a given type and format and returns them as a list of BytesIO objects"""
         # ensure Nameing Convention

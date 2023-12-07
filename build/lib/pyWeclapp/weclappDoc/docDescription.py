@@ -1,13 +1,7 @@
 from pyWeclapp import timeFunctions
 import logging,  json, datetime
 from typing import *
-
-
-ALLOWED_DOC_TYPES = ['anlage2', 'anlage4', 'signature', 'pod', 'reciept', 'tzmo_LS', 'reciept2', '-', "kkDoc", "abrechnung"]
-ALLOWED_DOC_TYPES_LITERAL = Literal['anlage2', 'anlage4', 'signature', 'pod', 'reciept', 'tzmo_LS', 'reciept2', '-', "kkDoc", "abrechnung"]
-ALLOWED_DOC_FORMATS = ['pdf', 'png', 'tiff', "txt", 'jpg']
-ALLOWED_DOC_FORMATS_LITERAL = Literal['pdf', 'png', 'tiff', "txt", 'jpg']
-
+from . import config
 
 
 class DocDescription:
@@ -36,7 +30,7 @@ class DocDescription:
     
     
     
-    def __init__(self, docType:ALLOWED_DOC_TYPES_LITERAL, docId:str, version:str='0') -> None:
+    def __init__(self, docType:config.ALLOWED_DOC_TYPES_LITERAL, docId:str, version:str='0') -> None:
         self.docType = docType
         self.docId = docId
         self.descVersion=version
@@ -47,7 +41,7 @@ class DocDescription:
         # Validate docType
         if not isinstance(self.docType, str):
             raise AssertionError("docType must be a string")
-        if not self.docType in ALLOWED_DOC_TYPES:
+        if not self.docType in config.ALLOWED_DOC_TYPES:
             raise AssertionError("docType is not in specified options")
 
         # Validate docId
