@@ -201,38 +201,77 @@ class Blueprint(BaseModel):
     
     
     
-    def tag_update(self, tagName: str):
-        if hasattr(self, "tags"):
-            if str(tagName).strip() not in self.__dict__.get("tags", []):
-                newTags = self.__dict__.get("tags", [])
-                if isinstance(newTags, list):
-                    newTags.append(str(tagName).strip())
-                    self.__dict__["tags"] = newTags
-                    self.addUsedAtt("tags")
-                else:
-                    raise TypeError("Type is not list!")
-            else:
-                logging.warning(f"{tagName} is already in tags!")
-        else:
-            raise KeyError("No tags in this class")
-    
+    def addTag(self, newTag: str):
+        '''Adds a tag to tags if available'''
 
-    def tag_delete(self, tagName: str):
         if hasattr(self, "tags"):
-            if str(tagName).strip() in self.__dict__.get("tags", []):
-                newTags = self.__dict__.get("tags", [])
-                if isinstance(newTags, list):
-                    newTags.remove(str(tagName).strip())
-                    if newTags == []:
-                        logging.warning("Tags list is empty!")
-                    self.__dict__["tags"] = newTags
+            if str(newTag).strip() not in self.__dict__.get("tags", []):
+                currentTags = self.__dict__.get("tags", [])
+                if isinstance(currentTags, list):
+                    currentTags.append(str(newTag).strip())
+                    self.__dict__["tags"] = currentTags
                     self.addUsedAtt("tags")
                 else:
                     raise TypeError("Type is not list!")
             else:
-                logging.warning(f"{tagName} is not in tags! Delete is not possible")
+                logging.warning(f"{newTag} is already in tags!")
         else:
             raise KeyError("No tags in this class")
+
+
+
+
+    def replaceTag(self, newTag: str, tagIdenitier:str=None):
+        '''Replaces and adds newTag:
+            1. replaces any tag that contains tagIdenitier; if tagIdenitier is None it skips this part. 
+            2. adds newTag to Tags if possible
+            3. it also encures uniqueness of Tags (no duplicates)'''
+
+        if hasattr(self, "tags"):
+            currentTags = self.__dict__.get("tags", [])
+            if isinstance(currentTags, list):
+                tagValue = str(newTag).strip()
+                
+                # get unique Tags without Tags containing TagId
+                if tagIdenitier is not None:
+                    currentTagsSet = set([str(tag) for tag in currentTags if tagIdenitier not in str(tag)]) 
+                else:
+                    currentTagsSet = set(currentTags)
+                
+                # Add newTag to Tags
+                currentTagsSet.add(tagValue)
+                
+                # Update Tags
+                self.__dict__["tags"] = list(currentTagsSet)
+                self.addUsedAtt("tags")
+            else:
+                raise TypeError("Type is not list!")
+
+        else:
+            raise KeyError("No tags in this class")
+        
+        
+
+
+    def deleteTag(self, newTag: str):
+        '''Deletes a tag if it is in the list of Tags'''
+        
+        if hasattr(self, "tags"):
+            if str(newTag).strip() in self.__dict__.get("tags", []):
+                currentTags = self.__dict__.get("tags", [])
+                if isinstance(currentTags, list):
+                    currentTags.remove(str(newTag).strip())
+                    if currentTags == []:
+                        logging.warning("Tags list is empty! -> list will not be updated")
+                    self.__dict__["tags"] = currentTags
+                    self.addUsedAtt("tags")
+                else:
+                    raise TypeError("Type is not list!")
+            else:
+                logging.warning(f"{newTag} is not in tags! Delete is not possible")
+        else:
+            raise KeyError("No tags in this class")
+        
         
         
         
