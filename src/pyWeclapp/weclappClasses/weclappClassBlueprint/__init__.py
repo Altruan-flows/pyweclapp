@@ -4,7 +4,7 @@ from .weclappClassCustomAttribute import WeclappMetaData
 import logging
 from typing import *
 import json
-
+import re
 
 
 
@@ -202,17 +202,20 @@ class Blueprint(BaseModel):
     
     
     def addTag(self, newTag: str):
-        '''Adds a tag to tags if available'''
+        '''Adds a tag to tags if available
+            - allowed charaters are a-z, 0-9 and "-", "-", " " -> others will be replaced by "_"'''
 
         if hasattr(self, "tags"):
-            if str(newTag).strip() not in self.__dict__.get("tags", []):
-                currentTags = self.__dict__.get("tags", [])
+            # strip and remove invalid characters
+            newTag = re.sub(r"[^a-zA-Z0-9\-_ ]", "_", str(newTag).strip())
+            currentTags = self.__dict__.get("tags", [])
+            if newTag not in currentTags:
                 if isinstance(currentTags, list):
                     currentTags.append(str(newTag).strip())
                     self.__dict__["tags"] = currentTags
                     self.addUsedAtt("tags")
                 else:
-                    raise TypeError("Type is not list!")
+                    raise TypeError("Tags is not list!")
             else:
                 logging.warning(f"{newTag} is already in tags!")
         else:
@@ -220,21 +223,23 @@ class Blueprint(BaseModel):
 
 
 
-
-    def replaceTag(self, newTag: str, tagIdenitier:str=None):
+    def replaceTag(self, newTag: str, tagIdenitier:str=None, regrex:str=None):
         '''Replaces and adds newTag:
-            1. replaces any tag that contains tagIdenitier; if tagIdenitier is None it skips this part. 
+            1. replaces any tag that contains tagIdenitier or regrex (case insensitive); if tagIdenitier is None it skips this part. 
             2. adds newTag to Tags if possible
+                - allowed charaters are a-z, 0-9 and "-", "-", " " -> others will be replaced by "_"
             3. it also encures uniqueness of Tags (no duplicates)'''
 
         if hasattr(self, "tags"):
             currentTags = self.__dict__.get("tags", [])
             if isinstance(currentTags, list):
-                tagValue = str(newTag).strip()
+                tagValue = re.sub(r"[^a-zA-Z0-9\-_ ]", "_", str(newTag).strip())
                 
                 # get unique Tags without Tags containing TagId
-                if tagIdenitier is not None:
-                    currentTagsSet = set([str(tag) for tag in currentTags if tagIdenitier not in str(tag)]) 
+                if regrex is not None:
+                    currentTagsSet = set([str(tag) for tag in currentTags if not re.match(regrex, tag)]) 
+                elif tagIdenitier and isinstance(tagIdenitier, str):
+                    currentTagsSet = set([str(tag) for tag in currentTags if str(tagIdenitier).lower() not in str(tag).lower()]) 
                 else:
                     currentTagsSet = set(currentTags)
                 
@@ -242,7 +247,7 @@ class Blueprint(BaseModel):
                 currentTagsSet.add(tagValue)
                 
                 # Update Tags if something changed
-                if all(tag in currentTagsSet for tag in currentTags) and len(currentTags) == len(currentTagsSet):
+                if not all(tag in currentTagsSet for tag in currentTags) or len(currentTags) != len(currentTagsSet):
                     self.__dict__["tags"] = list(currentTagsSet)
                     self.addUsedAtt("tags")
             else:
@@ -258,10 +263,11 @@ class Blueprint(BaseModel):
         '''Deletes a tag if it is in the list of Tags'''
         
         if hasattr(self, "tags"):
-            if str(newTag).strip() in self.__dict__.get("tags", []):
+            newTag = re.sub(r"[^a-zA-Z0-9\-_ ]", "_", str(newTag).strip())
+            if newTag in self.__dict__.get("tags", []):
                 currentTags = self.__dict__.get("tags", [])
                 if isinstance(currentTags, list):
-                    currentTags.remove(str(newTag).strip())
+                    currentTags.remove(newTag)
                     if currentTags == []:
                         logging.warning("Tags list is empty! -> list will not be updated")
                     self.__dict__["tags"] = currentTags
