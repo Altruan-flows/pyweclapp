@@ -193,7 +193,46 @@ class Blueprint(BaseModel):
         value = self.USED_ATTRIBUTES.get(key)
         logging.warning(f"Restoring {key} to {value}")
         setattr(self, key, value)
-        
+
+
+
+
+    ################################### Tags handling ###################################
+    
+    
+    
+    def tag_update(self, tagName: str):
+        if hasattr(self, "tags"):
+            if str(tagName).strip() not in self.__dict__.get("tags", []):
+                newTags = self.__dict__.get("tags", [])
+                if isinstance(newTags, list):
+                    newTags.append(str(tagName).strip())
+                    self.__dict__["tags"] = newTags
+                    self.addUsedAtt("tags")
+                else:
+                    raise TypeError("Type is not list!")
+            else:
+                logging.warning(f"{tagName} is already in tags!")
+        else:
+            raise KeyError("No tags in this class")
+    
+
+    def tag_delete(self, tagName: str):
+        if hasattr(self, "tags"):
+            if str(tagName).strip() in self.__dict__.get("tags", []):
+                newTags = self.__dict__.get("tags", [])
+                if isinstance(newTags, list):
+                    newTags.remove(str(tagName).strip())
+                    if newTags == []:
+                        logging.warning("Tags list is empty!")
+                    self.__dict__["tags"] = newTags
+                    self.addUsedAtt("tags")
+                else:
+                    raise TypeError("Type is not list!")
+            else:
+                logging.warning(f"{tagName} is not in tags! Delete is not possible")
+        else:
+            raise KeyError("No tags in this class")
         
         
         
