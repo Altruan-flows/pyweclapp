@@ -241,9 +241,10 @@ class Blueprint(BaseModel):
                 # Add newTag to Tags
                 currentTagsSet.add(tagValue)
                 
-                # Update Tags
-                self.__dict__["tags"] = list(currentTagsSet)
-                self.addUsedAtt("tags")
+                # Update Tags if something changed
+                if all(tag in currentTagsSet for tag in currentTags) and len(currentTags) == len(currentTagsSet):
+                    self.__dict__["tags"] = list(currentTagsSet)
+                    self.addUsedAtt("tags")
             else:
                 raise TypeError("Type is not list!")
 
