@@ -259,25 +259,37 @@ class Blueprint(BaseModel):
         
 
 
-    def deleteTag(self, newTag: str):
-        '''Deletes a tag if it is in the list of Tags'''
+    def deleteTag(self, tagToRemove: str=None, regrex:str=None):
+        '''Deletes a tag if it is in the list of Tags or matches the regrex
+            - regrex will be prioritized over tagToRemove'''
+        if tagToRemove is None and regrex is None:
+            raise AssertionError("Please provide a tagToRemove or a regrex")
         
         if hasattr(self, "tags"):
-            newTag = re.sub(r"[^a-zA-Z0-9\-_ ]", "_", str(newTag).strip())
-            if newTag in self.__dict__.get("tags", []):
-                currentTags = self.__dict__.get("tags", [])
-                if isinstance(currentTags, list):
-                    currentTags.remove(newTag)
-                    if currentTags == []:
-                        logging.warning("Tags list is empty! -> list will not be updated")
+            currentTags = self.__dict__.get("tags", [])
+            if isinstance(currentTags, list):
+                initialLength = len(currentTags)
+                if regrex is not None:
+                    currentTags = [str(tag) for tag in currentTags if not re.match(regrex, tag)]
+                else:
+                    try:
+                        tagToRemove = re.sub(r"[^a-zA-Z0-9\-_ ]", "_", str(tagToRemove).strip())
+                        currentTags.remove(tagToRemove)
+                    except ValueError:
+                        pass
+                    
+                if currentTags == []:
+                    logging.warning("Tags list is empty! -> list will not be updated")
+                
+                if len(currentTags) != initialLength:
                     self.__dict__["tags"] = currentTags
                     self.addUsedAtt("tags")
-                else:
-                    raise TypeError("Type is not list!")
             else:
-                logging.warning(f"{newTag} is not in tags! Delete is not possible")
+                raise TypeError("Type is not list!")
         else:
             raise KeyError("No tags in this class")
+        
+        
         
         
         

@@ -13,3 +13,4 @@ requests==2.31.0
 rpds-py==0.13.1
 typing_extensions==4.8.0
 urllib3==2.1.0
+re
