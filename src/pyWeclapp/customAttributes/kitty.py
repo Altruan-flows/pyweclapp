@@ -1,9 +1,9 @@
 from .. import weclapp
 import logging
 import re
+from . import config
 
-
-class CITTY_Generator:
+class KITTY_Generator:
     def __init__(self, groupName, catName, catId, catType, selectableValues):
         self.groupName = groupName
         self.catName = catName
@@ -13,38 +13,17 @@ class CITTY_Generator:
     
     @staticmethod
     def getValueName(attributeType) -> str:
-        a = {"MULTISELECT_LIST": "selectedValues",
-            "INTEGER": "numberValue",
-            "DECIMAL": "numberValue",
-            "LIST": "selectedValueId",
-            "BOOLEAN": "booleanValue",
-            "STRING": "stringValue",
-            "LARGE_TEXT": "stringValue",
-            "DATE": "dateValue",
-            "ENTITY": "entityId",
-            "REFERENCE": "entityReferences",
-            "URL": "stringValue"
-        }
-        return a[attributeType]
+        '''Takes a weclapp attributeType and returns the corresponding Python value name'''
+        return config.VALUE_NAME_MAPPING[attributeType]
     
-    # @staticmethod
-    # def getFieldName(input_string) -> str:
-    #     # Use a regular expression to match non-alphanumeric characters (except underscore)
-    #     # and replace them with an underscore '_'
-    #     assert len(input_string) > 0, "Input String is empty"
-    #     modified_string = re.sub(r'[^a-zA-Z0-9_]', '', input_string)
-        
-    #     # Use another regular expression to extract the value inside parentheses
-    #     match = re.search(r'\((.*?)\)', input_string)
-    #     returnString = match.group(1) if match else modified_string
-    #     if not returnString or not returnString[0].isalpha():
-    #         return "X" + returnString
-    #     return returnString
-    
+
     @staticmethod
-    def getFieldName(input_string) -> str:
+    def getFieldName(input_string:str) -> str:
+        '''Takes a string and returns a valid Python variable name
+            - Text in barckets will be extracted and used as the variable name'''
         # Ensure the input string is not empty
-        assert len(input_string) > 0, "Input String is empty"
+        if not isinstance(input_string, str) or not len(input_string) > 0:
+            raise AssertionError("Input String is empty")
         
         # Use a regular expression to extract the value inside parentheses
         match = re.search(r'\((.*?)\)', input_string)
@@ -59,19 +38,15 @@ class CITTY_Generator:
         valid_string = re.sub(r'[^a-zA-Z0-9_]', '', extracted_string)
         
         # Ensure the resulting string starts with a valid character
-        if not valid_string or not (valid_string[0].isalpha() or valid_string[0] == '_'):
-            return "X" + valid_string
+        if not valid_string or not (valid_string[0].isalpha() or valid_string[0] == "_"):
+            return config.DEFAULT_FIRST_CHAR + valid_string
         return valid_string
-
-
-
-
-
-
 
         
     @classmethod
-    def fromWeclapp(cls, catId:str, catName:str=None):
+    def fromWeclapp(cls, catId:str, catName:str=None, groupNamePrefix:str=None):
+        '''Returns a KITTY_Generator object from a weclapp customAttributeDefinition'''
+        groupNamePrefix = groupNamePrefix or ""
         attribute = weclapp.GET(entityName=f"customAttributeDefinition", entityId=catId)
         
         # parse selectableValues
@@ -80,25 +55,33 @@ class CITTY_Generator:
             try:
                 name = cls.getFieldName(el['value']).replace('___', '_')
                 selectableValues[name] = el['id']
-            except:
-                logging.warning(f"Could not parse selectableValues of {catId}")
-            
+            except AssertionError as e:
+                logging.warning(f"Could not parse selectableValues of {catId}: AssertionError: {e}")
+        
+        groupName = groupNamePrefix + attribute.get('groupName', config.DEFAULT_GROUP_NAME)
         # init Attribute
-        return cls(groupName=   attribute.get('groupName', 'other'),
+        return cls(groupName=   groupName,
                     catName=    cls.getFieldName(attribute['attributeKey']) if catName is None else catName,
                     catId=      catId,
                     catType=    cls.getValueName(attribute['attributeType']),
                     selectableValues = selectableValues)
         
         
-    def getDict(self) -> dict:
+    def to_dict(self) -> dict:
+        '''returns a copy of the namedTuple attributes as a dict'''
         new = self.selectableValues.copy()
         new["id"] = self.catId
         new["valueName"] = self.catType
         return new
         
     def getPythonCode(self) -> str:
-        keys = ["id", "valueName"] + list(self.selectableValues.keys())
+        '''returns the variable setup for a single kitty as a string
+            - Format: self.VAR = namedtuple("VAR", [key1, key2, ...])(**data["VAR"])'''
+        keys = config.BASE_ATTRIBUTES + list(self.selectableValues.keys())
         keystring = ", ".join([f'"{key2}"' for key2 in keys])
-        return f'\t\tself.{self.catName + " " * (25 - len(self.catName))}= namedtuple("{self.catName}", {" " * (25 - len(self.catName))}[{keystring}])(**data["{self.catName}"]) # {self.catId}\n'
-
+        
+        catNameWithSpacing = self.catName + " " * (config.DEFAULT_CAT_INDENT_SPACES - len(self.catName))
+        spacesBetweenNameAndSchema = " " * (config.DEFAULT_CAT_INDENT_SPACES - len(self.catName))
+        finalString = f'\t\tself.{catNameWithSpacing}= namedtuple("{self.catName}", {spacesBetweenNameAndSchema}[{keystring}])'
+        finalString += f'(**data["{self.catName}"]) # {self.catId}\n'
+        return finalString

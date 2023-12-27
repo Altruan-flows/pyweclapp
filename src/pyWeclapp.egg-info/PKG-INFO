@@ -99,7 +99,7 @@ otherhwise invalid characters will be removed and a "X" will be added if the sta
 #### Setup Example
     from pyWeclapp.customAttributes import CAT_Generator
     # create an empyt folder as targetDirectory
-    CAT_Generator(entityName="ticket", entityId="74344116", targetDirectory="util/cat").main()
+    CAT_Generator(entityName="ticket", entityId="74344116", targetDirectory="util/customAttributes").main()
 
 #### Usage Example
     from yourTaregtDirectory import CAT

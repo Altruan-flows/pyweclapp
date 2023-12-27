@@ -1,0 +1,19 @@
+{
+    "2174360": "FORMER_SERVICE",
+    "27993891": "ebay1StockTransfer",
+    "27993890": "ebay2StockTransfer",
+    "26423400": "ebay1Available",
+    "26423399": "ebay2Available",
+    "1527232": "amazonASIN",
+    "1527231": "amazonSlSKU",
+    "1527230": "amazonFbaSku",
+    "1527229": "amazonSKU",
+    "1527228": "amazonStockTransfer",
+    "1527227": "amazonAvailable",
+    "291457": "wooDescription",
+    "8613": "wooStockTransfer",
+    "8612": "wooActive",
+    "8611": "wooAvailable",
+    "45569272": "shopifyId",
+    "45569274": "shopifyVariantId"
+}
