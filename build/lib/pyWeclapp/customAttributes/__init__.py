@@ -27,6 +27,7 @@ class CAT_Generator:
         self.findAllCATs(self.entity)
         self.findeDefaultCATs(self.entity)
         self.parse()
+        self.generatePyFile()
         self.save()
         self.updateSuperClass()
         self.createCatSettings()
@@ -114,7 +115,6 @@ class CAT_Generator:
             
             
     def save(self, filetype=config.FILE_TYPE):
-        self.generatePyFile()
         
         # CHECK IF DIRECTORY EXISTS and create it if not
         if not os.path.exists(self.targetDirectory):
