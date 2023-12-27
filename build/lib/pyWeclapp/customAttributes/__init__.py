@@ -10,7 +10,11 @@ class CAT_Generator:
     def __init__(self, entityName:str, entityId:str, targetDirectory:str):
         """Creates or updated a CAT Class for a givern weclapp entity in a predefined directory
         it will use the 
-        staticOrExcludedIDs: dict = {catId: catName}; if catName is None the cat will be ignored"""
+            - entityName:       as the name of the weclapp entity
+            - entityId:         as the id of the weclapp entity
+            - targetDirectory   desired directory to save the file in
+            - StaticOrExcludedIDs.json File - Schema: {catId: catName}; Method to manually rename or exclude (catName=null) a cat
+            - cat_Settings.py File: File to manually save other constants related to cats."""
         self.entityName = entityName
         self.entityId = entityId
         self.targetDirectory = targetDirectory
@@ -20,10 +24,8 @@ class CAT_Generator:
         self.groupedCatInfo: List[KITTY_Generator] = list()
         self.staticOrExcludedIDs = self.openOrAddStaticOrExcludedIDs()
         logging.info(f"Found {len(self.customAttributes)} Custom Attributes")
-        self.main()
-        
-        
-    def main(self):
+
+        # MAIN SEQUENCE
         self.findAllCATs(self.entity)
         self.findeDefaultCATs(self.entity)
         self.parse()
@@ -31,6 +33,7 @@ class CAT_Generator:
         self.save()
         self.updateSuperClass()
         self.createCatSettings()
+        
         
         
     def openOrAddStaticOrExcludedIDs(self):
@@ -51,6 +54,7 @@ class CAT_Generator:
         '''finds the first layer of customAttributes and adds them to the defaultCustomAttributes set'''
         for cat in d.get('customAttributes', []):
             self.defaultCustomAttributes.add(cat['attributeDefinitionId'])
+    
     
     def findAllCATs(self, d):
         '''iterates recursively through a dict and finds all customAttributes regardless of the nesting'''

@@ -98,8 +98,8 @@ otherhwise invalid characters will be removed and a "X" will be added if the sta
 #### CAUTION this may overwrite changes you made in your module. 
 #### Setup Example
     from pyWeclapp.customAttributes import CAT_Generator
-    # create an empyt folder as targetDirectory
-    CAT_Generator(entityName="ticket", entityId="74344116", targetDirectory="util/customAttributes").main()
+    # specify your wish directory. 
+    CAT_Generator(entityName="ticket", entityId="74344116", targetDirectory="util/customAttributes")
 
 #### Usage Example
     from yourTaregtDirectory import CAT
