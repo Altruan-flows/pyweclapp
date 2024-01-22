@@ -9,4 +9,3 @@ from .quotation_Model import Quotation
 from .ticket_Model import Ticket
 from .contact_Model import Contact
 from .extraInfoForApp import ExtraInfoForApp
-
