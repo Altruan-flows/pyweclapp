@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pyWeclapp
-Version: 0.0.1
+Version: 0.0.2
 Summary: Provides methods, classes and classbuilders to integrate with the Weclapp API
 Home-page: https://github.com/AltruanGmbH/weclappFunctions
 Author: Altruan GmbH
