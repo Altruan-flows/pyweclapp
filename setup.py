@@ -19,7 +19,7 @@ except FileNotFoundError:
 
 setup(
     name="pyWeclapp",
-    version="0.0.1",
+    version="0.0.2",
     description="Provides methods, classes and classbuilders to integrate with the Weclapp API",
     package_dir={"": "src"},
     packages=find_packages(where="src"),

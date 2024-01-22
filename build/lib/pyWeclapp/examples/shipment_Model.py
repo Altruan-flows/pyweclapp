@@ -1,11 +1,11 @@
 # This code was dynamically created using WeclappClassCreator from pyWeclapp
 
-from .weclappClassBlueprint import Blueprint, WeclappMetaData
+from pyWeclapp.weclappClasses.weclappClassBlueprint import Blueprint, WeclappMetaData
 from typing import *
 
 
 
-class Address(Blueprint):
+class InvoiceAddress(Blueprint):
 	city: Union[str, None] = None
 	company: Union[str, None] = None
 	company2: Union[str, None] = None
@@ -29,6 +29,28 @@ class Address(Blueprint):
 	ITEMS_NAME: ClassVar[str] = None
 
 
+class RecipientAddress(Blueprint):
+	city: Union[str, None] = None
+	company: Union[str, None] = None
+	company2: Union[str, None] = None
+	countryCode: Union[str, None] = None
+	firstName: Union[str, None] = None
+	globalLocationNumber: Union[str, None] = None
+	lastName: Union[str, None] = None
+	middleName: Union[str, None] = None
+	phoneNumber: Union[str, None] = None
+	postOfficeBoxCity: Union[str, None] = None
+	postOfficeBoxNumber: Union[str, None] = None
+	postOfficeBoxZipCode: Union[str, None] = None
+	salutation: Union[Literal["COMPANY", "FAMILY", "MR", "MRS", "NO_SALUTATION"], None] = None
+	state: Union[str, None] = None
+	street1: Union[str, None] = None
+	street2: Union[str, None] = None
+	title: Union[str, None] = None
+	titleId: Union[str, None] = None
+	zipcode: Union[str, None] = None
+	# AutomationData
+	ITEMS_NAME: ClassVar[str] = None
 
 
 class StatusHistory(Blueprint):
@@ -45,7 +67,15 @@ class PurchaseOrders(Blueprint):
 	ITEMS_NAME: ClassVar[str] = None
 
 
-class EmailAddresses(Blueprint):
+class RecordEmailAddresses(Blueprint):
+	bccAddresses: Union[str, None] = None
+	ccAddresses: Union[str, None] = None
+	toAddresses: Union[str, None] = None
+	# AutomationData
+	ITEMS_NAME: ClassVar[str] = None
+
+
+class SalesInvoiceEmailAddresses(Blueprint):
 	bccAddresses: Union[str, None] = None
 	ccAddresses: Union[str, None] = None
 	toAddresses: Union[str, None] = None
@@ -130,8 +160,8 @@ class Shipment(Blueprint):
 	recordOpening: Union[str, None] = None
 	sentToRecipient: Union[bool, None]
 	tags: list = []
-	invoiceAddress: Address = Address.fromBlank()
-	recipientAddress: Address = Address.fromBlank()
+	invoiceAddress: InvoiceAddress = InvoiceAddress.fromBlank()
+	recipientAddress: RecipientAddress = RecipientAddress.fromBlank()
 	salesOrderId: Union[str, None] = None
 	salesOrderNumber: Union[str, None] = None
 	status: Union[Literal["CANCELLED", "DELIVERED", "DELIVERY_NOTE_PRINTED", "INCOMING_CANCELLED", "INCOMING_GOODS_MOVEMENT_PRINTED", "INCOMING_MOVED_INTO_STORE", "INCOMING_SHIPPED", "IN_ROUTE", "NEW", "SHIPPED"], None] = None
@@ -164,9 +194,9 @@ class Shipment(Blueprint):
 	recipientCustomerNumber: Union[str, None] = None
 	recipientPartyId: Union[str, None] = None
 	recipientSupplierNumber: Union[str, None] = None
-	recordEmailAddresses: EmailAddresses = EmailAddresses.fromBlank()
+	recordEmailAddresses: RecordEmailAddresses = RecordEmailAddresses.fromBlank()
 	responsibleUserId: Union[str, None] = None
-	salesInvoiceEmailAddresses: EmailAddresses = EmailAddresses.fromBlank()
+	salesInvoiceEmailAddresses: SalesInvoiceEmailAddresses = SalesInvoiceEmailAddresses.fromBlank()
 	shipmentItems: List[ShipmentItems] = []
 	shipmentMethodId: Union[str, None] = None
 	shipmentMethodName: Union[str, None] = None

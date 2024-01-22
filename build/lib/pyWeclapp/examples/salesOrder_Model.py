@@ -1,6 +1,6 @@
 # This code was dynamically created using WeclappClassCreator from pyWeclapp
 
-from .weclappClassBlueprint import Blueprint, WeclappMetaData
+from pyWeclapp.weclappClasses.weclappClassBlueprint import Blueprint, WeclappMetaData
 from typing import *
 
 
@@ -42,7 +42,7 @@ class ShippingCostItems(Blueprint):
 	ITEMS_NAME: ClassVar[str] = None
 
 
-class Address(Blueprint):
+class DeliveryAddress(Blueprint):
 	city: Union[str, None] = None
 	company: Union[str, None] = None
 	company2: Union[str, None] = None
@@ -66,12 +66,73 @@ class Address(Blueprint):
 	ITEMS_NAME: ClassVar[str] = None
 
 
-
-
-class EmailAddresses(Blueprint):
+class DeliveryEmailAddresses(Blueprint):
 	bccAddresses: Union[str, None] = None
 	ccAddresses: Union[str, None] = None
 	toAddresses: Union[str, None] = None
+	# AutomationData
+	ITEMS_NAME: ClassVar[str] = None
+
+
+class InvoiceAddress(Blueprint):
+	city: Union[str, None] = None
+	company: Union[str, None] = None
+	company2: Union[str, None] = None
+	countryCode: Union[str, None] = None
+	firstName: Union[str, None] = None
+	globalLocationNumber: Union[str, None] = None
+	lastName: Union[str, None] = None
+	middleName: Union[str, None] = None
+	phoneNumber: Union[str, None] = None
+	postOfficeBoxCity: Union[str, None] = None
+	postOfficeBoxNumber: Union[str, None] = None
+	postOfficeBoxZipCode: Union[str, None] = None
+	salutation: Union[Literal["COMPANY", "FAMILY", "MR", "MRS", "NO_SALUTATION"], None] = None
+	state: Union[str, None] = None
+	street1: Union[str, None] = None
+	street2: Union[str, None] = None
+	title: Union[str, None] = None
+	titleId: Union[str, None] = None
+	zipcode: Union[str, None] = None
+	# AutomationData
+	ITEMS_NAME: ClassVar[str] = None
+
+
+class RecordAddress(Blueprint):
+	city: Union[str, None] = None
+	company: Union[str, None] = None
+	company2: Union[str, None] = None
+	countryCode: Union[str, None] = None
+	firstName: Union[str, None] = None
+	globalLocationNumber: Union[str, None] = None
+	lastName: Union[str, None] = None
+	middleName: Union[str, None] = None
+	phoneNumber: Union[str, None] = None
+	postOfficeBoxCity: Union[str, None] = None
+	postOfficeBoxNumber: Union[str, None] = None
+	postOfficeBoxZipCode: Union[str, None] = None
+	salutation: Union[Literal["COMPANY", "FAMILY", "MR", "MRS", "NO_SALUTATION"], None] = None
+	state: Union[str, None] = None
+	street1: Union[str, None] = None
+	street2: Union[str, None] = None
+	title: Union[str, None] = None
+	titleId: Union[str, None] = None
+	zipcode: Union[str, None] = None
+	# AutomationData
+	ITEMS_NAME: ClassVar[str] = None
+
+
+class SalesInvoiceEmailAddresses(Blueprint):
+	bccAddresses: Union[str, None] = None
+	ccAddresses: Union[str, None] = None
+	toAddresses: Union[str, None] = None
+	# AutomationData
+	ITEMS_NAME: ClassVar[str] = None
+
+
+class EcommerceOrder(Blueprint):
+	ecommerceId: Union[str, None] = None
+	externalConnectionId: Union[str, None] = None
 	# AutomationData
 	ITEMS_NAME: ClassVar[str] = None
 
@@ -99,29 +160,13 @@ class CommissionSalesPartners(Blueprint):
 	ITEMS_NAME: ClassVar[str] = None
 
 
-class CostCenterItems(Blueprint):
+class Tasks(Blueprint):
 	id: Union[str, None]
-	createdDate: Union[int, None]
-	lastModifiedDate: Union[int, None]
-	version: Union[str, None]
-	costCenterId: Union[str, None] = None
-	costCenterNumber: Union[str, None] = None
-	distributionPercentage: Union[str, None] = None
 	# AutomationData
 	ITEMS_NAME: ClassVar[str] = None
 
 
-class SalesInvoiceItemRelationship(Blueprint):
-	performanceRecordItemId: Union[str, None] = None
-	quantity: Union[str, None] = None
-	salesInvoiceItemId: Union[str, None] = None
-	salesOrderItemId: Union[str, None] = None
-	shipmentItemId: Union[str, None] = None
-	# AutomationData
-	ITEMS_NAME: ClassVar[str] = None
-
-
-class SalesInvoiceItems(Blueprint):
+class OrderItems(Blueprint):
 	id: Union[str, None]
 	createdDate: Union[int, None]
 	lastModifiedDate: Union[int, None]
@@ -161,31 +206,55 @@ class SalesInvoiceItems(Blueprint):
 	servicePeriodTo: Union[int, None] = None
 	unitCost: Union[str, None] = None
 	unitCostInCompanyCurrency: Union[str, None] = None
-	accountId: Union[str, None] = None
-	accountNumber: Union[str, None] = None
-	costCenterItems: List[CostCenterItems] = []
-	creditedInvoiceItemId: Union[str, None] = None
-	salesInvoiceItemRelationship: List[SalesInvoiceItemRelationship] = []
-	serialNumbers: list = []
+	invoicingType: Union[Literal["EFFORT", "FIXED_PRICE"], None] = None
+	manualPlannedWorkingTimePerUnit: Union[bool, None]
+	plannedWorkingTimePerUnit: Union[str, None] = None
+	serviceItem: Union[bool, None]
+	availability: Union[Literal["COMPLETELY_AVAILABLE", "NOTHING_AVAILABLE", "NOT_CHECKED", "PARTIALLY_AVAILABLE", "TRANSFER_REQUIRED"], None] = None
+	availabilityForAllWarehouses: Union[Literal["COMPLETELY_AVAILABLE", "NOTHING_AVAILABLE", "NOT_CHECKED", "PARTIALLY_AVAILABLE", "TRANSFER_REQUIRED"], None] = None
+	ecommerceOrderItemId: Union[str, None] = None
+	invoicedQuantity: Union[str, None] = None
+	pickBatchNumber: Union[str, None] = None
+	pickSerialNumbers: list = []
+	pickStoragePlaceId: Union[str, None] = None
+	plannedShippingDate: Union[int, None] = None
+	returnedQuantity: Union[str, None] = None
+	shipped: Union[bool, None]
+	shippedQuantity: Union[str, None] = None
+	tasks: List[Tasks] = []
 	# AutomationData
 	ITEMS_NAME: ClassVar[str] = None
 
 
-class SalesOrders(Blueprint):
+class ProjectMembers(Blueprint):
 	id: Union[str, None]
+	createdDate: Union[int, None]
+	lastModifiedDate: Union[int, None]
+	version: Union[str, None]
+	hourlyCost: Union[str, None] = None
+	teamRole: Union[Literal["MANAGER", "USER"], None] = None
+	userId: Union[str, None] = None
+	# AutomationData
+	ITEMS_NAME: ClassVar[str] = None
+
+
+class RecordEmailAddresses(Blueprint):
+	bccAddresses: Union[str, None] = None
+	ccAddresses: Union[str, None] = None
+	toAddresses: Union[str, None] = None
 	# AutomationData
 	ITEMS_NAME: ClassVar[str] = None
 
 
 class StatusHistory(Blueprint):
-	status: Union[Literal["CANCELLED", "DOCUMENT_CREATED", "ENTRY_COMPLETED", "NEW", "OPEN_ITEM_CREATED"], None] = None
+	status: Union[Literal["CANCELLED", "CLOSED", "MANUALLY_CLOSED", "ORDER_CONFIRMATION_PRINTED", "ORDER_ENTRY_IN_PROGRESS"], None] = None
 	statusDate: Union[int, None] = None
 	userId: Union[str, None] = None
 	# AutomationData
 	ITEMS_NAME: ClassVar[str] = None
 
 
-class SalesInvoice(Blueprint):
+class SalesOrder(Blueprint):
 	id: Union[str, None]
 	createdDate: Union[int, None]
 	lastModifiedDate: Union[int, None]
@@ -231,32 +300,49 @@ class SalesInvoice(Blueprint):
 	shipmentMethodId: Union[str, None] = None
 	shipmentMethodName: Union[str, None] = None
 	shippingCostItems: List[ShippingCostItems] = []
-	bookingDate: Union[int, None] = None
-	cancellationDate: Union[int, None] = None
-	cancellationNumber: Union[str, None] = None
-	collectiveInvoicePositionPrintType: Union[Literal["ORDER_POSITION_GROUP", "PERFORMANCE_RECORD_POSITION_GROUP", "SHIPMENT_POSITION_GROUP"], None] = None
+	defaultShippingCarrierId: Union[str, None] = None
+	defaultShippingCarrierName: Union[str, None] = None
+	deliveryAddress: DeliveryAddress = DeliveryAddress.fromBlank()
+	deliveryEmailAddresses: DeliveryEmailAddresses = DeliveryEmailAddresses.fromBlank()
+	invoiceAddress: InvoiceAddress = InvoiceAddress.fromBlank()
+	plannedDeliveryDate: Union[int, None] = None
+	plannedShippingDate: Union[int, None] = None
+	recordAddress: RecordAddress = RecordAddress.fromBlank()
+	salesInvoiceEmailAddresses: SalesInvoiceEmailAddresses = SalesInvoiceEmailAddresses.fromBlank()
+	advancePaymentStatus: Union[Literal["OPEN", "PAID"], None] = None
+	availability: Union[Literal["COMPLETELY_AVAILABLE", "NOTHING_AVAILABLE", "NOT_CHECKED", "PARTIALLY_AVAILABLE", "TRANSFER_REQUIRED"], None] = None
+	availabilityForAllWarehouses: Union[Literal["COMPLETELY_AVAILABLE", "NOTHING_AVAILABLE", "NOT_CHECKED", "PARTIALLY_AVAILABLE", "TRANSFER_REQUIRED"], None] = None
+	cashAccountId: Union[str, None] = None
 	customerHabitualExporterLetterOfIntentId: Union[str, None] = None
-	deliveryAddress: Address = Address.fromBlank()
-	deliveryDate: Union[int, None] = None
-	dueDate: Union[int, None] = None
-	invoiceDate: Union[int, None] = None
-	invoiceNumber: Union[str, None] = None
+	defaultShippingReturnCarrierId: Union[str, None] = None
+	defaultShippingReturnCarrierName: Union[str, None] = None
+	ecommerceOrder: EcommerceOrder = EcommerceOrder.fromBlank()
+	fulfillmentProviderId: Union[str, None] = None
+	invoiceRecipientId: Union[str, None] = None
+	invoiced: Union[bool, None]
+	onlyServices: Union[bool, None]
+	orderDate: Union[int, None] = None
+	orderItems: List[OrderItems] = []
+	orderNumber: Union[str, None] = None
 	orderNumberAtCustomer: Union[str, None] = None
 	paid: Union[bool, None]
-	paymentStatus: Union[Literal["CLEARED_WITH_CREDIT_NOTE", "CREDIT_NOTE_CLEARED", "NO_OPEN_ITEM", "OPEN", "PAID", "UNKNOWN"], None] = None
-	precedingSalesInvoiceId: Union[str, None] = None
-	recordAddress: Address = Address.fromBlank()
-	recordEmailAddresses: EmailAddresses = EmailAddresses.fromBlank()
-	salesInvoiceItems: List[SalesInvoiceItems] = []
-	salesInvoiceType: Union[Literal["ADVANCE_PAYMENT_INVOICE", "CREDIT_NOTE", "FINAL_INVOICE", "PART_PAYMENT_INVOICE", "PREPAYMENT_INVOICE", "RETAIL_INVOICE", "STANDARD_INVOICE"], None] = None
-	salesOrderId: Union[str, None] = None
-	salesOrderNumber: Union[str, None] = None
-	salesOrders: List[SalesOrders] = []
-	shippingDate: Union[int, None] = None
-	status: Union[Literal["CANCELLED", "DOCUMENT_CREATED", "ENTRY_COMPLETED", "NEW", "OPEN_ITEM_CREATED"], None] = None
+	plannedProjectEndDate: Union[int, None] = None
+	plannedProjectStartDate: Union[int, None] = None
+	projectGoals: Union[str, None] = None
+	projectMembers: List[ProjectMembers] = []
+	projectModeActive: Union[bool, None]
+	quotationId: Union[str, None] = None
+	quotationNumber: Union[str, None] = None
+	recordEmailAddresses: RecordEmailAddresses = RecordEmailAddresses.fromBlank()
+	salesOrderPaymentType: Union[Literal["ADVANCE_PAYMENT", "COUNTER_SALES", "PART_PAYMENT", "PREPAYMENT", "STANDARD"], None] = None
+	servicesFinished: Union[bool, None]
+	shipped: Union[bool, None]
+	shippingLabelsCount: Union[int, None] = None
+	status: Union[Literal["CANCELLED", "CLOSED", "MANUALLY_CLOSED", "ORDER_CONFIRMATION_PRINTED", "ORDER_ENTRY_IN_PROGRESS"], None] = None
 	statusHistory: List[StatusHistory] = []
-	vatRegistrationNumber: Union[str, None] = None
+	warehouseId: Union[str, None] = None
+	warehouseName: Union[str, None] = None
 	# AutomationData
-	ITEMS_NAME: ClassVar[str] = "salesInvoiceItems"
+	ITEMS_NAME: ClassVar[str] = "orderItems"
 
 

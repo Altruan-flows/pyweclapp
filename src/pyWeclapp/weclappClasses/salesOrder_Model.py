@@ -42,7 +42,7 @@ class ShippingCostItems(Blueprint):
 	ITEMS_NAME: ClassVar[str] = None
 
 
-class DeliveryAddress(Blueprint):
+class Address(Blueprint):
 	city: Union[str, None] = None
 	company: Union[str, None] = None
 	company2: Union[str, None] = None
@@ -66,68 +66,7 @@ class DeliveryAddress(Blueprint):
 	ITEMS_NAME: ClassVar[str] = None
 
 
-class DeliveryEmailAddresses(Blueprint):
-	bccAddresses: Union[str, None] = None
-	ccAddresses: Union[str, None] = None
-	toAddresses: Union[str, None] = None
-	# AutomationData
-	ITEMS_NAME: ClassVar[str] = None
 
-
-class InvoiceAddress(Blueprint):
-	city: Union[str, None] = None
-	company: Union[str, None] = None
-	company2: Union[str, None] = None
-	countryCode: Union[str, None] = None
-	firstName: Union[str, None] = None
-	globalLocationNumber: Union[str, None] = None
-	lastName: Union[str, None] = None
-	middleName: Union[str, None] = None
-	phoneNumber: Union[str, None] = None
-	postOfficeBoxCity: Union[str, None] = None
-	postOfficeBoxNumber: Union[str, None] = None
-	postOfficeBoxZipCode: Union[str, None] = None
-	salutation: Union[Literal["COMPANY", "FAMILY", "MR", "MRS", "NO_SALUTATION"], None] = None
-	state: Union[str, None] = None
-	street1: Union[str, None] = None
-	street2: Union[str, None] = None
-	title: Union[str, None] = None
-	titleId: Union[str, None] = None
-	zipcode: Union[str, None] = None
-	# AutomationData
-	ITEMS_NAME: ClassVar[str] = None
-
-
-class RecordAddress(Blueprint):
-	city: Union[str, None] = None
-	company: Union[str, None] = None
-	company2: Union[str, None] = None
-	countryCode: Union[str, None] = None
-	firstName: Union[str, None] = None
-	globalLocationNumber: Union[str, None] = None
-	lastName: Union[str, None] = None
-	middleName: Union[str, None] = None
-	phoneNumber: Union[str, None] = None
-	postOfficeBoxCity: Union[str, None] = None
-	postOfficeBoxNumber: Union[str, None] = None
-	postOfficeBoxZipCode: Union[str, None] = None
-	salutation: Union[Literal["COMPANY", "FAMILY", "MR", "MRS", "NO_SALUTATION"], None] = None
-	state: Union[str, None] = None
-	street1: Union[str, None] = None
-	street2: Union[str, None] = None
-	title: Union[str, None] = None
-	titleId: Union[str, None] = None
-	zipcode: Union[str, None] = None
-	# AutomationData
-	ITEMS_NAME: ClassVar[str] = None
-
-
-class SalesInvoiceEmailAddresses(Blueprint):
-	bccAddresses: Union[str, None] = None
-	ccAddresses: Union[str, None] = None
-	toAddresses: Union[str, None] = None
-	# AutomationData
-	ITEMS_NAME: ClassVar[str] = None
 
 
 class EcommerceOrder(Blueprint):
@@ -238,7 +177,7 @@ class ProjectMembers(Blueprint):
 	ITEMS_NAME: ClassVar[str] = None
 
 
-class RecordEmailAddresses(Blueprint):
+class EmailAddresses(Blueprint):
 	bccAddresses: Union[str, None] = None
 	ccAddresses: Union[str, None] = None
 	toAddresses: Union[str, None] = None
@@ -302,13 +241,13 @@ class SalesOrder(Blueprint):
 	shippingCostItems: List[ShippingCostItems] = []
 	defaultShippingCarrierId: Union[str, None] = None
 	defaultShippingCarrierName: Union[str, None] = None
-	deliveryAddress: DeliveryAddress = DeliveryAddress.fromBlank()
-	deliveryEmailAddresses: DeliveryEmailAddresses = DeliveryEmailAddresses.fromBlank()
-	invoiceAddress: InvoiceAddress = InvoiceAddress.fromBlank()
+	deliveryAddress: Address = Address.fromBlank()
+	deliveryEmailAddresses: EmailAddresses = EmailAddresses.fromBlank()
+	invoiceAddress: Address = Address.fromBlank()
 	plannedDeliveryDate: Union[int, None] = None
 	plannedShippingDate: Union[int, None] = None
-	recordAddress: RecordAddress = RecordAddress.fromBlank()
-	salesInvoiceEmailAddresses: SalesInvoiceEmailAddresses = SalesInvoiceEmailAddresses.fromBlank()
+	recordAddress: Address = Address.fromBlank()
+	salesInvoiceEmailAddresses: EmailAddresses = EmailAddresses.fromBlank()
 	advancePaymentStatus: Union[Literal["OPEN", "PAID"], None] = None
 	availability: Union[Literal["COMPLETELY_AVAILABLE", "NOTHING_AVAILABLE", "NOT_CHECKED", "PARTIALLY_AVAILABLE", "TRANSFER_REQUIRED"], None] = None
 	availabilityForAllWarehouses: Union[Literal["COMPLETELY_AVAILABLE", "NOTHING_AVAILABLE", "NOT_CHECKED", "PARTIALLY_AVAILABLE", "TRANSFER_REQUIRED"], None] = None
@@ -333,7 +272,7 @@ class SalesOrder(Blueprint):
 	projectModeActive: Union[bool, None]
 	quotationId: Union[str, None] = None
 	quotationNumber: Union[str, None] = None
-	recordEmailAddresses: RecordEmailAddresses = RecordEmailAddresses.fromBlank()
+	recordEmailAddresses: EmailAddresses = EmailAddresses.fromBlank()
 	salesOrderPaymentType: Union[Literal["ADVANCE_PAYMENT", "COUNTER_SALES", "PART_PAYMENT", "PREPAYMENT", "STANDARD"], None] = None
 	servicesFinished: Union[bool, None]
 	shipped: Union[bool, None]
