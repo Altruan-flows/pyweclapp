@@ -1,96 +1,93 @@
+# This code was dynamically created using WeclappClassCreator from pyWeclapp
+
 from .weclappClassBlueprint import Blueprint, WeclappMetaData
 from typing import *
 
 
 
 class Addresses(Blueprint):
-	id: str
-	version: str
-	city: str = None
-	company: str = None
-	company2: str = None
-	countryCode: str = None
-	createdDate: int
-	deliveryAddress: bool
-	firstName: str = None
-	globalLocationNumber: str = None
-	invoiceAddress: bool
-	lastModifiedDate: int
-	lastName: str = None
-	phoneNumber: str = None
-	postOfficeBoxCity: str = None
-	postOfficeBoxNumber: str = None
-	postOfficeBoxZipCode: str = None
-	primeAddress: bool
-	salutation: str = None
-	state: str = None
-	street1: str = None
-	street2: str = None
-	title: str = None
-	titleId: str = None
-	zipcode: str = None
-
-
+	id: Union[str, None]
+	createdDate: Union[int, None]
+	lastModifiedDate: Union[int, None]
+	version: Union[str, None]
+	city: Union[str, None] = None
+	company: Union[str, None] = None
+	company2: Union[str, None] = None
+	countryCode: Union[str, None] = None
+	deliveryAddress: Union[bool, None]
+	firstName: Union[str, None] = None
+	globalLocationNumber: Union[str, None] = None
+	invoiceAddress: Union[bool, None]
+	lastName: Union[str, None] = None
+	phoneNumber: Union[str, None] = None
+	postOfficeBoxCity: Union[str, None] = None
+	postOfficeBoxNumber: Union[str, None] = None
+	postOfficeBoxZipCode: Union[str, None] = None
+	primeAddress: Union[bool, None]
+	salutation: Union[Literal["COMPANY", "FAMILY", "MR", "MRS", "NO_SALUTATION"], None] = None
+	state: Union[str, None] = None
+	street1: Union[str, None] = None
+	street2: Union[str, None] = None
+	title: Union[str, None] = None
+	titleId: Union[str, None] = None
+	zipcode: Union[str, None] = None
+	# AutomationData
+	ITEMS_NAME: ClassVar[str] = None
 
 
 class OnlineAccounts(Blueprint):
-	id: str
-	version: str
-	accountName: str = None
-	accountType: str = None
-	createdDate: int
-	lastModifiedDate: int
-	url: str = None
-
-
-
+	id: Union[str, None]
+	createdDate: Union[int, None]
+	lastModifiedDate: Union[int, None]
+	version: Union[str, None]
+	accountName: Union[str, None] = None
+	accountType: Union[Literal["AMAZON", "BLOG", "EBAY", "FACEBOOK", "GOOGLE_DRIVE", "INSTAGRAM", "LINKEDIN", "OTHER", "PINTEREST", "SKYPE", "SLIDESHARE", "TWITTER", "WIKIPEDIA", "XING", "YELP", "YOUTUBE"], None] = None
+	url: Union[str, None] = None
+	# AutomationData
+	ITEMS_NAME: ClassVar[str] = None
 
 
 class Contact(Blueprint):
-	id: str
-	version: str
-	addresses: List[Addresses] = []
-	birthDate: int = None
-	company: str = None
-	company2: str = None
-	createdDate: int
+	id: Union[str, None]
+	createdDate: Union[int, None]
+	lastModifiedDate: Union[int, None]
+	version: Union[str, None]
 	customAttributes: List[WeclappMetaData] = []
-	customerCategoryId: str = None
-	customerCategoryName: str = None
-	deliveryAddressId: str = None
-	description: str = None
-	email: str = None
-	fax: str = None
-	firstName: str = None
-	fixPhone2: str = None
-	invoiceAddressId: str = None
-	lastModifiedDate: int
-	lastName: str = None
-	middleName: str = None
-	mobilePhone1: str = None
-	mobilePhone2: str = None
+	addresses: List[Addresses] = []
+	birthDate: Union[int, None] = None
+	company: Union[str, None] = None
+	company2: Union[str, None] = None
+	deliveryAddressId: Union[str, None] = None
+	email: Union[str, None] = None
+	fax: Union[str, None] = None
+	firstName: Union[str, None] = None
+	invoiceAddressId: Union[str, None] = None
+	lastName: Union[str, None] = None
+	middleName: Union[str, None] = None
+	mobilePhone1: Union[str, None] = None
 	onlineAccounts: List[OnlineAccounts] = []
-	optIn: bool
-	optInLetter: bool
-	optInPhone: bool
-	optInSms: bool
-	partyType: str
-	personCompany: str = None
-	personDepartmentId: str = None
-	personRoleId: str = None
-	phone: str = None
-	phoneHome: str = None
-	primaryAddressId: str = None
-	salutation: str = None
-	tags: list = [] # could not be parsed
-	title: str = None
-	titleId: str = None
-	website: str = None
-
-
-
+	partyType: Union[Literal["ORGANIZATION", "PERSON"], None] = None
+	personCompany: Union[str, None] = None
+	personDepartmentId: Union[str, None] = None
+	personRoleId: Union[str, None] = None
+	phone: Union[str, None] = None
+	primaryAddressId: Union[str, None] = None
+	salutation: Union[Literal["COMPANY", "FAMILY", "MR", "MRS", "NO_SALUTATION"], None] = None
+	tags: list = []
+	title: Union[str, None] = None
+	titleId: Union[str, None] = None
+	website: Union[str, None] = None
+	customerCategoryId: Union[str, None] = None
+	customerCategoryName: Union[str, None] = None
+	description: Union[str, None] = None
+	fixPhone2: Union[str, None] = None
+	mobilePhone2: Union[str, None] = None
+	optIn: Union[bool, None]
+	optInLetter: Union[bool, None]
+	optInPhone: Union[bool, None]
+	optInSms: Union[bool, None]
+	phoneHome: Union[str, None] = None
 	# AutomationData
-	ITEMS_NAME: str = 'addresses'
-
+	ITEMS_NAME: ClassVar[str] = None
 
 

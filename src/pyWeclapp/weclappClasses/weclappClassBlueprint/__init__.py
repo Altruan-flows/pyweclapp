@@ -64,6 +64,7 @@ class Blueprint(BaseModel):
         else:
             raise KeyError(f"Attribute customAttributes not found in {type(self).__name__}")
     
+    
     def qmd(self, value, raiseError:bool = True, addToMetaData:bool=False) -> WeclappMetaData:
         """short Version for queryMetaData Function. Returns the first item customAttribute where a given attributeDefinitionId equals value 
 
@@ -76,48 +77,45 @@ class Blueprint(BaseModel):
         """
         return self.queryMetaData(value=value, raiseError=raiseError, addToMetaData=addToMetaData)
     
-    
-    
-    
-    def query(self, key:str, value:Any, entity:str, raiseError:bool = True):
-        """Returns the first item in the entity (eg. orderItem) where a given key equals value (e.g. key='id', value='123')
+            
+    def query(self, entity:str, raiseError:bool = True, **kwargs):
+        """Returns the first item in the entity (eg. orderItem) that satisfies all kwargs (e.g. id='123', name='test')
 
         Args:
-            key (str): any attribute of the Child Attribute (eg. id)
-            value (Any): any Value of the key (eg. 123)
             entity (str): list of items (eg. orderItems)
             raiseError (bool, optional): Returns None if nothing found. Defaults to True.
+            **kwargs: any Attribute of the Child Attribute (eg. id='123', name='test')
 
         Raises: KeyError if not found
         """
         try:
+            if not kwargs:
+                logging.warning(f"No keywordQueries provided {entity} -> this will return the first element")
             if hasattr(self, entity):
-                listAttribute = getattr(self, entity)
-                if not isinstance(listAttribute, list):
+                listAttributes = getattr(self, entity)
+                if isinstance(listAttributes, list):
+                    for item in listAttributes:
+                        if all([getattr(item, key) == value for key, value in kwargs.items()]):
+                            return item
+                else:
                     raise KeyError(f"Attribute >{entity}< is not a list")
-                for listItem in listAttribute:
-                    if getattr(listItem, key) == value:
-                        return listItem
-                raise KeyError(f"Item >{value}< not found in >{entity}<")
-            else:
-                raise KeyError(f"Attribute >{entity}< not found")
-
+                
+            qString = " & ".join([f"{key}={value}" for key, value in kwargs.items()])
+            raise KeyError(f"no element found in {qString} for {entity=}")
+        
         except KeyError as e:
             if raiseError:
                 raise e
             else:
                 return None
            
-           
             
-    def queryItems(self, key:str, value:Any, raiseError:bool = True):
-        """Returns the first item in the self.ITEMS_NAME (eg. orderItem) where a given key equals value (e.g. key='id', value='123')
-            self.ITEMS_NAME is usually orderItems or a similar important list of items
+    def queryItems(self, raiseError:bool = True, **kwargs):
+        """Returns the first item in the list specified by ITEMS_NAME (eg. orderItem) that satisfies all kwargs (e.g. id='123', name='test')
 
         Args:
-            key (str): any attribute of the Child Attribute (eg. id)
-            value (Any): any Value of the key (eg. 123)
             raiseError (bool, optional): Returns None if nothing found. Defaults to True.
+            **kwargs: any Attribute of the Child Attribute (eg. id='123', name='test')
 
         Raises: KeyError if not found
         """
@@ -125,14 +123,7 @@ class Blueprint(BaseModel):
             if not hasattr(self, self.ITEMS_NAME):
                 raise KeyError(f"Attribute {self.ITEMS_NAME=} not found or invalid")
             
-            listAttribute = getattr(self, self.ITEMS_NAME)
-            if not isinstance(listAttribute, list):
-                raise KeyError(f"Attribute >{self.ITEMS_NAME}< is not a list")
-            
-            for listItem in listAttribute:
-                if getattr(listItem, key) == value:
-                    return listItem
-            raise KeyError(f"Item {value} not found")
+            return self.query(entity=self.ITEMS_NAME, raiseError=raiseError, **kwargs)
 
         except KeyError as e:
             if raiseError:
