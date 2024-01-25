@@ -477,7 +477,7 @@ class Blueprint(BaseModel):
                         for listItem in value:
                             try:
                                 if hasattr(listItem, "id"):
-                                    Blueprint.assessChanges(listItem, other.query(key='id', value=listItem.id, entity=key))
+                                    Blueprint.assessChanges(listItem, other.query(id=listItem.id, entity=key))
                                 else:
                                     logging.warning(f"List Item {listItem} has no id -> can not be assesed")
                             except AttributeError: 
@@ -525,9 +525,7 @@ class Blueprint(BaseModel):
     
     def updateEntity(self, updateType:Literal['full', 'used', "used+"]='used+'):
         """Mirrors changes to weclapp with the specified updateType and includes any possible change from weclapp
-
-        Args:
-            updateType (Literal[full, used, used+, optional): Mode of update. Defaults to 'used+'.
+            - updateType (Literal[full, used, used+, optional): Mode of update. Defaults to 'used+'.
         """
 
         logging.warning(f"Updating {self.__entityName__} in conjunction with webhooks can lead to loops!!! -> Please take precautions")
@@ -578,7 +576,7 @@ class Blueprint(BaseModel):
     
     
     def postNewEntity(self) -> dict:
-        """Posts a new Entity to weclapp, includes the changes additions from weclapp and returns the new Entity as dict
+        """Posts a new Entity to weclapp, and updates the wecalppClass and usedAtts are reset. In addition the new entity is returned
         """
         
         body = self.getUpdateDict(updateType="full", creationMode=True)
