@@ -300,20 +300,37 @@ class Blueprint(BaseModel):
             
         # Ensure type consistancy
         if type(__value) in  [int, str, float, bool]:
-            if type(__value) != self.__annotations__.get(__name, type(__value)):
-                targetType = self.__annotations__.get(__name, type(__value))
-                logging.warning(f"You tried to assign {__value} ({type(__value).__name__}) to the {targetType.__name__} attribute {__name} -> try to converted it")
-                if targetType == int:
-                    __value = int(float(__value))
-                elif targetType == str:
-                    __value = str(__value)
-                elif targetType == bool:
-                    __value = bool(__value)
-                elif targetType == float:
-                    __value = float(__value)
-                else:
-                    logging.error(f"failed to correct it...")
-                    raise TypeError(f"You tried to assign an {type(__value).__name__} to the {targetType.__name__} attribute {__name} -> could not correct it")
+            targetType = self.__annotations__.get(__name, type(__value))
+            # Check if targetType is a Union and extract its arguments
+            if get_origin(targetType) in [Union, Optional]:
+                args = []
+                for arg in get_args(targetType):
+                    if get_origin(arg) in [Literal]:
+                        args.append(str)
+                    else:
+                        args.append(arg)
+            # simple args
+            elif get_origin(targetType) is None:
+                args=[targetType]
+            elif get_origin(targetType) is Literal:
+                args = [str]
+            else:
+                logging.warning(f"Could not parse type {targetType} allowed are Union, Optional, Literal, None and base types")
+                args = []
+
+        # Converting value if necessary
+            logging.warning(f"You tried to assign {__value} ({type(__value).__name__}) to the {targetType.__name__} attribute {__name} -> try to converted it")
+            if int in args:
+                __value = int(float(__value))
+            elif str in args:
+                __value = str(__value)
+            elif bool in args:
+                __value = bool(__value)
+            elif float in args:
+                __value = float(__value)
+            else:
+                logging.error(f"failed to correct it...")
+                raise TypeError(f"You tried to assign {type(__value).__name__} to the {targetType.__name__} attribute {__name} -> could not correct it")
         
         # Check if somthing would change
         if __value != getattr(self, __name):
@@ -477,7 +494,7 @@ class Blueprint(BaseModel):
                         for listItem in value:
                             try:
                                 if hasattr(listItem, "id"):
-                                    Blueprint.assessChanges(listItem, other.query(key='id', value=listItem.id, entity=key))
+                                    Blueprint.assessChanges(listItem, other.query(id=listItem.id, entity=key))
                                 else:
                                     logging.warning(f"List Item {listItem} has no id -> can not be assesed")
                             except AttributeError: 
@@ -525,9 +542,7 @@ class Blueprint(BaseModel):
     
     def updateEntity(self, updateType:Literal['full', 'used', "used+"]='used+'):
         """Mirrors changes to weclapp with the specified updateType and includes any possible change from weclapp
-
-        Args:
-            updateType (Literal[full, used, used+, optional): Mode of update. Defaults to 'used+'.
+            - updateType (Literal[full, used, used+, optional): Mode of update. Defaults to 'used+'.
         """
 
         logging.warning(f"Updating {self.__entityName__} in conjunction with webhooks can lead to loops!!! -> Please take precautions")
@@ -578,7 +593,7 @@ class Blueprint(BaseModel):
     
     
     def postNewEntity(self) -> dict:
-        """Posts a new Entity to weclapp, includes the changes additions from weclapp and returns the new Entity as dict
+        """Posts a new Entity to weclapp, and updates the wecalppClass and usedAtts are reset. In addition the new entity is returned
         """
         
         body = self.getUpdateDict(updateType="full", creationMode=True)
