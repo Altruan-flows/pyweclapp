@@ -320,15 +320,23 @@ class Blueprint(BaseModel):
 
             # Converting value if necessary
             
-            logging.warning(f"You tried to assign {__value} ({type(__value).__name__}) to the {targetType.__name__} attribute {__name} -> try to converted it")
+            # Converting value if necessary
             if int in args:
-                __value = int(float(__value))
+                if not isinstance(__value, int):
+                    logging.warning(f"Autoconverting {__value} ({type(__value).__name__}) to required type int")
+                    __value = int(float(__value))
             elif str in args:
-                __value = str(__value)
+                if not isinstance(__value, str):
+                    logging.warning(f"Autoconverting {__value} ({type(__value).__name__}) to required type str")
+                    __value = str(__value)
             elif bool in args:
-                __value = bool(__value)
+                if not isinstance(__value, bool):
+                    logging.warning(f"Autoconverting {__value} ({type(__value).__name__}) to required type bool")
+                    __value = bool(__value)
             elif float in args:
-                __value = float(__value)
+                if not isinstance(__value, float):
+                    logging.warning(f"Autoconverting {__value} ({type(__value).__name__}) to required type float")
+                    __value = float(__value)
             else:
                 logging.error(f"failed to correct it...")
                 raise TypeError(f"You tried to assign {type(__value).__name__} to the {targetType.__name__} attribute {__name} -> could not correct it")
