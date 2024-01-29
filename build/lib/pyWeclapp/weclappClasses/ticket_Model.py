@@ -63,6 +63,6 @@ class Ticket(Blueprint):
 	ticketStatusId: Union[str, None] = None
 	ticketTypeId: Union[str, None] = None
 	# AutomationData
-	ITEMS_NAME: ClassVar[str] = None
+	ITEMS_NAME: ClassVar[str] = "entityReferences"
 
 

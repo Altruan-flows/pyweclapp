@@ -318,7 +318,8 @@ class Blueprint(BaseModel):
                 logging.warning(f"Could not parse type {targetType} allowed are Union, Optional, Literal, None and base types")
                 args = []
 
-        # Converting value if necessary
+            # Converting value if necessary
+            
             logging.warning(f"You tried to assign {__value} ({type(__value).__name__}) to the {targetType.__name__} attribute {__name} -> try to converted it")
             if int in args:
                 __value = int(float(__value))
