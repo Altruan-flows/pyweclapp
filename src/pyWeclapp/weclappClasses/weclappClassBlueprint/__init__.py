@@ -319,8 +319,6 @@ class Blueprint(BaseModel):
                 args = []
 
             # Converting value if necessary
-            
-            # Converting value if necessary
             if int in args:
                 if not isinstance(__value, int):
                     logging.warning(f"Autoconverting {__value} ({type(__value).__name__}) to required type int")

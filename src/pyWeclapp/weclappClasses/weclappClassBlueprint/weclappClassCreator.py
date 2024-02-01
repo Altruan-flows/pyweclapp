@@ -158,7 +158,7 @@ class WeclappClassCreator:
                     fileContent += f"\t{key}:{estimatedType} = None # type Estimated as str\n"
                 else:
                     relevantType = value if str(value).startswith("Literal") else attributeType.__name__    # for items generated from openApi swagger this can be a preprocessed Literal
-                    if key in config.ALWAYS_REQUIRED or attributeType.__name__ == "bool": # or str(value) == str(value).upper(): -> doesnot work :(
+                    if key in config.ALWAYS_REQUIRED: # or str(value) == str(value).upper(): -> doesnot work :(
                         fileContent += f"\t{key}: Union[{relevantType}, None]\n"
                     else:
                         fileContent += f"\t{key}: Union[{relevantType}, None] = None\n"

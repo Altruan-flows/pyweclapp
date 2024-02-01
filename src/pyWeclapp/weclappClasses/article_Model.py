@@ -40,7 +40,7 @@ class ArticleImages(Blueprint):
 	lastModifiedDate: Union[int, None]
 	version: Union[str, None]
 	fileName: Union[str, None] = None
-	mainImage: Union[bool, None]
+	mainImage: Union[bool, None] = None
 	# AutomationData
 	ITEMS_NAME: ClassVar[str] = None
 
@@ -133,7 +133,7 @@ class QuantityConversions(Blueprint):
 	conversionQuantity: Union[str, None] = None
 	createdUserId: Union[str, None] = None
 	lastEditedUserId: Union[str, None] = None
-	oppositeDirection: Union[bool, None]
+	oppositeDirection: Union[bool, None] = None
 	unitId: Union[str, None] = None
 	# AutomationData
 	ITEMS_NAME: ClassVar[str] = None
@@ -186,8 +186,8 @@ class Article(Blueprint):
 	accountId: Union[str, None] = None
 	accountNumber: Union[str, None] = None
 	accountingCodeId: Union[str, None] = None
-	active: Union[bool, None]
-	applyCashDiscount: Union[bool, None]
+	active: Union[bool, None] = None
+	applyCashDiscount: Union[bool, None] = None
 	articleAlternativeQuantities: List[ArticleAlternativeQuantities] = []
 	articleCalculationPrices: List[ArticleCalculationPrices] = []
 	articleCategoryId: Union[str, None] = None
@@ -200,11 +200,11 @@ class Article(Blueprint):
 	articleType: Union[Literal["BASIC", "LOADING_EQUIPMENT", "LOADING_EQUIPMENT_STORABLE", "PACKAGING_UNIT", "SALES_BILL_OF_MATERIAL", "SERVICE", "SHIPPING_COST", "STORABLE"], None]
 	articleWidth: Union[str, None] = None
 	availableForSalesChannels: list = [] # could not be parsed
-	availableInSale: Union[bool, None]
+	availableInSale: Union[bool, None] = None
 	averageDeliveryTime: Union[int, None] = None
 	barcode: Union[str, None] = None
-	batchNumberRequired: Union[bool, None]
-	billOfMaterialPartDeliveryPossible: Union[bool, None]
+	batchNumberRequired: Union[bool, None] = None
+	billOfMaterialPartDeliveryPossible: Union[bool, None] = None
 	catalogCode: Union[str, None] = None
 	commissionRate: Union[str, None] = None
 	contractBillingCycle: Union[Literal["DAILY", "FIVE_YEARLY", "FOUR_YEARLY", "HALF_YEARLY", "MONTHLY", "NONE", "QUARTER", "THREE_YEARLY", "TWO_YEARLY", "WEEKLY", "YEARLY"], None] = None
@@ -217,7 +217,7 @@ class Article(Blueprint):
 	defaultLoadingEquipmentIdentifierId: Union[str, None] = None
 	defaultPriceCalculationType: Union[Literal["MARGIN_CALCULATION", "PURCHASE", "RECOMMENDED_RETAIL_PRICE", "SALES"], None] = None
 	defaultStoragePlaces: List[DefaultStoragePlaces] = []
-	defineIndividualTaskTemplates: Union[bool, None]
+	defineIndividualTaskTemplates: Union[bool, None] = None
 	expenseAccountId: Union[str, None] = None
 	expenseAccountNumber: Union[str, None] = None
 	expirationDays: Union[int, None] = None
@@ -238,7 +238,7 @@ class Article(Blueprint):
 	primarySupplySourceId: Union[str, None] = None
 	procurementLeadDays: Union[int, None] = None
 	producerType: Union[str, None] = None
-	productionArticle: Union[bool, None]
+	productionArticle: Union[bool, None] = None
 	productionBillOfMaterialItems: List[ProductionBillOfMaterialItems] = []
 	purchaseCostCenterId: Union[str, None] = None
 	purchaseCostCenterNumber: Union[str, None] = None
@@ -252,17 +252,17 @@ class Article(Blueprint):
 	salesCostCenterNumber: Union[str, None] = None
 	sellByDate: Union[int, None] = None
 	sellFromDate: Union[int, None] = None
-	serialNumberRequired: Union[bool, None]
-	showOnDeliveryNote: Union[bool, None]
+	serialNumberRequired: Union[bool, None] = None
+	showOnDeliveryNote: Union[bool, None] = None
 	statusId: Union[str, None] = None
 	supplySources: List[SupplySources] = []
 	supportUntilDate: Union[int, None] = None
 	systemCode: Union[str, None] = None
 	tags: list = []
 	targetStockQuantity: Union[str, None] = None
-	useAvailableForSalesChannels: Union[bool, None]
-	useSalesBillOfMaterialItemPrices: Union[bool, None]
-	useSalesBillOfMaterialItemPricesForPurchase: Union[bool, None]
+	useAvailableForSalesChannels: Union[bool, None] = None
+	useSalesBillOfMaterialItemPrices: Union[bool, None] = None
+	useSalesBillOfMaterialItemPricesForPurchase: Union[bool, None] = None
 	# AutomationData
 	ITEMS_NAME: ClassVar[str] = "articlePrices"
 
