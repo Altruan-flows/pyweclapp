@@ -14,16 +14,16 @@ class Addresses(Blueprint):
 	company: Union[str, None] = None
 	company2: Union[str, None] = None
 	countryCode: Union[str, None] = None
-	deliveryAddress: Union[bool, None]
+	deliveryAddress: Union[bool, None] = None
 	firstName: Union[str, None] = None
 	globalLocationNumber: Union[str, None] = None
-	invoiceAddress: Union[bool, None]
+	invoiceAddress: Union[bool, None] = None
 	lastName: Union[str, None] = None
 	phoneNumber: Union[str, None] = None
 	postOfficeBoxCity: Union[str, None] = None
 	postOfficeBoxNumber: Union[str, None] = None
 	postOfficeBoxZipCode: Union[str, None] = None
-	primeAddress: Union[bool, None]
+	primeAddress: Union[bool, None] = None
 	salutation: Union[Literal["COMPANY", "FAMILY", "MR", "MRS", "NO_SALUTATION"], None] = None
 	state: Union[str, None] = None
 	street1: Union[str, None] = None
@@ -82,10 +82,10 @@ class Contact(Blueprint):
 	description: Union[str, None] = None
 	fixPhone2: Union[str, None] = None
 	mobilePhone2: Union[str, None] = None
-	optIn: Union[bool, None]
-	optInLetter: Union[bool, None]
-	optInPhone: Union[bool, None]
-	optInSms: Union[bool, None]
+	optIn: Union[bool, None] = None
+	optInLetter: Union[bool, None] = None
+	optInPhone: Union[bool, None] = None
+	optInSms: Union[bool, None] = None
 	phoneHome: Union[str, None] = None
 	# AutomationData
 	ITEMS_NAME: ClassVar[str] = None

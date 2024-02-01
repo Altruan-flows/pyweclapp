@@ -64,17 +64,17 @@ class ShipmentItems(Blueprint):
 	positionNumber: Union[int, None]
 	quantity: Union[str, None] = None
 	description: Union[str, None] = None
-	descriptionFixed: Union[bool, None]
-	manualQuantity: Union[bool, None]
+	descriptionFixed: Union[bool, None] = None
+	manualQuantity: Union[bool, None] = None
 	parentItemId: Union[str, None] = None
 	title: Union[str, None] = None
 	unitId: Union[str, None] = None
 	unitName: Union[str, None] = None
-	addPageBreakBefore: Union[bool, None]
+	addPageBreakBefore: Union[bool, None] = None
 	availability: Union[Literal["COMPLETELY_AVAILABLE", "NOTHING_AVAILABLE", "NOT_CHECKED", "PARTIALLY_AVAILABLE", "TRANSFER_REQUIRED"], None] = None
 	availabilityForAllWarehouses: Union[Literal["COMPLETELY_AVAILABLE", "NOTHING_AVAILABLE", "NOT_CHECKED", "PARTIALLY_AVAILABLE", "TRANSFER_REQUIRED"], None] = None
 	customAttributes: List[WeclappMetaData] = []
-	freeTextItem: Union[bool, None]
+	freeTextItem: Union[bool, None] = None
 	groupName: Union[str, None] = None
 	purchaseOrderItemId: Union[str, None] = None
 	returnAssessmentId: Union[str, None] = None
@@ -124,11 +124,11 @@ class Shipment(Blueprint):
 	commercialLanguage: Union[str, None] = None
 	creatorId: Union[str, None] = None
 	description: Union[str, None] = None
-	disableEmailTemplate: Union[bool, None]
+	disableEmailTemplate: Union[bool, None] = None
 	recordComment: Union[str, None] = None
 	recordFreeText: Union[str, None] = None
 	recordOpening: Union[str, None] = None
-	sentToRecipient: Union[bool, None]
+	sentToRecipient: Union[bool, None] = None
 	tags: list = []
 	invoiceAddress: Address = Address.fromBlank()
 	recipientAddress: Address = Address.fromBlank()
@@ -159,7 +159,7 @@ class Shipment(Blueprint):
 	packageWeight: Union[str, None] = None
 	packageWidth: Union[int, None] = None
 	pickingInstructions: Union[str, None] = None
-	picksComplete: Union[bool, None]
+	picksComplete: Union[bool, None] = None
 	purchaseOrders: List[PurchaseOrders] = []
 	recipientCustomerNumber: Union[str, None] = None
 	recipientPartyId: Union[str, None] = None

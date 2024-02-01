@@ -14,16 +14,16 @@ class Addresses(Blueprint):
 	company: Union[str, None] = None
 	company2: Union[str, None] = None
 	countryCode: Union[str, None] = None
-	deliveryAddress: Union[bool, None]
+	deliveryAddress: Union[bool, None] = None
 	firstName: Union[str, None] = None
 	globalLocationNumber: Union[str, None] = None
-	invoiceAddress: Union[bool, None]
+	invoiceAddress: Union[bool, None] = None
 	lastName: Union[str, None] = None
 	phoneNumber: Union[str, None] = None
 	postOfficeBoxCity: Union[str, None] = None
 	postOfficeBoxNumber: Union[str, None] = None
 	postOfficeBoxZipCode: Union[str, None] = None
-	primeAddress: Union[bool, None]
+	primeAddress: Union[bool, None] = None
 	salutation: Union[Literal["COMPANY", "FAMILY", "MR", "MRS", "NO_SALUTATION"], None] = None
 	state: Union[str, None] = None
 	street1: Union[str, None] = None
@@ -57,7 +57,7 @@ class BankAccounts(Blueprint):
 	bankCode: Union[str, None] = None
 	creditInstitute: Union[str, None] = None
 	partyId: Union[str, None] = None
-	primary: Union[bool, None]
+	primary: Union[bool, None] = None
 	# AutomationData
 	ITEMS_NAME: ClassVar[str] = None
 
@@ -117,9 +117,9 @@ class PartyHabitualExporterLettersOfIntent(Blueprint):
 	createdDate: Union[int, None]
 	lastModifiedDate: Union[int, None]
 	version: Union[str, None]
-	automaticallySuggestInInvoice: Union[bool, None]
+	automaticallySuggestInInvoice: Union[bool, None] = None
 	date: Union[int, None] = None
-	fromSupplier: Union[bool, None]
+	fromSupplier: Union[bool, None] = None
 	invoices: List[Invoices] = []
 	numberDeclarer: Union[str, None] = None
 	numberSupplier: Union[str, None] = None
@@ -171,15 +171,15 @@ class Party(Blueprint):
 	commissionSalesPartners: List[CommissionSalesPartners] = []
 	companySizeId: Union[str, None] = None
 	companySizeName: Union[str, None] = None
-	competitor: Union[bool, None]
+	competitor: Union[bool, None] = None
 	contacts: List[Contacts] = []
 	currencyId: Union[str, None] = None
 	currencyName: Union[str, None] = None
-	customer: Union[bool, None]
+	customer: Union[bool, None] = None
 	customerAmountInsured: Union[str, None] = None
 	customerAnnualRevenue: Union[str, None] = None
 	customerBlockNotice: Union[str, None] = None
-	customerBlocked: Union[bool, None]
+	customerBlocked: Union[bool, None] = None
 	customerBusinessType: Union[Literal["B2B", "B2C", "B2G"], None] = None
 	customerCategoryId: Union[str, None] = None
 	customerCategoryName: Union[str, None] = None
@@ -192,9 +192,9 @@ class Party(Blueprint):
 	customerDefaultHeaderDiscount: Union[str, None] = None
 	customerDefaultHeaderSurcharge: Union[str, None] = None
 	customerDefaultShippingCarrierId: Union[str, None] = None
-	customerDeliveryBlock: Union[bool, None]
-	customerInsolvent: Union[bool, None]
-	customerInsured: Union[bool, None]
+	customerDeliveryBlock: Union[bool, None] = None
+	customerInsolvent: Union[bool, None] = None
+	customerInsured: Union[bool, None] = None
 	customerInternalNote: Union[str, None] = None
 	customerLossDescription: Union[str, None] = None
 	customerLossReasonId: Union[str, None] = None
@@ -214,20 +214,20 @@ class Party(Blueprint):
 	customerSupplierNumber: Union[str, None] = None
 	customerTermOfPaymentId: Union[str, None] = None
 	customerTermOfPaymentName: Union[str, None] = None
-	customerUseCustomsTariffNumber: Union[bool, None]
+	customerUseCustomsTariffNumber: Union[bool, None] = None
 	deliveryEmailAddressesId: Union[str, None] = None
 	description: Union[str, None] = None
 	dunningAddressId: Union[str, None] = None
 	dunningEmailAddressesId: Union[str, None] = None
-	enableDropshippingInNewSupplySources: Union[bool, None]
+	enableDropshippingInNewSupplySources: Union[bool, None] = None
 	eoriNumber: Union[str, None] = None
-	factoring: Union[bool, None]
+	factoring: Union[bool, None] = None
 	fixPhone2: Union[str, None] = None
-	fixedResponsibleUser: Union[bool, None]
-	formerSalesPartner: Union[bool, None]
-	habitualExporter: Union[bool, None]
+	fixedResponsibleUser: Union[bool, None] = None
+	formerSalesPartner: Union[bool, None] = None
+	habitualExporter: Union[bool, None] = None
 	imageId: Union[str, None] = None
-	invoiceBlock: Union[bool, None]
+	invoiceBlock: Union[bool, None] = None
 	invoiceRecipientId: Union[str, None] = None
 	leadRatingId: Union[str, None] = None
 	leadRatingName: Union[str, None] = None
@@ -237,17 +237,17 @@ class Party(Blueprint):
 	legalFormId: Union[str, None] = None
 	legalFormName: Union[str, None] = None
 	mobilePhone2: Union[str, None] = None
-	optInEmail: Union[bool, None]
-	optInLetter: Union[bool, None]
-	optInPhone: Union[bool, None]
-	optInSms: Union[bool, None]
+	optInEmail: Union[bool, None] = None
+	optInLetter: Union[bool, None] = None
+	optInPhone: Union[bool, None] = None
+	optInSms: Union[bool, None] = None
 	parentPartyId: Union[str, None] = None
 	partyEmailAddresses: List[PartyEmailAddresses] = []
 	partyHabitualExporterLettersOfIntent: List[PartyHabitualExporterLettersOfIntent] = []
 	phoneHome: Union[str, None] = None
 	primaryContactId: Union[str, None] = None
 	purchaseEmailAddressesId: Union[str, None] = None
-	purchaseViaPlafond: Union[bool, None]
+	purchaseViaPlafond: Union[bool, None] = None
 	quotationEmailAddressesId: Union[str, None] = None
 	ratingId: Union[str, None] = None
 	ratingName: Union[str, None] = None
@@ -256,13 +256,13 @@ class Party(Blueprint):
 	responsibleUserUsername: Union[str, None] = None
 	salesInvoiceEmailAddressesId: Union[str, None] = None
 	salesOrderEmailAddressesId: Union[str, None] = None
-	salesPartner: Union[bool, None]
+	salesPartner: Union[bool, None] = None
 	salesPartnerDefaultCommissionFix: Union[str, None] = None
 	salesPartnerDefaultCommissionPercentage: Union[str, None] = None
 	salesPartnerDefaultCommissionType: Union[Literal["FIX", "FIX_AND_MARGIN", "FIX_AND_REVENUE", "MARGIN", "NO_COMMISSION", "REVENUE"], None] = None
 	sectorId: Union[str, None] = None
 	sectorName: Union[str, None] = None
-	supplier: Union[bool, None]
+	supplier: Union[bool, None] = None
 	supplierCreditorAccountId: Union[str, None] = None
 	supplierCreditorAccountNumber: Union[str, None] = None
 	supplierCreditorAccountingCodeId: Union[str, None] = None
@@ -273,7 +273,7 @@ class Party(Blueprint):
 	supplierNonStandardTaxId: Union[str, None] = None
 	supplierNumber: Union[str, None] = None
 	supplierNumberOld: Union[str, None] = None
-	supplierOrderBlock: Union[bool, None]
+	supplierOrderBlock: Union[bool, None] = None
 	supplierPaymentMethodId: Union[str, None] = None
 	supplierPaymentMethodName: Union[str, None] = None
 	supplierShipmentMethodId: Union[str, None] = None

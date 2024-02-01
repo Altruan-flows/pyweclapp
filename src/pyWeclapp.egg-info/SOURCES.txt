@@ -26,15 +26,6 @@ src/pyWeclapp/weclappClasses/article_Model.py
 src/pyWeclapp/weclappClasses/contact_Model.py
 src/pyWeclapp/weclappClasses/contract_Model.py
 src/pyWeclapp/weclappClasses/customer_Model.py
-src/pyWeclapp/weclappClasses/old_article_Model.py
-src/pyWeclapp/weclappClasses/old_contact_Model.py
-src/pyWeclapp/weclappClasses/old_contract_Model.py
-src/pyWeclapp/weclappClasses/old_party_Model.py
-src/pyWeclapp/weclappClasses/old_quotation_Model.py
-src/pyWeclapp/weclappClasses/old_salesInvoice_Model.py
-src/pyWeclapp/weclappClasses/old_salesOrder_Model.py
-src/pyWeclapp/weclappClasses/old_shipment_Model.py
-src/pyWeclapp/weclappClasses/old_ticket_Model.py
 src/pyWeclapp/weclappClasses/party_Model.py
 src/pyWeclapp/weclappClasses/quotation_Model.py
 src/pyWeclapp/weclappClasses/salesInvoice_Model.py

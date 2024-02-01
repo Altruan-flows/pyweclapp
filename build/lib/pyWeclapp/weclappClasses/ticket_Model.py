@@ -20,13 +20,13 @@ class Ticket(Blueprint):
 	customAttributes: List[WeclappMetaData] = []
 	assignedPoolingGroupId: Union[str, None] = None
 	assignedUserId: Union[str, None] = None
-	billable: Union[bool, None]
-	billableStatus: Union[bool, None]
+	billable: Union[bool, None] = None
+	billableStatus: Union[bool, None] = None
 	ccEmailAddresses: Union[str, None] = None
 	contactId: Union[str, None] = None
 	contractId: Union[str, None] = None
 	description: Union[str, None] = None
-	disableEmailTemplates: Union[bool, None]
+	disableEmailTemplates: Union[bool, None] = None
 	email: Union[str, None] = None
 	entityReferences: List[EntityReferences] = []
 	finishedDate: Union[int, None] = None
@@ -36,7 +36,7 @@ class Ticket(Blueprint):
 	language: Union[str, None] = None
 	lastName: Union[str, None] = None
 	legacyArticleId: Union[str, None] = None
-	legacyTimeAndMaterialTicket: Union[bool, None]
+	legacyTimeAndMaterialTicket: Union[bool, None] = None
 	mail2TicketId: Union[str, None] = None
 	mobilePhoneNumber: Union[str, None] = None
 	note: Union[str, None] = None
@@ -45,7 +45,7 @@ class Ticket(Blueprint):
 	phoneNumber: Union[str, None] = None
 	publicPageExpirationDate: Union[int, None] = None
 	publicPageUuid: Union[str, None] = None
-	resolvedYourIssue: Union[bool, None]
+	resolvedYourIssue: Union[bool, None] = None
 	responsibleUserId: Union[str, None] = None
 	room: Union[str, None] = None
 	salesOrderId: Union[str, None] = None
