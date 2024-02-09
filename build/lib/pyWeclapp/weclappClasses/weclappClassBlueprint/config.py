@@ -13,7 +13,10 @@ ITEMS_NAMES = {
     "shipment": "shipmentItems",
     "contract": "contractItems",
     "article": "articlePrices",
-    "salesInvoice": "salesInvoiceItems"
+    "salesInvoice": "salesInvoiceItems",
+    "ticket": "entityReferences",
+    "party": "addresses",
+    "customer": "addresses"
 } 
 ALWAYS_REQUIRED = ["id", "version", "active", "createdDate", "lastModifiedDate", "articleType", "priceScaleType", "positionNumber"]
 COMMON_ENTITIES = []

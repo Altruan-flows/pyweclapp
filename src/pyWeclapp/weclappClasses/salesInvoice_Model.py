@@ -28,14 +28,14 @@ class ShippingCostItems(Blueprint):
 	articleNumber: Union[str, None] = None
 	grossAmount: Union[str, None] = None
 	grossAmountInCompanyCurrency: Union[str, None] = None
-	manualUnitPrice: Union[bool, None]
+	manualUnitPrice: Union[bool, None] = None
 	netAmount: Union[str, None] = None
 	netAmountInCompanyCurrency: Union[str, None] = None
 	taxId: Union[str, None] = None
 	taxName: Union[str, None] = None
 	unitPrice: Union[str, None] = None
 	unitPriceInCompanyCurrency: Union[str, None] = None
-	manualUnitCost: Union[bool, None]
+	manualUnitCost: Union[bool, None] = None
 	unitCost: Union[str, None] = None
 	unitCostInCompanyCurrency: Union[str, None] = None
 	# AutomationData
@@ -132,8 +132,8 @@ class SalesInvoiceItems(Blueprint):
 	positionNumber: Union[int, None]
 	quantity: Union[str, None] = None
 	description: Union[str, None] = None
-	descriptionFixed: Union[bool, None]
-	manualQuantity: Union[bool, None]
+	descriptionFixed: Union[bool, None] = None
+	manualQuantity: Union[bool, None] = None
 	parentItemId: Union[str, None] = None
 	title: Union[str, None] = None
 	unitId: Union[str, None] = None
@@ -141,7 +141,7 @@ class SalesInvoiceItems(Blueprint):
 	discountPercentage: Union[str, None] = None
 	grossAmount: Union[str, None] = None
 	grossAmountInCompanyCurrency: Union[str, None] = None
-	manualUnitPrice: Union[bool, None]
+	manualUnitPrice: Union[bool, None] = None
 	netAmount: Union[str, None] = None
 	netAmountForStatistics: Union[str, None] = None
 	netAmountForStatisticsInCompanyCurrency: Union[str, None] = None
@@ -151,12 +151,12 @@ class SalesInvoiceItems(Blueprint):
 	taxName: Union[str, None] = None
 	unitPrice: Union[str, None] = None
 	unitPriceInCompanyCurrency: Union[str, None] = None
-	addPageBreakBefore: Union[bool, None]
+	addPageBreakBefore: Union[bool, None] = None
 	customAttributes: List[WeclappMetaData] = []
-	freeTextItem: Union[bool, None]
+	freeTextItem: Union[bool, None] = None
 	groupName: Union[str, None] = None
 	commissionSalesPartners: List[CommissionSalesPartners] = []
-	manualUnitCost: Union[bool, None]
+	manualUnitCost: Union[bool, None] = None
 	servicePeriodFrom: Union[int, None] = None
 	servicePeriodTo: Union[int, None] = None
 	unitCost: Union[str, None] = None
@@ -194,11 +194,11 @@ class SalesInvoice(Blueprint):
 	commercialLanguage: Union[str, None] = None
 	creatorId: Union[str, None] = None
 	description: Union[str, None] = None
-	disableEmailTemplate: Union[bool, None]
+	disableEmailTemplate: Union[bool, None] = None
 	recordComment: Union[str, None] = None
 	recordFreeText: Union[str, None] = None
 	recordOpening: Union[str, None] = None
-	sentToRecipient: Union[bool, None]
+	sentToRecipient: Union[bool, None] = None
 	tags: list = []
 	currencyConversionDate: Union[int, None] = None
 	currencyConversionRate: Union[str, None] = None
@@ -221,7 +221,7 @@ class SalesInvoice(Blueprint):
 	customerId: Union[str, None] = None
 	customerNumber: Union[str, None] = None
 	dispatchCountryCode: Union[str, None] = None
-	factoring: Union[bool, None]
+	factoring: Union[bool, None] = None
 	pricingDate: Union[int, None] = None
 	responsibleUserId: Union[str, None] = None
 	responsibleUserUsername: Union[str, None] = None
@@ -242,7 +242,7 @@ class SalesInvoice(Blueprint):
 	invoiceDate: Union[int, None] = None
 	invoiceNumber: Union[str, None] = None
 	orderNumberAtCustomer: Union[str, None] = None
-	paid: Union[bool, None]
+	paid: Union[bool, None] = None
 	paymentStatus: Union[Literal["CLEARED_WITH_CREDIT_NOTE", "CREDIT_NOTE_CLEARED", "NO_OPEN_ITEM", "OPEN", "PAID", "UNKNOWN"], None] = None
 	precedingSalesInvoiceId: Union[str, None] = None
 	recordAddress: Address = Address.fromBlank()

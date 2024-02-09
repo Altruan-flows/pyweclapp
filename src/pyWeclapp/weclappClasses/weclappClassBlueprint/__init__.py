@@ -318,16 +318,23 @@ class Blueprint(BaseModel):
                 logging.warning(f"Could not parse type {targetType} allowed are Union, Optional, Literal, None and base types")
                 args = []
 
-        # Converting value if necessary
-            logging.warning(f"You tried to assign {__value} ({type(__value).__name__}) to the {targetType.__name__} attribute {__name} -> try to converted it")
+            # Converting value if necessary
             if int in args:
-                __value = int(float(__value))
+                if not isinstance(__value, int):
+                    logging.warning(f"Autoconverting {__value} ({type(__value).__name__}) to required type int")
+                    __value = int(float(__value))
             elif str in args:
-                __value = str(__value)
+                if not isinstance(__value, str):
+                    logging.warning(f"Autoconverting {__value} ({type(__value).__name__}) to required type str")
+                    __value = str(__value)
             elif bool in args:
-                __value = bool(__value)
+                if not isinstance(__value, bool):
+                    logging.warning(f"Autoconverting {__value} ({type(__value).__name__}) to required type bool")
+                    __value = bool(__value)
             elif float in args:
-                __value = float(__value)
+                if not isinstance(__value, float):
+                    logging.warning(f"Autoconverting {__value} ({type(__value).__name__}) to required type float")
+                    __value = float(__value)
             else:
                 logging.error(f"failed to correct it...")
                 raise TypeError(f"You tried to assign {type(__value).__name__} to the {targetType.__name__} attribute {__name} -> could not correct it")
@@ -494,7 +501,7 @@ class Blueprint(BaseModel):
                         for listItem in value:
                             try:
                                 if hasattr(listItem, "id"):
-                                    Blueprint.assessChanges(listItem, other.query(key='id', value=listItem.id, entity=key))
+                                    Blueprint.assessChanges(listItem, other.query(id=listItem.id, entity=key))
                                 else:
                                     logging.warning(f"List Item {listItem} has no id -> can not be assesed")
                             except AttributeError: 
@@ -542,9 +549,7 @@ class Blueprint(BaseModel):
     
     def updateEntity(self, updateType:Literal['full', 'used', "used+"]='used+'):
         """Mirrors changes to weclapp with the specified updateType and includes any possible change from weclapp
-
-        Args:
-            updateType (Literal[full, used, used+, optional): Mode of update. Defaults to 'used+'.
+            - updateType (Literal[full, used, used+, optional): Mode of update. Defaults to 'used+'.
         """
 
         logging.warning(f"Updating {self.__entityName__} in conjunction with webhooks can lead to loops!!! -> Please take precautions")
@@ -595,7 +600,7 @@ class Blueprint(BaseModel):
     
     
     def postNewEntity(self) -> dict:
-        """Posts a new Entity to weclapp, includes the changes additions from weclapp and returns the new Entity as dict
+        """Posts a new Entity to weclapp, and updates the wecalppClass and usedAtts are reset. In addition the new entity is returned
         """
         
         body = self.getUpdateDict(updateType="full", creationMode=True)

@@ -61,11 +61,11 @@ class ContractCostItems(Blueprint):
 	version: Union[str, None]
 	articleId: Union[str, None] = None
 	description: Union[str, None] = None
-	descriptionFixed: Union[bool, None]
+	descriptionFixed: Union[bool, None] = None
 	discountPercentage: Union[str, None] = None
 	interval: Union[Literal["DAILY", "FIVE_YEARLY", "FOUR_YEARLY", "HALF_YEARLY", "MONTHLY", "NONE", "QUARTER", "THREE_YEARLY", "TWO_YEARLY", "WEEKLY", "YEARLY"], None] = None
 	intervalType: Union[Literal["NON_RECURRENT", "RECURRENT"], None] = None
-	manualUnitPrice: Union[bool, None]
+	manualUnitPrice: Union[bool, None] = None
 	netAmount: Union[str, None] = None
 	netAmountInCompanyCurrency: Union[str, None] = None
 	note: Union[str, None] = None
@@ -114,8 +114,8 @@ class ContractItems(Blueprint):
 	positionNumber: Union[int, None]
 	quantity: Union[str, None] = None
 	description: Union[str, None] = None
-	descriptionFixed: Union[bool, None]
-	manualQuantity: Union[bool, None]
+	descriptionFixed: Union[bool, None] = None
+	manualQuantity: Union[bool, None] = None
 	parentItemId: Union[str, None] = None
 	title: Union[str, None] = None
 	unitId: Union[str, None] = None
@@ -123,7 +123,7 @@ class ContractItems(Blueprint):
 	discountPercentage: Union[str, None] = None
 	grossAmount: Union[str, None] = None
 	grossAmountInCompanyCurrency: Union[str, None] = None
-	manualUnitPrice: Union[bool, None]
+	manualUnitPrice: Union[bool, None] = None
 	netAmount: Union[str, None] = None
 	netAmountForStatistics: Union[str, None] = None
 	netAmountForStatisticsInCompanyCurrency: Union[str, None] = None
@@ -133,9 +133,9 @@ class ContractItems(Blueprint):
 	taxName: Union[str, None] = None
 	unitPrice: Union[str, None] = None
 	unitPriceInCompanyCurrency: Union[str, None] = None
-	addPageBreakBefore: Union[bool, None]
+	addPageBreakBefore: Union[bool, None] = None
 	customAttributes: List[WeclappMetaData] = []
-	freeTextItem: Union[bool, None]
+	freeTextItem: Union[bool, None] = None
 	groupName: Union[str, None] = None
 	billingGroupId: Union[str, None] = None
 	commissionSalesPartners: List[CommissionSalesPartners] = []
@@ -278,15 +278,15 @@ class Contract(Blueprint):
 	commercialLanguage: Union[str, None] = None
 	creatorId: Union[str, None] = None
 	description: Union[str, None] = None
-	disableEmailTemplate: Union[bool, None]
+	disableEmailTemplate: Union[bool, None] = None
 	recordComment: Union[str, None] = None
 	recordFreeText: Union[str, None] = None
 	recordOpening: Union[str, None] = None
-	sentToRecipient: Union[bool, None]
+	sentToRecipient: Union[bool, None] = None
 	tags: list = []
 	additionalAddresses: List[AdditionalAddresses] = []
 	authorizationUnitId: Union[str, None] = None
-	automaticExtension: Union[bool, None]
+	automaticExtension: Union[bool, None] = None
 	billUntil: Union[Literal["CURRENT_MONTH_1", "CURRENT_MONTH_10", "CURRENT_MONTH_11", "CURRENT_MONTH_12", "CURRENT_MONTH_13", "CURRENT_MONTH_14", "CURRENT_MONTH_15", "CURRENT_MONTH_16", "CURRENT_MONTH_17", "CURRENT_MONTH_18", "CURRENT_MONTH_19", "CURRENT_MONTH_2", "CURRENT_MONTH_20", "CURRENT_MONTH_21", "CURRENT_MONTH_22", "CURRENT_MONTH_23", "CURRENT_MONTH_24", "CURRENT_MONTH_25", "CURRENT_MONTH_26", "CURRENT_MONTH_27", "CURRENT_MONTH_28", "CURRENT_MONTH_29", "CURRENT_MONTH_3", "CURRENT_MONTH_30", "CURRENT_MONTH_31", "CURRENT_MONTH_4", "CURRENT_MONTH_5", "CURRENT_MONTH_6", "CURRENT_MONTH_7", "CURRENT_MONTH_8", "CURRENT_MONTH_9", "NEXT_MONTH_1", "NEXT_MONTH_10", "NEXT_MONTH_11", "NEXT_MONTH_12", "NEXT_MONTH_13", "NEXT_MONTH_14", "NEXT_MONTH_15", "NEXT_MONTH_16", "NEXT_MONTH_17", "NEXT_MONTH_18", "NEXT_MONTH_19", "NEXT_MONTH_2", "NEXT_MONTH_20", "NEXT_MONTH_21", "NEXT_MONTH_22", "NEXT_MONTH_23", "NEXT_MONTH_24", "NEXT_MONTH_25", "NEXT_MONTH_26", "NEXT_MONTH_27", "NEXT_MONTH_28", "NEXT_MONTH_29", "NEXT_MONTH_3", "NEXT_MONTH_30", "NEXT_MONTH_31", "NEXT_MONTH_4", "NEXT_MONTH_5", "NEXT_MONTH_6", "NEXT_MONTH_7", "NEXT_MONTH_8", "NEXT_MONTH_9"], None] = None
 	billingDay: Union[int, None] = None
 	billingTargetInvoiceStatus: Union[Literal["BOOKED", "DOCUMENT_CREATED", "NEW", "OPEN_ITEM_CREATED"], None] = None
@@ -306,13 +306,13 @@ class Contract(Blueprint):
 	correspondenceAddress: CorrespondenceAddress = CorrespondenceAddress.fromBlank()
 	deliveryAddress: DeliveryAddress = DeliveryAddress.fromBlank()
 	deliveryEmailAddresses: DeliveryEmailAddresses = DeliveryEmailAddresses.fromBlank()
-	differingCorrespondenceAddress: Union[bool, None]
-	differingDeliveryAddress: Union[bool, None]
-	differingInvoiceAddress: Union[bool, None]
+	differingCorrespondenceAddress: Union[bool, None] = None
+	differingDeliveryAddress: Union[bool, None] = None
+	differingInvoiceAddress: Union[bool, None] = None
 	endDate: Union[int, None] = None
 	extensionQuantity: Union[int, None] = None
 	extensionUnit: Union[Literal["DAY", "MONTH", "WEEK", "YEAR"], None] = None
-	factoring: Union[bool, None]
+	factoring: Union[bool, None] = None
 	invoiceAddress: InvoiceAddress = InvoiceAddress.fromBlank()
 	invoiceRecipientId: Union[str, None] = None
 	latestCancellationWarningQuantity: Union[int, None] = None
@@ -337,12 +337,12 @@ class Contract(Blueprint):
 	salesInvoiceEmailAddresses: SalesInvoiceEmailAddresses = SalesInvoiceEmailAddresses.fromBlank()
 	salesOrderEmailAddresses: SalesOrderEmailAddresses = SalesOrderEmailAddresses.fromBlank()
 	startDate: Union[int, None] = None
-	template: Union[bool, None]
+	template: Union[bool, None] = None
 	termOfPaymentId: Union[str, None] = None
 	terminationReasonId: Union[str, None] = None
 	ticketServiceLevelAgreementId: Union[str, None] = None
 	types: List[Types] = []
-	unlimited: Union[bool, None]
+	unlimited: Union[bool, None] = None
 	# AutomationData
 	ITEMS_NAME: ClassVar[str] = "contractItems"
 

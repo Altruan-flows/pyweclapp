@@ -101,7 +101,7 @@ class CAT_Generator:
         self.file += f'from collections import namedtuple\n\n\n'
         self.file += f'class CAT_{self.name}({config.FILENAME_CAT_SETTINGS}.CAT_Settings):\n\n'
         self.file += f'\t@staticmethod\n\tdef is_namedtuple(obj):\n\t\ttry:\n\t\t\treturn isinstance(obj, tuple) and hasattr(obj, "_fields")\n\t\texcept:\n\t\t\treturn False\n\n'
-        self.file += f'\tdef __init__(self, data:dict=None):\n\t\tsuper().__init__()\n\t\tif data is None:\n\t\t\twith open("{self.targetDirectory}/{config.JSON_DATA_FOLDER_NAME}/{self.name}.json", "r") as f:\n\t\t\t\tdata = json.load(f)\n\n'
+        self.file += f'\tdef __init__(self, data:dict=None):\n\t\tsuper().__init__()\n\t\tif data is None:\n\t\t\twith open("{self.targetDirectory}/{config.JSON_DATA_FOLDER_NAME}/{self.entityName}.json", "r") as f:\n\t\t\t\tdata = json.load(f)\n\n'
 
         lastGroupName = None
         for kitty in sorted(self.groupedCatInfo, key=lambda x: x.groupName):

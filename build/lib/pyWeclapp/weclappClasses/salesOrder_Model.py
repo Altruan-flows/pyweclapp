@@ -28,14 +28,14 @@ class ShippingCostItems(Blueprint):
 	articleNumber: Union[str, None] = None
 	grossAmount: Union[str, None] = None
 	grossAmountInCompanyCurrency: Union[str, None] = None
-	manualUnitPrice: Union[bool, None]
+	manualUnitPrice: Union[bool, None] = None
 	netAmount: Union[str, None] = None
 	netAmountInCompanyCurrency: Union[str, None] = None
 	taxId: Union[str, None] = None
 	taxName: Union[str, None] = None
 	unitPrice: Union[str, None] = None
 	unitPriceInCompanyCurrency: Union[str, None] = None
-	manualUnitCost: Union[bool, None]
+	manualUnitCost: Union[bool, None] = None
 	unitCost: Union[str, None] = None
 	unitCostInCompanyCurrency: Union[str, None] = None
 	# AutomationData
@@ -116,8 +116,8 @@ class OrderItems(Blueprint):
 	positionNumber: Union[int, None]
 	quantity: Union[str, None] = None
 	description: Union[str, None] = None
-	descriptionFixed: Union[bool, None]
-	manualQuantity: Union[bool, None]
+	descriptionFixed: Union[bool, None] = None
+	manualQuantity: Union[bool, None] = None
 	parentItemId: Union[str, None] = None
 	title: Union[str, None] = None
 	unitId: Union[str, None] = None
@@ -125,7 +125,7 @@ class OrderItems(Blueprint):
 	discountPercentage: Union[str, None] = None
 	grossAmount: Union[str, None] = None
 	grossAmountInCompanyCurrency: Union[str, None] = None
-	manualUnitPrice: Union[bool, None]
+	manualUnitPrice: Union[bool, None] = None
 	netAmount: Union[str, None] = None
 	netAmountForStatistics: Union[str, None] = None
 	netAmountForStatisticsInCompanyCurrency: Union[str, None] = None
@@ -135,20 +135,20 @@ class OrderItems(Blueprint):
 	taxName: Union[str, None] = None
 	unitPrice: Union[str, None] = None
 	unitPriceInCompanyCurrency: Union[str, None] = None
-	addPageBreakBefore: Union[bool, None]
+	addPageBreakBefore: Union[bool, None] = None
 	customAttributes: List[WeclappMetaData] = []
-	freeTextItem: Union[bool, None]
+	freeTextItem: Union[bool, None] = None
 	groupName: Union[str, None] = None
 	commissionSalesPartners: List[CommissionSalesPartners] = []
-	manualUnitCost: Union[bool, None]
+	manualUnitCost: Union[bool, None] = None
 	servicePeriodFrom: Union[int, None] = None
 	servicePeriodTo: Union[int, None] = None
 	unitCost: Union[str, None] = None
 	unitCostInCompanyCurrency: Union[str, None] = None
 	invoicingType: Union[Literal["EFFORT", "FIXED_PRICE"], None] = None
-	manualPlannedWorkingTimePerUnit: Union[bool, None]
+	manualPlannedWorkingTimePerUnit: Union[bool, None] = None
 	plannedWorkingTimePerUnit: Union[str, None] = None
-	serviceItem: Union[bool, None]
+	serviceItem: Union[bool, None] = None
 	availability: Union[Literal["COMPLETELY_AVAILABLE", "NOTHING_AVAILABLE", "NOT_CHECKED", "PARTIALLY_AVAILABLE", "TRANSFER_REQUIRED"], None] = None
 	availabilityForAllWarehouses: Union[Literal["COMPLETELY_AVAILABLE", "NOTHING_AVAILABLE", "NOT_CHECKED", "PARTIALLY_AVAILABLE", "TRANSFER_REQUIRED"], None] = None
 	ecommerceOrderItemId: Union[str, None] = None
@@ -158,7 +158,7 @@ class OrderItems(Blueprint):
 	pickStoragePlaceId: Union[str, None] = None
 	plannedShippingDate: Union[int, None] = None
 	returnedQuantity: Union[str, None] = None
-	shipped: Union[bool, None]
+	shipped: Union[bool, None] = None
 	shippedQuantity: Union[str, None] = None
 	tasks: List[Tasks] = []
 	# AutomationData
@@ -202,11 +202,11 @@ class SalesOrder(Blueprint):
 	commercialLanguage: Union[str, None] = None
 	creatorId: Union[str, None] = None
 	description: Union[str, None] = None
-	disableEmailTemplate: Union[bool, None]
+	disableEmailTemplate: Union[bool, None] = None
 	recordComment: Union[str, None] = None
 	recordFreeText: Union[str, None] = None
 	recordOpening: Union[str, None] = None
-	sentToRecipient: Union[bool, None]
+	sentToRecipient: Union[bool, None] = None
 	tags: list = []
 	currencyConversionDate: Union[int, None] = None
 	currencyConversionRate: Union[str, None] = None
@@ -229,7 +229,7 @@ class SalesOrder(Blueprint):
 	customerId: Union[str, None] = None
 	customerNumber: Union[str, None] = None
 	dispatchCountryCode: Union[str, None] = None
-	factoring: Union[bool, None]
+	factoring: Union[bool, None] = None
 	pricingDate: Union[int, None] = None
 	responsibleUserId: Union[str, None] = None
 	responsibleUserUsername: Union[str, None] = None
@@ -258,24 +258,24 @@ class SalesOrder(Blueprint):
 	ecommerceOrder: EcommerceOrder = EcommerceOrder.fromBlank()
 	fulfillmentProviderId: Union[str, None] = None
 	invoiceRecipientId: Union[str, None] = None
-	invoiced: Union[bool, None]
-	onlyServices: Union[bool, None]
+	invoiced: Union[bool, None] = None
+	onlyServices: Union[bool, None] = None
 	orderDate: Union[int, None] = None
 	orderItems: List[OrderItems] = []
 	orderNumber: Union[str, None] = None
 	orderNumberAtCustomer: Union[str, None] = None
-	paid: Union[bool, None]
+	paid: Union[bool, None] = None
 	plannedProjectEndDate: Union[int, None] = None
 	plannedProjectStartDate: Union[int, None] = None
 	projectGoals: Union[str, None] = None
 	projectMembers: List[ProjectMembers] = []
-	projectModeActive: Union[bool, None]
+	projectModeActive: Union[bool, None] = None
 	quotationId: Union[str, None] = None
 	quotationNumber: Union[str, None] = None
 	recordEmailAddresses: EmailAddresses = EmailAddresses.fromBlank()
 	salesOrderPaymentType: Union[Literal["ADVANCE_PAYMENT", "COUNTER_SALES", "PART_PAYMENT", "PREPAYMENT", "STANDARD"], None] = None
-	servicesFinished: Union[bool, None]
-	shipped: Union[bool, None]
+	servicesFinished: Union[bool, None] = None
+	shipped: Union[bool, None] = None
 	shippingLabelsCount: Union[int, None] = None
 	status: Union[Literal["CANCELLED", "CLOSED", "MANUALLY_CLOSED", "ORDER_CONFIRMATION_PRINTED", "ORDER_ENTRY_IN_PROGRESS"], None] = None
 	statusHistory: List[StatusHistory] = []
