@@ -34,7 +34,7 @@ def PUT(entityName:config.ENTITY_NAMES,
         query:dict=None,
         apiKey:config.AVAILABLE_APIKEYS=config.DEFAULT_KEY):
     '''Sends a PUT request to the weclapp API
-        - ignoreMissingProperties: if True, the API will ignore missing properties in the body - be carefull when modifying list items, all other (unmodifiesd) items need to be mentioned as well or they will be deleted
+        - ignoreMissingProperties: if True, the API will ignore missing properties in the body - be careful when modifying list items, all other (unmodifiesd) items need to be mentioned as well or they will be deleted
         - apiKey: Selects the API Key to use for the request'''
     # process URL
     URL = f'https://{getWeclappDomain()}/webapp/api/{config.API_VERSION}/{entityName}/id/{entityId}'
