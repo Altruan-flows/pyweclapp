@@ -1,5 +1,6 @@
 # dynamic File please do not edit
 
+from pyWeclapp.weclappClasses.weclappClassBlueprint.weclappClassCustomAttribute import WeclappMetaData
 from .weclappClassBlueprint.weclappClassCustomAttribute import WeclappMetaData
 from .contract_Model import Contract, ContractItems
 from .contact_Model import Contact
@@ -12,3 +13,5 @@ from .quotation_Model import Quotation
 from .ticket_Model import Ticket
 from .salesInvoice_Model import SalesInvoice, SalesInvoiceItems
 from .extraInfoForApp import ExtraInfoForApp
+from .purchaseOrder_Model import PurchaseOrder
+from .incomingGoods_Model import IncomingGoods
