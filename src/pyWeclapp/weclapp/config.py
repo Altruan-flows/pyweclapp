@@ -1,10 +1,18 @@
 from typing import Literal
 
-ODATA_EXCEPTIONS = ["properties", "entityId", "entityName", "name", 
-                    "description", "pageSize", "page", "additionalProperties", 
-                    "includeReferencedEntities", "serializeNulls", "sort"]  
-
-
+ODATA_EXCEPTIONS = [
+    "properties",
+    "entityId",
+    "entityName",
+    "name",
+    "description",
+    "pageSize",
+    "page",
+    "additionalProperties",
+    "includeReferencedEntities",
+    "serializeNulls",
+    "sort",
+]
 
 
 # Environment Variable NAMES
@@ -14,7 +22,16 @@ ENV_AUTHENTICATION_TOKEN_NAME_BASE = "Weclapp_AuthenticationToken"
 
 # authentication
 AVAILABLE_APIKEYS = Literal["key0", "key1"]
-ENTITY_NAMES = Literal["salesOrder", "shipment", "salesInvoice", "contract", "article", "quotation", "customer", "ticket"]
+ENTITY_NAMES = Literal[
+    "salesOrder",
+    "shipment",
+    "salesInvoice",
+    "contract",
+    "article",
+    "quotation",
+    "customer",
+    "ticket",
+]
 DEFAULT_KEY = "key0"
 AUTHENTICATION_TOKEN_NAME = "AuthenticationToken"
 DEFAULT_CONTENT_TYPE = "application/json"

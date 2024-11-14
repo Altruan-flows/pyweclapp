@@ -1,68 +1,65 @@
 # This code was dynamically created using WeclappClassCreator from pyWeclapp
 
 from .weclappClassBlueprint import Blueprint, WeclappMetaData
-from typing import *
-
+from typing import Optional, List, ClassVar
 
 
 class EntityReferences(Blueprint):
-	entityId: Union[str, None] = None
-	entityName: Union[str, None] = None
-	# AutomationData
-	ITEMS_NAME: ClassVar[str] = None
+    entityId: Optional[str] = None
+    entityName: Optional[str] = None
+    # AutomationData
+    ITEMS_NAME: ClassVar[str] = None
 
 
 class Ticket(Blueprint):
-	id: Union[str, None]
-	createdDate: Union[int, None]
-	lastModifiedDate: Union[int, None]
-	version: Union[str, None]
-	customAttributes: List[WeclappMetaData] = []
-	assignedPoolingGroupId: Union[str, None] = None
-	assignedUserId: Union[str, None] = None
-	billable: Union[bool, None] = None
-	billableStatus: Union[bool, None] = None
-	ccEmailAddresses: Union[str, None] = None
-	contactId: Union[str, None] = None
-	contractId: Union[str, None] = None
-	description: Union[str, None] = None
-	disableEmailTemplates: Union[bool, None] = None
-	email: Union[str, None] = None
-	entityReferences: List[EntityReferences] = []
-	finishedDate: Union[int, None] = None
-	firstName: Union[str, None] = None
-	followUpDate: Union[int, None] = None
-	invoicingStatus: Union[Literal["INVOICED", "NOT_INVOICED", "PARTLY_INVOICED"], None] = None
-	language: Union[str, None] = None
-	lastName: Union[str, None] = None
-	legacyArticleId: Union[str, None] = None
-	legacyTimeAndMaterialTicket: Union[bool, None] = None
-	mail2TicketId: Union[str, None] = None
-	mobilePhoneNumber: Union[str, None] = None
-	note: Union[str, None] = None
-	partyId: Union[str, None] = None
-	performanceRecordedStatus: Union[Literal["NOT_PERFORMANCE_RECORDED", "PERFORMANCE_RECORDED", "UNDEFINED"], None] = None
-	phoneNumber: Union[str, None] = None
-	publicPageExpirationDate: Union[int, None] = None
-	publicPageUuid: Union[str, None] = None
-	resolvedYourIssue: Union[bool, None] = None
-	responsibleUserId: Union[str, None] = None
-	room: Union[str, None] = None
-	salesOrderId: Union[str, None] = None
-	solutionDueDate: Union[int, None] = None
-	subject: Union[str, None] = None
-	tags: list = []
-	ticketCategoryId: Union[str, None] = None
-	ticketChannelId: Union[str, None] = None
-	ticketNumber: Union[str, None] = None
-	ticketPriorityId: Union[str, None] = None
-	ticketRating: Union[Literal["STARS_1", "STARS_2", "STARS_3", "STARS_4", "STARS_5"], None] = None
-	ticketRatingComment: Union[str, None] = None
-	ticketRatingDate: Union[int, None] = None
-	ticketServiceLevelAgreementId: Union[str, None] = None
-	ticketStatusId: Union[str, None] = None
-	ticketTypeId: Union[str, None] = None
-	# AutomationData
-	ITEMS_NAME: ClassVar[str] = "entityReferences"
-
-
+    id: Optional[str] = None
+    createdDate: Optional[int] = None
+    lastModifiedDate: Optional[int] = None
+    version: Optional[str] = None
+    customAttributes: List[WeclappMetaData] = []
+    assignedPoolingGroupId: Optional[str] = None
+    assignedUserId: Optional[str] = None
+    billable: Optional[bool] = None
+    billableStatus: Optional[bool] = None
+    ccEmailAddresses: Optional[str] = None
+    contactId: Optional[str] = None
+    contractId: Optional[str] = None
+    description: Optional[str] = None
+    disableEmailTemplates: Optional[bool] = None
+    email: Optional[str] = None
+    entityReferences: List[EntityReferences] = []
+    finishedDate: Optional[int] = None
+    firstName: Optional[str] = None
+    followUpDate: Optional[int] = None
+    invoicingStatus: Optional[str] = None
+    language: Optional[str] = None
+    lastName: Optional[str] = None
+    legacyArticleId: Optional[str] = None
+    legacyTimeAndMaterialTicket: Optional[bool] = None
+    mail2TicketId: Optional[str] = None
+    mobilePhoneNumber: Optional[str] = None
+    note: Optional[str] = None
+    partyId: Optional[str] = None
+    performanceRecordedStatus: Optional[str] = None
+    phoneNumber: Optional[str] = None
+    publicPageExpirationDate: Optional[int] = None
+    publicPageUuid: Optional[str] = None
+    resolvedYourIssue: Optional[bool] = None
+    responsibleUserId: Optional[str] = None
+    room: Optional[str] = None
+    salesOrderId: Optional[str] = None
+    solutionDueDate: Optional[int] = None
+    subject: Optional[str] = None
+    tags: list = []
+    ticketCategoryId: Optional[str] = None
+    ticketChannelId: Optional[str] = None
+    ticketNumber: Optional[str] = None
+    ticketPriorityId: Optional[str] = None
+    ticketRating: Optional[str] = None
+    ticketRatingComment: Optional[str] = None
+    ticketRatingDate: Optional[int] = None
+    ticketServiceLevelAgreementId: Optional[str] = None
+    ticketStatusId: Optional[str] = None
+    ticketTypeId: Optional[str] = None
+    # AutomationData
+    ITEMS_NAME: ClassVar[str] = "entityReferences"
