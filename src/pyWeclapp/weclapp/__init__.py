@@ -9,6 +9,7 @@ from .weclappResponseProcessing import (
     weclappResponse,
     getWeclappDomain,
 )
+from .weclappError import WeclappError
 from . import config
 
 

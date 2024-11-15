@@ -4,6 +4,7 @@ from typing import *
 import logging
 import io
 from pyWeclapp import weclapp
+from pyWeclapp.weclapp.weclappError import WeclappError
 import time
 import base64
 from . import config
@@ -142,8 +143,8 @@ class DocManager:
                                         "entityId": self.entityId, 
                                         "name": name},
                                     body=file)
-        except weclapp.WeclappError as e:
-            if e.isOptimisticLoc:
+        except WeclappError as e:
+            if e.isOptimisticLock:
                 logging.error(f"Optimistic Locking Error while uploading File {name}... retrying")
                 time.sleep(1)
                 response = weclapp.POST(entityName="document/upload",
