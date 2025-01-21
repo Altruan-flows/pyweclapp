@@ -9,29 +9,28 @@ from .weclappResponseProcessing import (
     weclappResponse,
     getWeclappDomain,
 )
-from .weclappError import WeclappError
 from . import config
 
 
 def GET(
-    entityName: config.ENTITY_NAMES,
-    entityId: str = None,
+    entity_name: config.ENTITY_NAMES,
+    entity_id: str = None,
     query: dict = {},
-    asType: Union[dict, bytes, list] = dict,
-    apiKey: config.AVAILABLE_APIKEYS = config.DEFAULT_KEY,
-    includeResult: bool = False,
+    as_type: Union[dict, bytes, list] = dict,
+    api_key: config.AVAILABLE_APIKEYS = config.DEFAULT_KEY,
+    include_result: bool = False,
 ):
     # process URL
-    URL = f"https://{getWeclappDomain()}/webapp/api/{config.API_VERSION}/{entityName}"
-    if entityId is not None:
-        URL += f"/id/{entityId}"
+    URL = f"https://{getWeclappDomain()}/webapp/api/{config.API_VERSION}/{entity_name}"
+    if entity_id is not None:
+        URL += f"/id/{entity_id}"
 
     response = requests.get(
         URL,
-        headers=getWeclappHeaders(apiKey=apiKey),
+        headers=getWeclappHeaders(apiKey=api_key),
         params=getWeclappQueries(query=query),
     )
-    return weclappResponse(response, asType=asType, includeResult=includeResult)
+    return weclappResponse(response, asType=as_type, includeResult=include_result)
 
 
 def PUT(
@@ -72,7 +71,7 @@ def POST(
     body: dict = None,
     entityId: str = None,
     apiKey: config.AVAILABLE_APIKEYS = config.DEFAULT_KEY,
-    query: dict = None,
+    query: dict = {},
 ):
 
     query = query or {}
@@ -123,7 +122,7 @@ def DELETE(
 
 def iterator(
     entityName: config.ENTITY_NAMES,
-    query: dict = [],
+    query: dict = {},
     enableLogging: bool = True,
     startPage: int = 1,
     pageSize: int = 100,
@@ -157,11 +156,11 @@ def iterator(
         # prepare Querys
         query["page"] = page
         weclappObjList = GET(
-            entityName=entityName,
+            entity_name=entityName,
             query=query,
-            asType=list,
-            apiKey=apiKey,
-            includeResult=False,
+            as_type=list,
+            api_key=apiKey,
+            include_result=False,
         )
 
         # check Result

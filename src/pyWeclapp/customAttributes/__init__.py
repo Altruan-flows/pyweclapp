@@ -20,7 +20,7 @@ class CAT_Generator:
         self.entityName = entityName
         self.entityId = entityId
         self.targetDirectory = targetDirectory
-        self.entity = weclapp.GET(entityName=entityName, entityId=entityId)
+        self.entity = weclapp.GET(entity_name=entityName, entity_id=entityId)
         self.customAttributes = set()
         self.defaultCustomAttributes = set()
         self.groupedCatInfo: List[KITTY_Generator] = list()

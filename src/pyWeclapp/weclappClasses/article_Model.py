@@ -4,6 +4,33 @@ from .weclappClassBlueprint import Blueprint, WeclappMetaData
 from typing import Optional, List, ClassVar
 
 
+class AttributeOptions(Blueprint):
+    id: Optional[str] = None
+
+
+class Variants(Blueprint):
+    id: Optional[str] = None
+    version: Optional[str] = None
+    articleId: Optional[str] = None
+    articleNumber: Optional[str] = None
+    attributeOptions: List[AttributeOptions] = []
+    createdDate: Optional[int] = None
+    lastModifiedDate: Optional[int] = None
+    positionNumber: Optional[int] = None
+
+
+class VariantArticle(Blueprint):
+    id: Optional[str] = None
+    version: Optional[str] = None
+    createdDate: Optional[int] = None
+    lastModifiedDate:  Optional[int] = None
+    primaryArticleId: Optional[str] = None
+    primaryArticleNumber: Optional[str] = None
+    variantArticleName: Optional[str] = None
+    variantArticleNumber: Optional[str] = None
+    variants: List[Variants] = []
+
+
 class ArticleAlternativeQuantities(Blueprint):
     id: Optional[str] = None
     createdDate: Optional[int] = None

@@ -79,7 +79,7 @@ class HookRequest:
                     assert "customAttributes" in value, f"customAttributes must be included when using properties for Loop prevention"
             queryParams.update(query)
         logging.info(f"{queryParams}")
-        answer = weclapp.GET(entityName=self.entityName, query_params=queryParams)
+        answer = weclapp.GET(entity_name=self.entityName, query_params=queryParams)
         logging.info(f"{answer=}")
         result = answer['result']
         logging.info(f"{len(result)=}")

@@ -11,7 +11,7 @@ class EntityReferences(Blueprint):
     ITEMS_NAME: ClassVar[str] = None
 
 
-class Ticket(Blueprint):
+class TicketWeclapp(Blueprint):
     id: Optional[str] = None
     createdDate: Optional[int] = None
     lastModifiedDate: Optional[int] = None

@@ -6,11 +6,11 @@ from .contract_Model import Contract, ContractItems
 from .contact_Model import Contact
 from .customer_Model import Customer
 from .party_Model import Party
-from .article_Model import Article, ArticlePrices
+from .article_Model import Article, ArticlePrices, VariantArticle
 from .salesOrder_Model import SalesOrder, OrderItems
 from .shipment_Model import Shipment, ShipmentItems
 from .quotation_Model import Quotation
-from .ticket_Model import Ticket
+from .ticket_Model import TicketWeclapp
 from .salesInvoice_Model import SalesInvoice, SalesInvoiceItems
 from .extraInfoForApp import ExtraInfoForApp
 from .purchaseOrder_Model import PurchaseOrder

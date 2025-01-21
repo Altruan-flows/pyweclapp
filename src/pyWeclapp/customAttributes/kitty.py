@@ -48,7 +48,7 @@ class KITTY_Generator:
     def fromWeclapp(cls, catId: str, catName: str = None, groupNamePrefix: str = None):
         """Returns a KITTY_Generator object from a weclapp customAttributeDefinition"""
         groupNamePrefix = groupNamePrefix or ""
-        attribute = weclapp.GET(entityName="customAttributeDefinition", entityId=catId)
+        attribute = weclapp.GET(entity_name="customAttributeDefinition", entity_id=catId)
 
         # parse selectableValues
         selectableValues = {}
