@@ -1,4 +1,4 @@
-from .localizedTime import parse
+from .localizedTime import *  # necessary import
 import datetime
 
 
