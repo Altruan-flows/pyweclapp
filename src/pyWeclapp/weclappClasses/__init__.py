@@ -10,7 +10,7 @@ from .article_Model import Article, ArticlePrices, VariantArticle
 from .salesOrder_Model import SalesOrder, OrderItems
 from .shipment_Model import Shipment, ShipmentItems
 from .quotation_Model import Quotation
-from .ticket_Model import TicketWeclapp
+from .ticket_Model import Ticket
 from .salesInvoice_Model import SalesInvoice, SalesInvoiceItems
 from .extraInfoForApp import ExtraInfoForApp
 from .purchaseOrder_Model import PurchaseOrder

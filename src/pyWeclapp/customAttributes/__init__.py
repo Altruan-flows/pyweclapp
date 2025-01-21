@@ -14,7 +14,8 @@ class CAT_Generator:
             - entityName:       as the name of the weclapp entity
             - entityId:         as the id of the weclapp entity
             - targetDirectory   desired directory to save the file in
-            - StaticOrExcludedIDs.json File - Schema: {catId: catName}; Method to manually rename or exclude (catName=null) a cat
+            - StaticOrExcludedIDs.json File - Schema: {catId: catName}; Method
+            to manually rename or exclude (catName=null) a cat
             - cat_Settings.py File: File to manually save other constants related to cats.
         """
         self.entityName = entityName
@@ -37,7 +38,8 @@ class CAT_Generator:
         self.createCatSettings()
 
     def openOrAddStaticOrExcludedIDs(self):
-        """opens the staticOrExcludedIDs.json file and returns the content as a dict, creates a new one if none exists"""
+        """Opens the staticOrExcludedIDs.json file and returns the content as
+        a dict, creates a new one if none exists"""
         if not os.path.exists(self.targetDirectory):
             os.mkdir(self.targetDirectory)
 
@@ -80,7 +82,8 @@ class CAT_Generator:
         return self.entityName[0].upper() + self.entityName[1:]
 
     def parse(self):
-        """converts the customAttributes into KITTY_Generator objects and adds them to the groupedCatInfo list"""
+        """converts the customAttributes into KITTY_Generator objects and adds
+        them to the groupedCatInfo list"""
         for el in self.customAttributes:
             prefix = ""
             catName = None
@@ -90,7 +93,7 @@ class CAT_Generator:
                 if not catName:
                     continue
             # sets Prefixes to better identify the group
-            if not el in self.defaultCustomAttributes:
+            if el not in self.defaultCustomAttributes:
                 prefix += str(config.PREFIX_GROUPNAME_ITEMS_ATTS)
             self.groupedCatInfo.append(
                 KITTY_Generator.fromWeclapp(el, catName, groupNamePrefix=prefix)
@@ -99,14 +102,23 @@ class CAT_Generator:
     def generatePyFile(self) -> Tuple[str, dict]:
         """Construcs the python file from the groupedCatInfo list and returns it as a string"""
         self.newJson = {}
-        self.file = f"import json\n"
+        self.file = "import json\n"
         self.file += f"from . import {config.FILENAME_CAT_SETTINGS}\n"
-        self.file += f"from collections import namedtuple\n\n\n"
+        self.file += "from collections import namedtuple\n\n\n"
         self.file += (
             f"class CAT_{self.name}({config.FILENAME_CAT_SETTINGS}.CAT_Settings):\n\n"
         )
-        self.file += f'\t@staticmethod\n\tdef is_namedtuple(obj):\n\t\ttry:\n\t\t\treturn isinstance(obj, tuple) and hasattr(obj, "_fields")\n\t\texcept:\n\t\t\treturn False\n\n'
-        self.file += f'\tdef __init__(self, data:dict=None):\n\t\tsuper().__init__()\n\t\tif data is None:\n\t\t\twith open("{self.targetDirectory}/{config.JSON_DATA_FOLDER_NAME}/{self.entityName}.json", "r") as f:\n\t\t\t\tdata = json.load(f)\n\n'
+        self.file += (
+            '\t@staticmethod\n\tdef is_namedtuple(obj):\n\t\ttry:\n\t\t\t'
+            'return isinstance(obj, tuple) and hasattr(obj, "_fields")\n\t\t'
+            'except:\n\t\t\treturn False\n\n'
+        )
+        self.file += (
+            f'\tdef __init__(self, data:dict=None):\n\t\tsuper().__init__()\n\t\t'
+            f'if data is None:\n\t\t\twith open("{self.targetDirectory}/'
+            f'{config.JSON_DATA_FOLDER_NAME}/{self.entityName}.json", "r") as '
+            'f:\n\t\t\t\tdata = json.load(f)\n\n'
+        )
 
         lastGroupName = None
         for kitty in sorted(self.groupedCatInfo, key=lambda x: x.groupName):
@@ -115,7 +127,7 @@ class CAT_Generator:
 
             if lastGroupName != kitty.groupName:
                 lastGroupName = kitty.groupName
-                self.file += f"\n"
+                self.file += "\n"
                 self.file += f"\t\t# {kitty.groupName}\n"
 
             self.newJson[kitty.catName] = kitty.to_dict()
@@ -156,13 +168,13 @@ class CAT_Generator:
 
     def createCatSettings(self):
         """creates a cat_Settings.py file if none exists"""
-        fileContent = f"from collections import namedtuple\n\n"
-        fileContent += f"class CAT_Settings:\n"
-        fileContent += f"\tdef __init__(self, data:dict=None):\n"
+        fileContent = "from collections import namedtuple\n\n"
+        fileContent += "class CAT_Settings:\n"
+        fileContent += "\tdef __init__(self, data:dict=None):\n"
         fileContent += (
-            f"\t\t# You can place global cat settings here. they will not be modified\n"
+            "\t\t# You can place global cat settings here. they will not be modified\n"
         )
-        fileContent += f"\t\tpass\n"
+        fileContent += "\t\tpass\n"
 
         if not os.path.exists(
             f"{self.targetDirectory}/{config.FILENAME_CAT_SETTINGS}.py"
@@ -202,11 +214,14 @@ class CAT_Generator:
         fileContent = "\n".join(import_statements)
         fileContent += "\n# dynamic File please do not edit\n"
         fileContent += f"\n\nclass CAT({model}):\n"
-        fileContent += f"\tdef __init__(self):\n"
-        fileContent += f'\t\twith open("{self.targetDirectory}/{config.JSON_DATA_FOLDER_NAME}/{config.FILENAME_ALL_CAT_DATA}.json", "r") as f:\n'
-        fileContent += f"\t\t\tself.data = json.load(f)\n"
-        fileContent += f"\t\tsuper().__init__(self.data)\n"
-        fileContent += f"\n\n"
+        fileContent += "\tdef __init__(self):\n"
+        fileContent += (
+            f'\t\twith open("{self.targetDirectory}/{config.JSON_DATA_FOLDER_NAME}/'
+            f'{config.FILENAME_ALL_CAT_DATA}.json", "r") as f:\n'
+        )
+        fileContent += "\t\t\tself.data = json.load(f)\n"
+        fileContent += "\t\tsuper().__init__(self.data)\n"
+        fileContent += "\n\n"
 
         with open(f"{self.targetDirectory}/cat.py", "w+") as file:
             file.write(fileContent)

@@ -5,8 +5,7 @@ try:
         long_description = f.read()
 except FileNotFoundError:
     long_description = "Provides methods, classes and classbuilders to integrate with the Weclapp API"
-    
-    
+
 try:
     with open('requirements.txt') as f:
         required = f.read().splitlines()
@@ -19,7 +18,7 @@ except FileNotFoundError:
 
 setup(
     name="pyWeclapp",
-    version="0.0.7",
+    version="0.0.8",
     description="Provides methods, classes and classbuilders to integrate with the Weclapp API",
     package_dir={"": "src"},
     packages=find_packages(where="src"),

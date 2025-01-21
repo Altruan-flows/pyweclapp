@@ -7,7 +7,7 @@ from . import config
 
 class Swagger:
     def __init__(self):
-        self.swagger = weclapp.GET(entityName="meta/openapi.json")
+        self.swagger = weclapp.GET(entity_name="meta/openapi.json")
         self.entities = [
             key for key in self.swagger["paths"].keys() if key.endswith("/id/{id}")
         ]

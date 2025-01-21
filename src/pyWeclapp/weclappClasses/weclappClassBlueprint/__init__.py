@@ -619,7 +619,7 @@ class Blueprint(BaseModel):
         """Fetches changes that may have occured in weclapp (overwrites everything that was changed in self)"""
         if hasattr(self, "id"):
             response = weclapp.GET(
-                entityName=self.__entityName__, entityId=self.id, asType=dict
+                entity_name=self.__entityName__, entity_id=self.id, as_type=dict
             )
             self.updateEntityFromNewEntity(newEntity=response)
             logging.warning(f"{self.__entityName__} refreshed")
@@ -672,7 +672,7 @@ class Blueprint(BaseModel):
             )
         entityName = cls.__name__
         entityName = entityName[:1].lower() + entityName[1:]
-        response = weclapp.GET(entityName=entityName, entityId=entityId, asType=dict)
+        response = weclapp.GET(entity_name=entityName, entity_id=entityId, as_type=dict)
         if not isinstance(response, dict):
             raise AssertionError(
                 f"Response from weclapp is not a dict, but a {type(response).__name__}"

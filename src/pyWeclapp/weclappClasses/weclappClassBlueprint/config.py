@@ -49,6 +49,10 @@ ALWAYS_REQUIRED = [
 ]
 COMMON_ENTITIES = []
 
-STATIC_IMPORTS_MODEL_FILES = f"# This code was dynamically created using WeclappClassCreator from pyWeclapp\n\nfrom pyWeclapp.weclappClasses.weclappClassBlueprint import Blueprint, WeclappMetaData\nfrom typing import *\n\n\n\n"
+STATIC_IMPORTS_MODEL_FILES = (
+    "This code was dynamically created using WeclappClassCreator from pyWeclapp\n\n"
+    "from pyWeclapp.weclappClasses.weclappClassBlueprint import Blueprint, "
+    "WeclappMetaData\nfrom typing import *\n\n\n\n"
+)
 INIT_FILE_NAME = "__init__.py"
 STATIC_IMPORTS_INIT = "from pyWeclapp.weclappClasses.weclappClassBlueprint.weclappClassCustomAttribute import WeclappMetaData"
