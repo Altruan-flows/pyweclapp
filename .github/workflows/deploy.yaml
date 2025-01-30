@@ -21,7 +21,7 @@ jobs:
         pip install setuptools wheel twine
     - name: Clean dist directory
       run: |
-        rm -rf dist/
+        rm -rf build/ dist/ *.egg-info/
     - name: Build and publish
       env:
         TWINE_USERNAME: __token__
