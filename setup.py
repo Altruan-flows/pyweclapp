@@ -26,7 +26,7 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/AltruanGmbH/weclappFunctions",
     author="Altruan GmbH",
-    author_email="jakob.goesswald@altruan.de",
+    author_email="admin@altruan.de",
     license="MIT",
     classifiers=[
         "License :: OSI Approved :: MIT License",
