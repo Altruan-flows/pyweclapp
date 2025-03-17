@@ -151,7 +151,7 @@ class OrderItems(Blueprint):
 	serviceItem: Union[bool, None] = None
 	availability: Union[Literal["COMPLETELY_AVAILABLE", "NOTHING_AVAILABLE", "NOT_CHECKED", "PARTIALLY_AVAILABLE", "TRANSFER_REQUIRED"], None] = None
 	availabilityForAllWarehouses: Union[Literal["COMPLETELY_AVAILABLE", "NOTHING_AVAILABLE", "NOT_CHECKED", "PARTIALLY_AVAILABLE", "TRANSFER_REQUIRED"], None] = None
-	ecommerceOrderItemId: Union[str, None] = None
+	ecommerceOrderItemIds: list = []
 	invoicedQuantity: Union[str, None] = None
 	pickBatchNumber: Union[str, None] = None
 	pickSerialNumbers: list = []

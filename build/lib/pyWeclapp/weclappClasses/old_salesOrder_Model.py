@@ -107,7 +107,7 @@ class OrderItems(Blueprint):
 	description: str = None
 	descriptionFixed: bool
 	discountPercentage: str = None
-	ecommerceOrderItemId: str = None
+	ecommerceOrderItemIds: list = []
 	freeTextItem: bool
 	grossAmount: str = None
 	grossAmountInCompanyCurrency: str = None

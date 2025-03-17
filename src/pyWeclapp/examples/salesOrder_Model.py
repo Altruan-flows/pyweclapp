@@ -133,7 +133,7 @@ class OrderItems(Blueprint):
     serviceItem: Optional[bool] = None
     availability: Optional[str] = None
     availabilityForAllWarehouses: Optional[str] = None
-    ecommerceOrderItemId: Optional[str] = None
+    ecommerceOrderItemIds: list = []
     invoicedQuantity: Optional[str] = None
     pickBatchNumber: Optional[str] = None
     pickSerialNumbers: list = []
