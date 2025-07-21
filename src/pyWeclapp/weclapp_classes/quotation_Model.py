@@ -1,6 +1,6 @@
 # This code was dynamically created using WeclappClassCreator from pyWeclapp
 
-from .weclappClassBlueprint import Blueprint, WeclappMetaData
+from .blueprint import Blueprint, WeclappMetaData
 from typing import Optional, List, ClassVar
 
 
@@ -27,7 +27,7 @@ class ShippingCostItems(Blueprint):
     ITEMS_NAME: ClassVar[str] = None
 
 
-class Address(Blueprint):
+class DeliveryAddress(Blueprint):
     city: Optional[str] = None
     company: Optional[str] = None
     company2: Optional[str] = None
@@ -51,9 +51,66 @@ class Address(Blueprint):
     ITEMS_NAME: ClassVar[str] = None
 
 
-class EcommerceOrder(Blueprint):
-    ecommerceId: Optional[str] = None
-    externalConnectionId: Optional[str] = None
+class DeliveryEmailAddresses(Blueprint):
+    bccAddresses: Optional[str] = None
+    ccAddresses: Optional[str] = None
+    toAddresses: Optional[str] = None
+    # AutomationData
+    ITEMS_NAME: ClassVar[str] = None
+
+
+class InvoiceAddress(Blueprint):
+    city: Optional[str] = None
+    company: Optional[str] = None
+    company2: Optional[str] = None
+    countryCode: Optional[str] = None
+    firstName: Optional[str] = None
+    globalLocationNumber: Optional[str] = None
+    lastName: Optional[str] = None
+    middleName: Optional[str] = None
+    phoneNumber: Optional[str] = None
+    postOfficeBoxCity: Optional[str] = None
+    postOfficeBoxNumber: Optional[str] = None
+    postOfficeBoxZipCode: Optional[str] = None
+    salutation: Optional[str] = None
+    state: Optional[str] = None
+    street1: Optional[str] = None
+    street2: Optional[str] = None
+    title: Optional[str] = None
+    titleId: Optional[str] = None
+    zipcode: Optional[str] = None
+    # AutomationData
+    ITEMS_NAME: ClassVar[str] = None
+
+
+class RecordAddress(Blueprint):
+    city: Optional[str] = None
+    company: Optional[str] = None
+    company2: Optional[str] = None
+    countryCode: Optional[str] = None
+    firstName: Optional[str] = None
+    globalLocationNumber: Optional[str] = None
+    lastName: Optional[str] = None
+    middleName: Optional[str] = None
+    phoneNumber: Optional[str] = None
+    postOfficeBoxCity: Optional[str] = None
+    postOfficeBoxNumber: Optional[str] = None
+    postOfficeBoxZipCode: Optional[str] = None
+    salutation: Optional[str] = None
+    state: Optional[str] = None
+    street1: Optional[str] = None
+    street2: Optional[str] = None
+    title: Optional[str] = None
+    titleId: Optional[str] = None
+    zipcode: Optional[str] = None
+    # AutomationData
+    ITEMS_NAME: ClassVar[str] = None
+
+
+class SalesInvoiceEmailAddresses(Blueprint):
+    bccAddresses: Optional[str] = None
+    ccAddresses: Optional[str] = None
+    toAddresses: Optional[str] = None
     # AutomationData
     ITEMS_NAME: ClassVar[str] = None
 
@@ -81,13 +138,7 @@ class CommissionSalesPartners(Blueprint):
     ITEMS_NAME: ClassVar[str] = None
 
 
-class Tasks(Blueprint):
-    id: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
-
-
-class OrderItems(Blueprint):
+class QuotationItems(Blueprint):
     id: Optional[str] = None
     createdDate: Optional[int] = None
     lastModifiedDate: Optional[int] = None
@@ -131,38 +182,36 @@ class OrderItems(Blueprint):
     manualPlannedWorkingTimePerUnit: Optional[bool] = None
     plannedWorkingTimePerUnit: Optional[str] = None
     serviceItem: Optional[bool] = None
-    availability: Optional[str] = None
-    availabilityForAllWarehouses: Optional[str] = None
-    ecommerceOrderItemIds: list = []
-    invoicedQuantity: Optional[str] = None
-    pickBatchNumber: Optional[str] = None
-    pickSerialNumbers: list = []
-    pickStoragePlaceId: Optional[str] = None
-    plannedShippingDate: Optional[int] = None
-    returnedQuantity: Optional[str] = None
-    shipped: Optional[bool] = None
-    shippedQuantity: Optional[str] = None
-    tasks: List[Tasks] = []
+    alternative: Optional[bool] = None
+    optional: Optional[bool] = None
     # AutomationData
     ITEMS_NAME: ClassVar[str] = None
 
 
-class ProjectMembers(Blueprint):
+class RecordEmailAddresses(Blueprint):
+    bccAddresses: Optional[str] = None
+    ccAddresses: Optional[str] = None
+    toAddresses: Optional[str] = None
+    # AutomationData
+    ITEMS_NAME: ClassVar[str] = None
+
+
+class SalesOrderEmailAddresses(Blueprint):
+    bccAddresses: Optional[str] = None
+    ccAddresses: Optional[str] = None
+    toAddresses: Optional[str] = None
+    # AutomationData
+    ITEMS_NAME: ClassVar[str] = None
+
+
+class SalesStageHistory(Blueprint):
     id: Optional[str] = None
     createdDate: Optional[int] = None
     lastModifiedDate: Optional[int] = None
     version: Optional[str] = None
-    hourlyCost: Optional[str] = None
-    teamRole: Optional[str] = None
+    salesStageId: Optional[str] = None
+    salesStageName: Optional[str] = None
     userId: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
-
-
-class EmailAddresses(Blueprint):
-    bccAddresses: Optional[str] = None
-    ccAddresses: Optional[str] = None
-    toAddresses: Optional[str] = None
     # AutomationData
     ITEMS_NAME: ClassVar[str] = None
 
@@ -175,7 +224,7 @@ class StatusHistory(Blueprint):
     ITEMS_NAME: ClassVar[str] = None
 
 
-class SalesOrder(Blueprint):
+class Quotation(Blueprint):
     id: Optional[str] = None
     createdDate: Optional[int] = None
     lastModifiedDate: Optional[int] = None
@@ -223,45 +272,41 @@ class SalesOrder(Blueprint):
     shippingCostItems: List[ShippingCostItems] = []
     defaultShippingCarrierId: Optional[str] = None
     defaultShippingCarrierName: Optional[str] = None
-    deliveryAddress: Address = Address.fromBlank()
-    deliveryEmailAddresses: EmailAddresses = EmailAddresses.fromBlank()
-    invoiceAddress: Address = Address.fromBlank()
+    deliveryAddress: DeliveryAddress = DeliveryAddress.fromBlank()
+    deliveryEmailAddresses: DeliveryEmailAddresses = DeliveryEmailAddresses.fromBlank()
+    invoiceAddress: InvoiceAddress = InvoiceAddress.fromBlank()
     plannedDeliveryDate: Optional[int] = None
     plannedShippingDate: Optional[int] = None
-    recordAddress: Address = Address.fromBlank()
-    salesInvoiceEmailAddresses: EmailAddresses = EmailAddresses.fromBlank()
-    advancePaymentStatus: Optional[str] = None
-    availability: Optional[str] = None
-    availabilityForAllWarehouses: Optional[str] = None
-    cashAccountId: Optional[str] = None
-    customerHabitualExporterLetterOfIntentId: Optional[str] = None
-    defaultShippingReturnCarrierId: Optional[str] = None
-    defaultShippingReturnCarrierName: Optional[str] = None
-    ecommerceOrder: EcommerceOrder = EcommerceOrder.fromBlank()
-    fulfillmentProviderId: Optional[str] = None
+    recordAddress: RecordAddress = RecordAddress.fromBlank()
+    salesInvoiceEmailAddresses: SalesInvoiceEmailAddresses = (
+        SalesInvoiceEmailAddresses.fromBlank()
+    )
+    activeVersion: Optional[bool] = None
     invoiceRecipientId: Optional[str] = None
-    invoiced: Optional[bool] = None
-    onlyServices: Optional[bool] = None
-    orderDate: Optional[int] = None
-    orderItems: List[OrderItems] = []
-    orderNumber: Optional[str] = None
-    orderNumberAtCustomer: Optional[str] = None
-    paid: Optional[bool] = None
-    plannedProjectEndDate: Optional[int] = None
-    plannedProjectStartDate: Optional[int] = None
-    projectGoals: Optional[str] = None
-    projectMembers: List[ProjectMembers] = []
-    projectModeActive: Optional[bool] = None
-    quotationId: Optional[str] = None
+    opportunityId: Optional[str] = None
+    opportunityNumber: Optional[str] = None
+    publicLink: Optional[str] = None
+    quotationDate: Optional[int] = None
+    quotationItems: List[QuotationItems] = []
     quotationNumber: Optional[str] = None
-    recordEmailAddresses: EmailAddresses = EmailAddresses.fromBlank()
-    salesOrderPaymentType: Optional[str] = None
-    servicesFinished: Optional[bool] = None
-    shipped: Optional[bool] = None
-    shippingLabelsCount: Optional[int] = None
+    quotationType: Optional[str] = None
+    quotationVersion: Optional[int] = None
+    recordEmailAddresses: RecordEmailAddresses = RecordEmailAddresses.fromBlank()
+    rejectionReason: Optional[str] = None
+    requestDate: Optional[int] = None
+    salesOrderEmailAddresses: SalesOrderEmailAddresses = (
+        SalesOrderEmailAddresses.fromBlank()
+    )
+    salesProbability: Optional[int] = None
+    salesStageHistory: List[SalesStageHistory] = []
+    salesStageId: Optional[str] = None
+    salesStageName: Optional[str] = None
     status: Optional[str] = None
     statusHistory: List[StatusHistory] = []
+    template: Optional[bool] = None
+    validFrom: Optional[int] = None
+    validTo: Optional[int] = None
     warehouseId: Optional[str] = None
     warehouseName: Optional[str] = None
     # AutomationData
-    ITEMS_NAME: ClassVar[str] = "orderItems"
+    ITEMS_NAME: ClassVar[str] = None

@@ -13,7 +13,6 @@ except FileNotFoundError:
     required = ["requests>=2.28.2",
                 "pydantic>=1.10.4",
                 "jsonschema>=4.17.3",
-                # "pymupdf>=1.21.1",
                 "pytz>=2022.7.1"]
 
 setup(

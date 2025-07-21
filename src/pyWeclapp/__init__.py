@@ -1,7 +1,6 @@
-from .weclapp import GET, POST, PUT, DELETE
+from .weclapp import Weclapp, WeclappError
 from . import weclapp
-# from . import webhooks
-from . import weclappClasses
+from . import weclapp_classes
 from . import weclappDoc
-from . import timeFunctions
+from . import time_functions
 from . import customAttributes

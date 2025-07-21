@@ -1,6 +1,6 @@
 from pyWeclapp import weclapp
 from pydantic import BaseModel
-from .weclappClassCustomAttribute import WeclappMetaData
+from .custom_attributes_model import WeclappMetaData
 import logging
 from typing import Any, Union, Literal, Optional, List, get_origin, get_args
 import re
@@ -56,13 +56,13 @@ class Blueprint(BaseModel):
 
             except KeyError as e:
                 if addToMetaData and hasattr(self, "customAttributes"):
-                    item = WeclappMetaData(attributeDefinitionId=value)
+                    item = WeclappMetaData(attribute_definition_id=value)
                     self.customAttributes.append(item)
                     return item
                 elif raiseError:
                     raise e
                 else:
-                    return WeclappMetaData(attributeDefinitionId=value)
+                    return WeclappMetaData(attribute_definition_id=value)
 
         else:
             raise KeyError(

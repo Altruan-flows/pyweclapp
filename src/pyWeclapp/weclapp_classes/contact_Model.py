@@ -1,6 +1,6 @@
 # This code was dynamically created using WeclappClassCreator from pyWeclapp
 
-from .weclappClassBlueprint import Blueprint, WeclappMetaData
+from .blueprint import Blueprint, WeclappMetaData
 from typing import Optional, List, ClassVar
 
 

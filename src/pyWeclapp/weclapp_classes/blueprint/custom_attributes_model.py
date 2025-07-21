@@ -7,15 +7,15 @@ from . import config
 
 
 class WeclappMetaData(BaseModel):
-    attributeDefinitionId: str
-    valueName: Union[config.CUSTOM_ATTRIBUTE_TYPES_LITERAL, None] = None
-    originalValue: Any = None
+    attribute_definition_id: str
+    value_name: Union[config.CUSTOM_ATTRIBUTE_TYPES_LITERAL, None] = None
+    original_value: Any = None
     value: Any = None
     reset: bool = False
 
     def __init__(self, **data):
-        attributeDefinitionId = data["attributeDefinitionId"]
-        valueName = None
+        attribute_definition_id = data["attributeDefinitionId"]
+        value_name = None
         value = (
             []
             if any(element in data for element in config.LIST_CUSTOM_ATTRIBUTE_TYPES)
@@ -23,38 +23,38 @@ class WeclappMetaData(BaseModel):
         )
         for key in config.CUSTOM_ATTRIBUTE_TYPES:
             if key in data:
-                valueName = key
+                value_name = key
                 value = data.get(key)
                 break
         try:
             super().__init__(
-                attributeDefinitionId=attributeDefinitionId,
-                valueName=valueName,
+                attributeDefinitionId=attribute_definition_id,
+                valueName=value_name,
                 value=value,
                 originalValue=value,
             )
         except (AttributeError, TypeError) as error:
-            logging.error(f"Error in WeclappMetaData {attributeDefinitionId}: {error}")
+            logging.error("Error in WeclappMetaData %s: %s", attribute_definition_id, error)
             raise error
 
     @property
     def updated(self) -> bool:
         """Checks if the value was updated and differs from the original value"""
-        if self.originalValue == self.value:
+        if self.original_value == self.value:
             return False
-        elif self.originalValue is None:
+        elif self.original_value is None:
             return True
         else:
             # special cases
             if self.value is not None:
-                if self.valueName in config.FLOAT_CUSTOM_ATTRIBUTE_TYPES:
-                    if float(self.originalValue) == float(self.value):
+                if self.value_name in config.FLOAT_CUSTOM_ATTRIBUTE_TYPES:
+                    if float(self.original_value) == float(self.value):
                         return False
-                if self.valueName in config.INT_CUSTOM_ATTRIBUTE_TYPES:
-                    if int(self.originalValue) == int(self.value):
+                if self.value_name in config.INT_CUSTOM_ATTRIBUTE_TYPES:
+                    if int(self.original_value) == int(self.value):
                         return False
-                if self.valueName in config.LIST_CUSTOM_ATTRIBUTE_TYPES:
-                    if sorted(self.originalValue, key=lambda x: str(x)) == sorted(
+                if self.value_name in config.LIST_CUSTOM_ATTRIBUTE_TYPES:
+                    if sorted(self.original_value, key=lambda x: str(x)) == sorted(
                         self.value, key=lambda x: str(x)
                     ):
                         return False
@@ -62,35 +62,35 @@ class WeclappMetaData(BaseModel):
 
     @property
     def selectedValueId(self) -> str:
-        return str(self.value) if self.valueName == "selectedValueId" else None
+        return str(self.value) if self.value_name == "selectedValueId" else None
 
     @property
     def stringValue(self) -> str:
-        return str(self.value) if self.valueName == "stringValue" else None
+        return str(self.value) if self.value_name == "stringValue" else None
 
     @property
     def booleanValue(self) -> bool:
-        return bool(self.value) if self.valueName == "booleanValue" else None
+        return bool(self.value) if self.value_name == "booleanValue" else None
 
     @property
     def selectedValues(self) -> List[dict]:
-        return list(self.value) if self.valueName == "selectedValues" else []
+        return list(self.value) if self.value_name == "selectedValues" else []
 
     @property
     def dateValue(self) -> int:
-        return int(self.value) if self.valueName == "dateValue" else None
+        return int(self.value) if self.value_name == "dateValue" else None
 
     @property
     def entityId(self) -> str:
-        return str(self.value) if self.valueName == "entityId" else None
+        return str(self.value) if self.value_name == "entityId" else None
 
     @property
     def entityReferences(self) -> List[dict]:
-        return list(self.value) if self.valueName == "entityReferences" else []
+        return list(self.value) if self.value_name == "entityReferences" else []
 
     @property
     def numberValue(self) -> float:
-        return str(self.value) if self.valueName == "numberValue" else None
+        return str(self.value) if self.value_name == "numberValue" else None
 
     def __setattr__(self, name, value):
         if name in config.CUSTOM_ATTRIBUTE_TYPES:
@@ -100,22 +100,22 @@ class WeclappMetaData(BaseModel):
 
     def checkValueName(self, valueName: config.CUSTOM_ATTRIBUTE_TYPES_LITERAL):
         """Checks for consitstency of valueName"""
-        if self.valueName is None:
-            self.valueName = valueName
-        elif self.valueName != valueName:
+        if self.value_name is None:
+            self.value_name = valueName
+        elif self.value_name != valueName:
             raise ValueError(
-                f"ValueName of cAtt {self.name} is {self.valueName} but should be {valueName}"
+                f"ValueName of cAtt {self.name} is {self.value_name} but should be {valueName}"
             )
 
     # get the valueName of Class
     def getValueName(self):
         """returns the type of custom attribute"""
-        return self.valueName
+        return self.value_name
 
     @property
     def name(self) -> str:
         """==attributeDefinitionId"""
-        return self.attributeDefinitionId
+        return self.attribute_definition_id
 
     def setValue(
         self,
@@ -136,7 +136,7 @@ class WeclappMetaData(BaseModel):
             self.value = self.validateValue(value)
             if not self.updated:
                 logging.info(
-                    f"cAtt of {self.attributeDefinitionId} was already {self.value} - not updating"
+                    f"cAtt of {self.attribute_definition_id} was already {self.value} - not updating"
                 )
 
     def addValue(self, value, valueName: config.LIST_CUSTOM_ATTRIBUTE_TYPES_LITERAL):
@@ -153,7 +153,7 @@ class WeclappMetaData(BaseModel):
             )
         if not all([isinstance(listEl, dict) for listEl in self.val]):
             raise AssertionError("All items in list cAtts should be dicts")
-        if self.valueName == "selectedValues":
+        if self.value_name == "selectedValues":
             currentState = set([listEl["id"] for listEl in self.val])
             currentState.add(value)
             newValue = [{"id": el} for el in currentState]
@@ -176,7 +176,7 @@ class WeclappMetaData(BaseModel):
         self.checkValueName(valueName)
 
         # Update Field
-        if self.valueName not in config.LIST_CUSTOM_ATTRIBUTE_TYPES:
+        if self.value_name not in config.LIST_CUSTOM_ATTRIBUTE_TYPES:
             raise AssertionError(
                 "removing a value to cAtt is only possible for list Types"
             )
@@ -189,7 +189,7 @@ class WeclappMetaData(BaseModel):
         if not all([isinstance(listEl, dict) for listEl in self.val]):
             raise AssertionError("All items in list cAtts should be dicts")
         newValue = []
-        key = "id" if self.valueName == "selectedValues" else "entityId"
+        key = "id" if self.value_name == "selectedValues" else "entityId"
         for el in self.val:
             if el[key] != value:
                 newValue.append(el)
@@ -202,11 +202,11 @@ class WeclappMetaData(BaseModel):
             if targetValue is None:
                 return True if self.val is not None else False
             else:
-                if self.valueName == "selectedValues":
+                if self.value_name == "selectedValues":
                     return targetValue in [
                         el["id"] for el in self.getValue(asType=list, default=[])
                     ]
-                elif self.valueName == "entityReferences":
+                elif self.value_name == "entityReferences":
                     return targetValue in [
                         el["entityId"] for el in self.getValue(asType=list, default=[])
                     ]
@@ -224,7 +224,7 @@ class WeclappMetaData(BaseModel):
         """Validates the custom attriuute value and converts it to the correct
         format. Rasies an error if the value is invalid."""
         # insert Numbers
-        if self.valueName == "numberValue":
+        if self.value_name == "numberValue":
             if isinstance(value, float):
                 return str(round(value, 2))
             if not str(value).replace(".", "").strip("-").isnumeric():
@@ -234,7 +234,7 @@ class WeclappMetaData(BaseModel):
             return str(value)
 
         # insert booleans
-        elif self.valueName == "booleanValue":
+        elif self.value_name == "booleanValue":
             if not isinstance(value, bool):
                 raise ValueError(
                     f"To Update Custom Attribute Value must be bool not {type(value).__name__}"
@@ -242,11 +242,11 @@ class WeclappMetaData(BaseModel):
             return bool(value)
 
         # insert strings
-        elif self.valueName == "stringValue" or self.valueName == "selectedValueId":
+        elif self.value_name == "stringValue" or self.value_name == "selectedValueId":
             return str(value)
 
         # if date is selected
-        elif self.valueName == "dateValue":
+        elif self.value_name == "dateValue":
             if isinstance(value, datetime):
                 value = timeFunctions.toStr(time=value, to="weclapp")
             if not isinstance(value, int):
@@ -254,11 +254,11 @@ class WeclappMetaData(BaseModel):
             return int(value)
 
         # if entity is selected -> be carefull no validation
-        elif self.valueName == "entityId" or self.valueName == "selectedValueId":
+        elif self.value_name == "entityId" or self.value_name == "selectedValueId":
             return str(value)
 
         # Multiselect -> the whole list of dicts needs to be passed!!!
-        elif self.valueName in config.LIST_CUSTOM_ATTRIBUTE_TYPES:
+        elif self.value_name in config.LIST_CUSTOM_ATTRIBUTE_TYPES:
             if not isinstance(value, list):
                 raise ValueError("Type needs to be list of dicts")
             for el in value:
@@ -330,7 +330,7 @@ class WeclappMetaData(BaseModel):
                 else:
                     raise ValueError(f"Given Type {asType} not found")
             else:
-                raise ValueError(f"Value of {self.attributeDefinitionId} was None")
+                raise ValueError(f"Value of {self.attribute_definition_id} was None")
         except Exception as e:
             logging.error(e)
             if raiseError:
@@ -341,9 +341,9 @@ class WeclappMetaData(BaseModel):
         """transform the Class back to a dict for updating Weclapp"""
         updateType = updateType if updateType != "used+" else "used"
         if self.updated or updateType == "full":
-            answer = {"attributeDefinitionId": self.attributeDefinitionId}
-            if not self.reset and self.valueName is not None:
-                answer[self.valueName] = self.val
+            answer = {"attributeDefinitionId": self.attribute_definition_id}
+            if not self.reset and self.value_name is not None:
+                answer[self.value_name] = self.val
             return answer
         return None
 
