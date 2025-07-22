@@ -11,18 +11,15 @@ import os
 import logging
 from typing import Union, Generator
 import requests
-from .response import (
-    get_headers,
-    parse_response,
-    check_domain,
-)
 from . import config
 
 
 class WeclappError(Exception):
     """Custom exception class for Weclapp API errors."""
 
-    def __init__(self, error_response: requests.Response, api_version: str = config.API_VERSION):
+    def __init__(
+        self, error_response: requests.Response, api_version: str = config.API_VERSION
+    ):
         self.response = error_response
         self.url = str(self.response.url).split(f"/api/{api_version}", maxsplit=1)[-1]
         self.is_json = False
@@ -37,7 +34,7 @@ class WeclappError(Exception):
             self.messages = error_response.get("messages", [])
             self.is_json = True
 
-        except json.JSONDecodeError:
+        except (json.JSONDecodeError, requests.exceptions.JSONDecodeError):
             self.detail = error_response.text
 
         super().__init__(self.detail)
@@ -93,14 +90,107 @@ class Weclapp:
         iterator: Yields entities from the Weclapp API based on the provided query.
     """
 
-    def __init__(self, api_token: str = None, domain: str = None, api_version: str = config.API_VERSION):
+    def __init__(
+        self,
+        api_token: str = None,
+        domain: str = None,
+        api_version: str = config.API_VERSION,
+    ):
         if not api_token:
             api_token = os.environ.get(config.API_TOKEN_ENV_VAR)
         if not domain:
             domain = os.environ.get(config.DOMAIN_ENV_VAR)
-        domain = check_domain(domain)
+        domain = self._check_domain(domain)
         self.base_url = f"https://{domain}/webapp/api/{api_version}"
-        self.headers = get_headers(api_token)
+        self.headers = self._get_headers(api_token)
+
+    def _get_headers(self, api_token: str) -> dict:
+        """Returns the headers for the weclapp API request."""
+        if not api_token:
+            raise ValueError(
+                "Authentication token for weclapp must be provided as a non-empty string."
+            )
+
+        if not isinstance(api_token, str):
+            raise TypeError(
+                f"Authentication token for weclapp must be a string, but is {type(api_token)}."
+            )
+
+        return {
+            config.AUTHENTICATION_TOKEN_NAME: api_token,
+            "Content-Type": config.DEFAULT_CONTENT_TYPE,
+        }
+
+    def _check_domain(self, url: str) -> str:
+        """Checks if the provided URL is a valid Weclapp domain."""
+        if not url:
+            raise ValueError("Weclapp domain must be provided as a non-empty string.")
+        url = str(url).strip()
+        if not url.endswith(config.WECLAPP_DOMAIN_ENDING):
+            raise ValueError(
+                f"Weclapp domain {url} must end with {config.WECLAPP_DOMAIN_ENDING}."
+            )
+        return url
+
+    def _parse_response(
+        self,
+        response: requests.Response,
+        as_type: Union[dict, bytes, list] = dict,
+        return_full_result: bool = False,
+    ) -> Union[dict, list, bytes, int]:
+        """
+        Parses the response from the Weclapp API and returns it in the specified format.
+
+        Args:
+            response (requests.Response): The response object from the Weclapp API.
+            as_type (Union[dict, bytes, list]): The type to return the parsed response as.
+            return_full_result (bool): If True, returns the full result including metadata.
+                If set to True, the function will always return a dict.
+
+        Returns:
+            result (Union[dict, list, bytes, int]): The parsed response in the specified format.
+        """
+        if not response.ok:
+            raise WeclappError(response)
+
+        if as_type == bytes:
+            return response.content
+
+        json_response = response.json()
+
+        if config.DEFAULT_RESPONSE_CONTAINER not in json_response:
+            raise WeclappError(response)
+
+        if return_full_result is True:
+            if as_type != dict:
+                logging.warning(
+                    "If return_full_result is True, function will always return a dict."
+                )
+            return json_response
+
+        result = json_response[config.DEFAULT_RESPONSE_CONTAINER]
+
+        if config.COUNT_REQUEST_IDENTIFIER in response.url:
+            if isinstance(result, int):
+                return result
+        elif as_type == dict:
+            if not isinstance(result, dict):
+                logging.warning(
+                    "Not a dict object was returned by Weclapp -> turned it into dict"
+                )
+                result = {config.DEFAULT_RESPONSE_CONTAINER: result}
+            return result
+        elif as_type == list:
+            if not isinstance(result, list):
+                logging.warning(
+                    "Not a list object was returned by Weclapp -> turned it into list"
+                )
+                result = [result]
+            return result
+        else:
+            raise TypeError("as_type must be one of dict, list, bytes")
+
+        return result
 
     def get(
         self,
@@ -139,7 +229,7 @@ class Weclapp:
             params=query,
             timeout=config.REQUEST_TIMEOUT,
         )
-        return parse_response(
+        return self._parse_response(
             response, as_type=as_type, return_full_result=include_result
         )
 
@@ -183,7 +273,7 @@ class Weclapp:
             timeout=config.REQUEST_TIMEOUT,
         )
 
-        return parse_response(response, as_type=dict)
+        return self._parse_response(response, as_type=dict)
 
     def post(
         self,
@@ -226,7 +316,7 @@ class Weclapp:
             timeout=config.REQUEST_TIMEOUT,
         )
 
-        return parse_response(response=response, as_type=dict)
+        return self._parse_response(response=response, as_type=dict)
 
     def delete(
         self,

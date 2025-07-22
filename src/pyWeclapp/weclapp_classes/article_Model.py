@@ -1,293 +1,291 @@
-# This code was dynamically created using WeclappClassCreator from pyWeclapp
+"""This code was dynamically created using WeclappClassCreator from pyweclapp"""
 
-from .blueprint import Blueprint, WeclappMetaData
-from typing import Optional, List, ClassVar
+from typing import Union, List
+from .blueprints import Blueprint, WeclappMetaData
 
 
 class AttributeOptions(Blueprint):
-    id: Optional[str] = None
+    """Subclass for attribute options in Variants."""
+
+    id: Union[str, None] = None
 
 
 class Variants(Blueprint):
-    id: Optional[str] = None
-    version: Optional[str] = None
-    articleId: Optional[str] = None
-    articleNumber: Optional[str] = None
+    """Subclass for variants in VariantArticle."""
+
+    id: Union[str, None] = None
+    version: Union[str, None] = None
+    articleId: Union[str, None] = None
+    articleNumber: Union[str, None] = None
     attributeOptions: List[AttributeOptions] = []
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    positionNumber: Optional[int] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    positionNumber: Union[int, None] = None
 
 
 class VariantArticle(Blueprint):
-    id: Optional[str] = None
-    version: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate:  Optional[int] = None
-    primaryArticleId: Optional[str] = None
-    primaryArticleNumber: Optional[str] = None
-    variantArticleName: Optional[str] = None
-    variantArticleNumber: Optional[str] = None
+    """Class for variantArticle endpoint."""
+
+    id: Union[str, None] = None
+    version: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    primaryArticleId: Union[str, None] = None
+    primaryArticleNumber: Union[str, None] = None
+    variantArticleName: Union[str, None] = None
+    variantArticleNumber: Union[str, None] = None
     variants: List[Variants] = []
 
 
 class ArticleAlternativeQuantities(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    minimumOrderQuantity: Optional[str] = None
-    minimumStockQuantity: Optional[str] = None
-    targetStockQuantity: Optional[str] = None
-    warehouseId: Optional[str] = None
-    warehouseName: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for articleAlternativeQuantities in Article."""
+
+    id: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    version: Union[str, None] = None
+    minimumOrderQuantity: Union[str, None] = None
+    minimumStockQuantity: Union[str, None] = None
+    targetStockQuantity: Union[str, None] = None
+    warehouseId: Union[str, None] = None
+    warehouseName: Union[str, None] = None
 
 
 class ArticleCalculationPrices(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    articleCalculationPriceType: Optional[str] = None
-    endDate: Optional[int] = None
-    positionNumber: Optional[int] = None
-    price: Optional[str] = None
-    salesChannel: Optional[str] = None
-    startDate: Optional[int] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for articleCalculationPrices in Article."""
+
+    id: Union[str, None]
+    version: Union[str, None] = None
+    articleCalculationPriceType: Union[str, None] = None
+    createdDate: Union[int, None]
+    endDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None]
+    price: Union[str, None] = None
+    salesChannel: Union[str, None] = None
+    startDate: Union[int, None] = None
 
 
 class ArticleImages(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    fileName: Optional[str] = None
-    mainImage: Optional[bool] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for articleImages in Article."""
+
+    id: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    version: Union[str, None] = None
+    fileName: Union[str, None] = None
+    mainImage: Union[bool, None] = None
 
 
 class ReductionAdditions(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    name: Optional[str] = None
-    type: Optional[str] = None
-    value: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for reductionAdditions of ArticlePrices."""
+
+    id: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    version: Union[str, None] = None
+    name: Union[str, None] = None
+    type: Union[str, None] = None
+    value: Union[str, None] = None
 
 
 class ArticlePrices(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    currencyId: Optional[str] = None
-    currencyName: Optional[str] = None
-    customerId: Optional[str] = None
-    description: Optional[str] = None
-    endDate: Optional[int] = None
-    lastModifiedByUserId: Optional[str] = None
-    positionNumber: Optional[int] = None
-    price: Optional[str] = None
-    priceScaleType: Optional[str] = None
-    priceScaleValue: Optional[str] = None
+    """Subclass for articlePrices in Article."""
+
+    id: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    version: Union[str, None] = None
+    currencyId: Union[str, None] = None
+    currencyName: Union[str, None] = None
+    customerId: Union[str, None] = None
+    description: Union[str, None] = None
+    endDate: Union[int, None] = None
+    lastModifiedByUserId: Union[str, None] = None
+    positionNumber: Union[int, None] = None
+    price: Union[str, None] = None
+    priceScaleType: Union[str, None] = None
+    priceScaleValue: Union[str, None] = None
     reductionAdditions: List[ReductionAdditions] = []
-    startDate: Optional[int] = None
-    salesChannel: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    startDate: Union[int, None] = None
+    salesChannel: Union[str, None] = None
 
 
 class CustomerArticleNumbers(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    customerArticleNumber: Optional[str] = None
-    customerId: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for customerArticleNumbers in Article."""
+
+    id: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    version: Union[str, None] = None
+    customerArticleNumber: Union[str, None] = None
+    customerId: Union[str, None] = None
 
 
 class DefaultStoragePlaces(Blueprint):
-    id: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for defaultStoragePlaces in Article."""
+
+    id: Union[str, None] = None
 
 
 class PriceCalculationParameters(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    fixSurcharge: Optional[str] = None
-    fromScale: Optional[str] = None
-    lowerPurchasePriceBound: Optional[str] = None
-    margin: Optional[str] = None
-    percentSurcharge: Optional[str] = None
-    profit: Optional[str] = None
-    salesChannel: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for priceCalculationParameters in Article."""
+
+    id: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    version: Union[str, None] = None
+    fixSurcharge: Union[str, None] = None
+    fromScale: Union[str, None] = None
+    lowerPurchasePriceBound: Union[str, None] = None
+    margin: Union[str, None] = None
+    percentSurcharge: Union[str, None] = None
+    profit: Union[str, None] = None
+    salesChannel: Union[str, None] = None
 
 
 class ProductionBillOfMaterialItems(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    articleId: Optional[str] = None
-    articleNumber: Optional[str] = None
-    positionNumber: Optional[int] = None
-    quantity: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for productionBillOfMaterialItems in Article."""
+
+    id: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    version: Union[str, None] = None
+    articleId: Union[str, None] = None
+    articleNumber: Union[str, None] = None
+    positionNumber: Union[int, None] = None
+    quantity: Union[str, None] = None
 
 
 class QuantityConversions(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    conversionQuantity: Optional[str] = None
-    createdUserId: Optional[str] = None
-    lastEditedUserId: Optional[str] = None
-    oppositeDirection: Optional[bool] = None
-    unitId: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for quantityConversions in Article."""
+
+    id: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    version: Union[str, None] = None
+    conversionQuantity: Union[str, None] = None
+    createdUserId: Union[str, None] = None
+    lastEditedUserId: Union[str, None] = None
+    oppositeDirection: Union[bool, None] = None
+    unitId: Union[str, None] = None
 
 
 class SalesBillOfMaterialItems(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    articleId: Optional[str] = None
-    articleNumber: Optional[str] = None
-    positionNumber: Optional[int] = None
-    quantity: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for salesBillOfMaterialItems in Article."""
 
-
-class SupplySources(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    articleSupplySourceId: Optional[str] = None
-    positionNumber: Optional[int] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    id: Union[str, None] = None
+    version: Union[str, None] = None
+    articleId: Union[str, None] = None
+    articleNumber: Union[str, None] = None
+    createdDate: Union[int, None]
+    lastModifiedDate: Union[int, None]
+    positionNumber: Union[int, None]
+    quantity: Union[str, None] = None
 
 
 class Article(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    customAttributes: List[WeclappMetaData] = []
-    articleNumber: Optional[str] = None
-    description: Optional[str] = None
-    ean: Optional[str] = None
-    fixedPurchaseQuantity: Optional[str] = None
-    internalNote: Optional[str] = None
-    manufacturerPartNumber: Optional[str] = None
-    matchCode: Optional[str] = None
-    minimumPurchaseQuantity: Optional[str] = None
-    name: Optional[str] = None
-    shortDescription1: Optional[str] = None
-    shortDescription2: Optional[str] = None
-    taxRateType: Optional[str] = None
-    unitId: Optional[str] = None
-    unitName: Optional[str] = None
-    accountId: Optional[str] = None
-    accountNumber: Optional[str] = None
-    accountingCodeId: Optional[str] = None
-    active: Optional[bool] = None
-    applyCashDiscount: Optional[bool] = None
+    """Class for article endpoint."""
+
+    id: Union[str, None]
+    version: Union[str, None]
+    accountId: Union[str, None] = None
+    accountNumber: Union[str, None] = None
+    accountingCodeId: Union[str, None] = None
+    active: Union[bool, None]
+    applyCashDiscount: Union[bool, None] = None
     articleAlternativeQuantities: List[ArticleAlternativeQuantities] = []
     articleCalculationPrices: List[ArticleCalculationPrices] = []
-    articleCategoryId: Optional[str] = None
-    articleGrossWeight: Optional[str] = None
-    articleHeight: Optional[str] = None
+    articleCategoryId: Union[str, None] = None
+    articleGrossWeight: Union[str, None] = None
+    articleHeight: Union[str, None] = None
     articleImages: List[ArticleImages] = []
-    articleLength: Optional[str] = None
-    articleNetWeight: Optional[str] = None
+    articleLength: Union[str, None] = None
+    articleNetWeight: Union[str, None] = None
+    articleNumber: Union[str, None] = None
     articlePrices: List[ArticlePrices] = []
-    articleType: Optional[str] = None
-    articleWidth: Optional[str] = None
-    availableForSalesChannels: list = []  # could not be parsed
-    availableInSale: Optional[bool] = None
-    averageDeliveryTime: Optional[int] = None
-    barcode: Optional[str] = None
-    batchNumberRequired: Optional[bool] = None
-    billOfMaterialPartDeliveryPossible: Optional[bool] = None
-    catalogCode: Optional[str] = None
-    commissionRate: Optional[str] = None
-    contractBillingCycle: Optional[str] = None
-    contractBillingMode: Optional[str] = None
-    countryOfOriginCode: Optional[str] = None
+    articleType: Union[str, None]
+    articleWidth: Union[str, None] = None
+    availableForSalesChannels: List[str] = []
+    availableInSale: Union[bool, None] = None
+    averageDeliveryTime: Union[int, None] = None
+    barcode: Union[str, None] = None
+    batchNumberRequired: Union[bool, None] = None
+    billOfMaterialPartDeliveryPossible: Union[bool, None] = None
+    catalogCode: Union[str, None] = None
+    commissionRate: Union[str, None] = None
+    contractBillingCycle: Union[str, None] = None
+    contractBillingMode: Union[str, None] = None
+    countryOfOriginCode: Union[str, None] = None
+    createdDate: Union[int, None]
+    customAttributes: List[WeclappMetaData] = []
     customerArticleNumbers: List[CustomerArticleNumbers] = []
-    customsDescription: Optional[str] = None
-    customsTariffNumber: Optional[str] = None
-    customsTariffNumberId: Optional[str] = None
-    defaultLoadingEquipmentIdentifierId: Optional[str] = None
-    defaultPriceCalculationType: Optional[str] = None
+    customsDescription: Union[str, None] = None
+    customsTariffNumber: Union[str, None] = None
+    customsTariffNumberId: Union[str, None] = None
+    defaultLoadingEquipmentIdentifierId: Union[str, None] = None
+    defaultPriceCalculationType: Union[str, None] = None
     defaultStoragePlaces: List[DefaultStoragePlaces] = []
-    defineIndividualTaskTemplates: Optional[bool] = None
-    expenseAccountId: Optional[str] = None
-    expenseAccountNumber: Optional[str] = None
-    expirationDays: Optional[int] = None
-    invoicingType: Optional[str] = None
-    launchDate: Optional[int] = None
-    loadingEquipmentArticleId: Optional[str] = None
-    longText: Optional[str] = None
-    lowLevelCode: Optional[int] = None
-    manufacturerId: Optional[str] = None
-    manufacturerName: Optional[str] = None
-    marginCalculationPriceType: Optional[str] = None
-    minimumStockQuantity: Optional[str] = None
-    packagingQuantity: Optional[int] = None
-    packagingUnitBaseArticleId: Optional[str] = None
-    packagingUnitParentArticleId: Optional[str] = None
-    plannedWorkingTimePerUnit: Optional[int] = None
+    defineIndividualTaskTemplates: Union[bool, None] = None
+    description: Union[str, None] = None
+    ean: Union[str, None] = None
+    expenseAccountId: Union[str, None] = None
+    expenseAccountNumber: Union[str, None] = None
+    expirationDays: Union[int, None] = None
+    fixedPurchaseQuantity: Union[str, None] = None
+    internalNote: Union[str, None] = None
+    invoicingType: Union[str, None] = None
+    lastModifiedDate: Union[int, None]
+    launchDate: Union[int, None] = None
+    loadingEquipmentArticleId: Union[str, None] = None
+    longText: Union[str, None] = None
+    lowLevelCode: Union[int, None] = None
+    manufacturerId: Union[str, None] = None
+    manufacturerName: Union[str, None] = None
+    manufacturerPartNumber: Union[str, None] = None
+    marginCalculationPriceType: Union[str, None] = None
+    matchCode: Union[str, None] = None
+    minimumPurchaseQuantity: Union[str, None] = None
+    minimumStockQuantity: Union[str, None] = None
+    name: Union[str, None] = None
+    packagingQuantity: Union[int, None] = None
+    packagingUnitBaseArticleId: Union[str, None] = None
+    packagingUnitParentArticleId: Union[str, None] = None
+    plannedWorkingTimePerUnit: Union[int, None] = None
     priceCalculationParameters: List[PriceCalculationParameters] = []
-    primarySupplySourceId: Optional[str] = None
-    procurementLeadDays: Optional[int] = None
-    producerType: Optional[str] = None
-    productionArticle: Optional[bool] = None
+    primarySupplySourceId: Union[str, None] = None
+    procurementLeadDays: Union[int, None] = None
+    producerType: Union[str, None] = None
+    productionArticle: Union[bool, None] = None
     productionBillOfMaterialItems: List[ProductionBillOfMaterialItems] = []
-    purchaseCostCenterId: Optional[str] = None
-    purchaseCostCenterNumber: Optional[str] = None
+    productionConfigurationRule: Union[str, None] = None
+    purchaseCostCenterId: Union[str, None] = None
+    purchaseCostCenterNumber: Union[str, None] = None
     quantityConversions: List[QuantityConversions] = []
-    ratingId: Optional[str] = None
-    ratingName: Optional[str] = None
-    recordItemGroupName: Optional[str] = None
-    safetyStockDays: Optional[int] = None
+    ratingId: Union[str, None] = None
+    ratingName: Union[str, None] = None
+    recordItemGroupName: Union[str, None] = None
+    safetyStockDays: Union[int, None] = None
     salesBillOfMaterialItems: List[SalesBillOfMaterialItems] = []
-    salesCostCenterId: Optional[str] = None
-    salesCostCenterNumber: Optional[str] = None
-    sellByDate: Optional[int] = None
-    sellFromDate: Optional[int] = None
-    serialNumberRequired: Optional[bool] = None
-    showOnDeliveryNote: Optional[bool] = None
-    statusId: Optional[str] = None
-    supplySources: List[SupplySources] = []
-    supportUntilDate: Optional[int] = None
-    systemCode: Optional[str] = None
+    salesCostCenterId: Union[str, None] = None
+    salesCostCenterNumber: Union[str, None] = None
+    sellByDate: Union[int, None] = None
+    sellFromDate: Union[int, None] = None
+    serialNumberRequired: Union[bool, None] = None
+    serviceArticleForServiceQuotaBookingId: Union[str, None] = None
+    serviceQuotaQuantity: Union[str, None] = None
+    shortDescription1: Union[str, None] = None
+    shortDescription2: Union[str, None] = None
+    showOnDeliveryNote: Union[bool, None] = None
+    statusId: Union[str, None] = None
+    supplySources: list = []
+    supportUntilDate: Union[int, None] = None
+    systemCode: Union[str, None] = None
     tags: list = []
-    targetStockQuantity: Optional[str] = None
-    useAvailableForSalesChannels: Optional[bool] = None
-    useSalesBillOfMaterialItemPrices: Optional[bool] = None
-    useSalesBillOfMaterialItemPricesForPurchase: Optional[bool] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = "articlePrices"
+    targetStockQuantity: Union[str, None] = None
+    taxRateType: Union[str, None] = None
+    unitId: Union[str, None] = None
+    unitName: Union[str, None] = None
+    useAvailableForSalesChannels: Union[bool, None] = None
+    useSalesBillOfMaterialItemPrices: Union[bool, None] = None
+    useSalesBillOfMaterialItemPricesForPurchase: Union[bool, None] = None
+    useSalesBillOfMaterialSubitemCosts: Union[bool, None] = None

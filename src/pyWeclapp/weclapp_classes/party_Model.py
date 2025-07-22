@@ -1,289 +1,335 @@
-# This code was dynamically created using WeclappClassCreator from pyWeclapp
+"""This code was dynamically created using WeclappClassCreator from pyweclapp"""
 
-from .blueprint import Blueprint, WeclappMetaData
-from typing import Optional, List, ClassVar
+from typing import Union, List
+from .blueprints import Blueprint, WeclappMetaData
 
 
 class Addresses(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    city: Optional[str] = None
-    company: Optional[str] = None
-    company2: Optional[str] = None
-    countryCode: Optional[str] = None
-    deliveryAddress: Optional[bool] = None
-    firstName: Optional[str] = None
-    globalLocationNumber: Optional[str] = None
-    invoiceAddress: Optional[bool] = None
-    lastName: Optional[str] = None
-    phoneNumber: Optional[str] = None
-    postOfficeBoxCity: Optional[str] = None
-    postOfficeBoxNumber: Optional[str] = None
-    postOfficeBoxZipCode: Optional[str] = None
-    primeAddress: Optional[bool] = None
-    salutation: Optional[str] = None
-    state: Optional[str] = None
-    street1: Optional[str] = None
-    street2: Optional[str] = None
-    title: Optional[str] = None
-    titleId: Optional[str] = None
-    zipcode: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for addresses in Party and Contacts."""
+
+    id: Union[str, None]
+    version: Union[str, None]
+    city: Union[str, None] = None
+    company: Union[str, None] = None
+    company2: Union[str, None] = None
+    countryCode: Union[str, None] = None
+    createdDate: Union[int, None]
+    deliveryAddress: Union[bool, None] = None
+    firstName: Union[str, None] = None
+    globalLocationNumber: Union[str, None] = None
+    invoiceAddress: Union[bool, None] = None
+    lastModifiedDate: Union[int, None]
+    lastName: Union[str, None] = None
+    phoneNumber: Union[str, None] = None
+    postOfficeBoxCity: Union[str, None] = None
+    postOfficeBoxNumber: Union[str, None] = None
+    postOfficeBoxZipCode: Union[str, None] = None
+    primeAddress: Union[bool, None] = None
+    salutation: Union[str, None] = None
+    state: Union[str, None] = None
+    street1: Union[str, None] = None
+    street2: Union[str, None] = None
+    title: Union[str, None] = None
+    titleId: Union[str, None] = None
+    zipcode: Union[str, None] = None
 
 
 class OnlineAccounts(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    accountName: Optional[str] = None
-    accountType: Optional[str] = None
-    url: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for onlineAccounts in Party and Contacts."""
 
-
-class BankAccounts(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    accountHolder: Optional[str] = None
-    accountNumber: Optional[str] = None
-    bankCode: Optional[str] = None
-    creditInstitute: Optional[str] = None
-    partyId: Optional[str] = None
-    primary: Optional[bool] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
-
-
-class CommissionSalesPartners(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    commissionFix: Optional[str] = None
-    commissionPercentage: Optional[str] = None
-    commissionType: Optional[str] = None
-    salesPartnerSupplierId: Optional[str] = None
-    salesPartnerSupplierNumber: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    id: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    version: Union[str, None] = None
+    accountName: Union[str, None] = None
+    accountType: Union[str, None] = None
+    url: Union[str, None] = None
 
 
 class Contacts(Blueprint):
-    id: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for contacts in Party."""
+
+    id: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    version: Union[str, None] = None
+    customAttributes: List[WeclappMetaData] = []
+    addresses: List[Addresses] = []
+    birthDate: Union[int, None] = None
+    company: Union[str, None] = None
+    company2: Union[str, None] = None
+    deliveryAddressId: Union[str, None] = None
+    email: Union[str, None] = None
+    fax: Union[str, None] = None
+    firstName: Union[str, None] = None
+    invoiceAddressId: Union[str, None] = None
+    lastName: Union[str, None] = None
+    middleName: Union[str, None] = None
+    mobilePhone1: Union[str, None] = None
+    onlineAccounts: List[OnlineAccounts] = []
+    partyType: Union[str, None] = None
+    personCompany: Union[str, None] = None
+    personDepartmentId: Union[str, None] = None
+    personRoleId: Union[str, None] = None
+    phone: Union[str, None] = None
+    primaryAddressId: Union[str, None] = None
+    salutation: Union[str, None] = None
+    tags: List[str] = []
+    title: Union[str, None] = None
+    titleId: Union[str, None] = None
+    website: Union[str, None] = None
+    customerCategoryId: Union[str, None] = None
+    customerCategoryName: Union[str, None] = None
+    description: Union[str, None] = None
+    fixPhone2: Union[str, None] = None
+    mobilePhone2: Union[str, None] = None
+    optIn: Union[bool, None] = None
+    optInLetter: Union[bool, None] = None
+    optInPhone: Union[bool, None] = None
+    optInSms: Union[bool, None] = None
+    phoneHome: Union[str, None] = None
+
+
+class BankAccounts(Blueprint):
+    """Subclass for bankAccounts in Party."""
+
+    id: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    version: Union[str, None] = None
+    accountHolder: Union[str, None] = None
+    accountNumber: Union[str, None] = None
+    bankCode: Union[str, None] = None
+    creditInstitute: Union[str, None] = None
+    partyId: Union[str, None] = None
+    primary: Union[bool, None] = None
+
+
+class CommissionSalesPartners(Blueprint):
+    """Subclass for commissionSalesPartners in Party."""
+
+    id: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    version: Union[str, None] = None
+    commissionFix: Union[str, None] = None
+    commissionPercentage: Union[str, None] = None
+    commissionType: Union[str, None] = None
+    salesPartnerSupplierId: Union[str, None] = None
+    salesPartnerSupplierNumber: Union[str, None] = None
 
 
 class CustomerSalesStageHistory(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    salesStageId: Optional[str] = None
-    salesStageName: Optional[str] = None
-    userId: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for customerSalesStageHistory in Party."""
+
+    id: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    version: Union[str, None] = None
+    salesStageId: Union[str, None] = None
+    salesStageName: Union[str, None] = None
+    userId: Union[str, None] = None
 
 
 class PartyEmailAddresses(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    bccAddresses: Optional[str] = None
-    ccAddresses: Optional[str] = None
-    toAddresses: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for partyEmailAddresses in Party."""
+
+    id: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    version: Union[str, None] = None
+    bccAddresses: Union[str, None] = None
+    ccAddresses: Union[str, None] = None
+    toAddresses: Union[str, None] = None
 
 
 class Invoices(Blueprint):
-    id: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for invoices in PartyHabitualExporterLettersOfIntent."""
+
+    id: Union[str, None] = None
 
 
 class PartyHabitualExporterLettersOfIntent(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    automaticallySuggestInInvoice: Optional[bool] = None
-    date: Optional[int] = None
-    fromSupplier: Optional[bool] = None
+    """Subclass for partyHabitualExporterLettersOfIntent in Party."""
+
+    id: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    version: Union[str, None] = None
+    automaticallySuggestInInvoice: Union[bool, None] = None
+    date: Union[int, None] = None
+    fromSupplier: Union[bool, None] = None
     invoices: List[Invoices] = []
-    numberDeclarer: Optional[str] = None
-    numberSupplier: Optional[str] = None
-    totalAmount: Optional[str] = None
-    type: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    numberDeclarer: Union[str, None] = None
+    numberSupplier: Union[str, None] = None
+    totalAmount: Union[str, None] = None
+    type: Union[str, None] = None
 
 
 class Topics(Blueprint):
-    id: Optional[str] = None
-    name: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for topics in Party."""
+
+    id: Union[str, None] = None
+    name: Union[str, None] = None
 
 
 class Party(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    customAttributes: List[WeclappMetaData] = []
+    """Class for party endpoint."""
+
+    id: Union[str, None]
+    version: Union[str, None]
     addresses: List[Addresses] = []
-    birthDate: Optional[int] = None
-    company: Optional[str] = None
-    company2: Optional[str] = None
-    deliveryAddressId: Optional[str] = None
-    email: Optional[str] = None
-    fax: Optional[str] = None
-    firstName: Optional[str] = None
-    invoiceAddressId: Optional[str] = None
-    lastName: Optional[str] = None
-    middleName: Optional[str] = None
-    mobilePhone1: Optional[str] = None
-    onlineAccounts: List[OnlineAccounts] = []
-    partyType: Optional[str] = None
-    personCompany: Optional[str] = None
-    personDepartmentId: Optional[str] = None
-    personRoleId: Optional[str] = None
-    phone: Optional[str] = None
-    primaryAddressId: Optional[str] = None
-    salutation: Optional[str] = None
-    tags: list = []
-    title: Optional[str] = None
-    titleId: Optional[str] = None
-    website: Optional[str] = None
+    allowPurchaseOrderCreation: Union[bool, None] = None
     bankAccounts: List[BankAccounts] = []
-    commercialLanguageId: Optional[str] = None
+    birthDate: Union[int, None] = None
+    commercialLanguageId: Union[str, None] = None
+    commissionBlock: Union[bool, None] = None
     commissionSalesPartners: List[CommissionSalesPartners] = []
-    companySizeId: Optional[str] = None
-    companySizeName: Optional[str] = None
-    competitor: Optional[bool] = None
+    company: Union[str, None] = None
+    company2: Union[str, None] = None
+    companySizeId: Union[str, None] = None
+    companySizeName: Union[str, None] = None
+    competitor: Union[bool, None] = None
     contacts: List[Contacts] = []
-    currencyId: Optional[str] = None
-    currencyName: Optional[str] = None
-    customer: Optional[bool] = None
-    customerAmountInsured: Optional[str] = None
-    customerAnnualRevenue: Optional[str] = None
-    customerBlockNotice: Optional[str] = None
-    customerBlocked: Optional[bool] = None
-    customerBusinessType: Optional[str] = None
-    customerCategoryId: Optional[str] = None
-    customerCategoryName: Optional[str] = None
-    customerCreditLimit: Optional[str] = None
-    customerCurrentSalesStageId: Optional[str] = None
-    customerCurrentSalesStageName: Optional[str] = None
-    customerDebtorAccountId: Optional[str] = None
-    customerDebtorAccountNumber: Optional[str] = None
-    customerDebtorAccountingCodeId: Optional[str] = None
-    customerDefaultHeaderDiscount: Optional[str] = None
-    customerDefaultHeaderSurcharge: Optional[str] = None
-    customerDefaultShippingCarrierId: Optional[str] = None
-    customerDeliveryBlock: Optional[bool] = None
-    customerInsolvent: Optional[bool] = None
-    customerInsured: Optional[bool] = None
-    customerInternalNote: Optional[str] = None
-    customerLossDescription: Optional[str] = None
-    customerLossReasonId: Optional[str] = None
-    customerLossReasonName: Optional[str] = None
-    customerNonStandardTaxId: Optional[str] = None
-    customerNumber: Optional[str] = None
-    customerNumberOld: Optional[str] = None
-    customerPaymentMethodId: Optional[str] = None
-    customerPaymentMethodName: Optional[str] = None
-    customerSalesChannel: Optional[str] = None
-    customerSalesOrderPaymentType: Optional[str] = None
-    customerSalesProbability: Optional[int] = None
+    convertedOnDate: Union[int, None] = None
+    createdDate: Union[int, None]
+    currencyId: Union[str, None] = None
+    currencyName: Union[str, None] = None
+    customAttributes: List[WeclappMetaData] = []
+    customer: Union[bool, None] = None
+    customerAllowDropshippingOrderCreation: Union[bool, None] = None
+    customerAmountInsured: Union[str, None] = None
+    customerAnnualRevenue: Union[str, None] = None
+    customerBlockNotice: Union[str, None] = None
+    customerBlocked: Union[bool, None] = None
+    customerBusinessType: Union[str, None] = None
+    customerCategoryId: Union[str, None] = None
+    customerCategoryName: Union[str, None] = None
+    customerCreditLimit: Union[str, None] = None
+    customerCurrentSalesStageId: Union[str, None] = None
+    customerCurrentSalesStageName: Union[str, None] = None
+    customerDebtorAccountId: Union[str, None] = None
+    customerDebtorAccountNumber: Union[str, None] = None
+    customerDebtorAccountingCodeId: Union[str, None] = None
+    customerDefaultHeaderDiscount: Union[str, None] = None
+    customerDefaultHeaderSurcharge: Union[str, None] = None
+    customerDefaultShippingCarrierId: Union[str, None] = None
+    customerDeliveryBlock: Union[bool, None] = None
+    customerInsolvent: Union[bool, None] = None
+    customerInsured: Union[bool, None] = None
+    customerInternalNote: Union[str, None] = None
+    customerLossDescription: Union[str, None] = None
+    customerLossReasonId: Union[str, None] = None
+    customerLossReasonName: Union[str, None] = None
+    customerNonStandardTaxId: Union[str, None] = None
+    customerNumber: Union[str, None] = None
+    customerNumberOld: Union[str, None] = None
+    customerPaymentMethodId: Union[str, None] = None
+    customerPaymentMethodName: Union[str, None] = None
+    customerSalesChannel: Union[str, None] = None
+    customerSalesOrderPaymentType: Union[str, None] = None
+    customerSalesProbability: Union[int, None] = None
     customerSalesStageHistory: List[CustomerSalesStageHistory] = []
-    customerSatisfaction: Optional[str] = None
-    customerShipmentMethodId: Optional[str] = None
-    customerShipmentMethodName: Optional[str] = None
-    customerSupplierNumber: Optional[str] = None
-    customerTermOfPaymentId: Optional[str] = None
-    customerTermOfPaymentName: Optional[str] = None
-    customerUseCustomsTariffNumber: Optional[bool] = None
-    deliveryEmailAddressesId: Optional[str] = None
-    description: Optional[str] = None
-    dunningAddressId: Optional[str] = None
-    dunningEmailAddressesId: Optional[str] = None
-    enableDropshippingInNewSupplySources: Optional[bool] = None
-    eoriNumber: Optional[str] = None
-    factoring: Optional[bool] = None
-    fixPhone2: Optional[str] = None
-    fixedResponsibleUser: Optional[bool] = None
-    formerSalesPartner: Optional[bool] = None
-    habitualExporter: Optional[bool] = None
-    imageId: Optional[str] = None
-    invoiceBlock: Optional[bool] = None
-    invoiceRecipientId: Optional[str] = None
-    leadRatingId: Optional[str] = None
-    leadRatingName: Optional[str] = None
-    leadSourceId: Optional[str] = None
-    leadSourceName: Optional[str] = None
-    leadStatus: Optional[str] = None
-    legalFormId: Optional[str] = None
-    legalFormName: Optional[str] = None
-    mobilePhone2: Optional[str] = None
-    optInEmail: Optional[bool] = None
-    optInLetter: Optional[bool] = None
-    optInPhone: Optional[bool] = None
-    optInSms: Optional[bool] = None
-    parentPartyId: Optional[str] = None
+    customerSatisfaction: Union[str, None] = None
+    customerShipmentMethodId: Union[str, None] = None
+    customerShipmentMethodName: Union[str, None] = None
+    customerSupplierNumber: Union[str, None] = None
+    customerTermOfPaymentId: Union[str, None] = None
+    customerTermOfPaymentName: Union[str, None] = None
+    customerUseCustomsTariffNumber: Union[bool, None] = None
+    deliveryAddressId: Union[str, None] = None
+    deliveryEmailAddressesId: Union[str, None] = None
+    description: Union[str, None] = None
+    dunningAddressId: Union[str, None] = None
+    dunningEmailAddressesId: Union[str, None] = None
+    email: Union[str, None] = None
+    enableDropshippingInNewSupplySources: Union[bool, None] = None
+    eoriNumber: Union[str, None] = None
+    factoring: Union[bool, None] = None
+    fax: Union[str, None] = None
+    firstName: Union[str, None] = None
+    fixPhone2: Union[str, None] = None
+    fixedResponsibleUser: Union[bool, None] = None
+    formerSalesPartner: Union[bool, None] = None
+    habitualExporter: Union[bool, None] = None
+    imageId: Union[str, None] = None
+    invoiceAddressId: Union[str, None] = None
+    invoiceBlock: Union[bool, None] = None
+    invoiceRecipientId: Union[str, None] = None
+    lastModifiedDate: Union[int, None]
+    lastName: Union[str, None] = None
+    leadRatingId: Union[str, None] = None
+    leadRatingName: Union[str, None] = None
+    leadSourceId: Union[str, None] = None
+    leadSourceName: Union[str, None] = None
+    leadStatus: Union[str, None] = None
+    legalFormId: Union[str, None] = None
+    legalFormName: Union[str, None] = None
+    middleName: Union[str, None] = None
+    mobilePhone1: Union[str, None] = None
+    mobilePhone2: Union[str, None] = None
+    onlineAccounts: List[OnlineAccounts] = []
+    optInEmail: Union[bool, None] = None
+    optInLetter: Union[bool, None] = None
+    optInPhone: Union[bool, None] = None
+    optInSms: Union[bool, None] = None
+    parentPartyId: Union[str, None] = None
     partyEmailAddresses: List[PartyEmailAddresses] = []
     partyHabitualExporterLettersOfIntent: List[PartyHabitualExporterLettersOfIntent] = (
         []
     )
-    phoneHome: Optional[str] = None
-    primaryContactId: Optional[str] = None
-    purchaseEmailAddressesId: Optional[str] = None
-    purchaseViaPlafond: Optional[bool] = None
-    quotationEmailAddressesId: Optional[str] = None
-    ratingId: Optional[str] = None
-    ratingName: Optional[str] = None
-    referenceNumber: Optional[str] = None
-    responsibleUserId: Optional[str] = None
-    responsibleUserUsername: Optional[str] = None
-    salesInvoiceEmailAddressesId: Optional[str] = None
-    salesOrderEmailAddressesId: Optional[str] = None
-    salesPartner: Optional[bool] = None
-    salesPartnerDefaultCommissionFix: Optional[str] = None
-    salesPartnerDefaultCommissionPercentage: Optional[str] = None
-    salesPartnerDefaultCommissionType: Optional[str] = None
-    sectorId: Optional[str] = None
-    sectorName: Optional[str] = None
-    supplier: Optional[bool] = None
-    supplierCreditorAccountId: Optional[str] = None
-    supplierCreditorAccountNumber: Optional[str] = None
-    supplierCreditorAccountingCodeId: Optional[str] = None
-    supplierCustomerNumberAtSupplier: Optional[str] = None
-    supplierDefaultShippingCarrierId: Optional[str] = None
-    supplierInternalNote: Optional[str] = None
-    supplierMinimumPurchaseOrderAmount: Optional[str] = None
-    supplierNonStandardTaxId: Optional[str] = None
-    supplierNumber: Optional[str] = None
-    supplierNumberOld: Optional[str] = None
-    supplierOrderBlock: Optional[bool] = None
-    supplierPaymentMethodId: Optional[str] = None
-    supplierPaymentMethodName: Optional[str] = None
-    supplierShipmentMethodId: Optional[str] = None
-    supplierShipmentMethodName: Optional[str] = None
-    supplierTermOfPaymentId: Optional[str] = None
-    supplierTermOfPaymentName: Optional[str] = None
-    taxId: Optional[str] = None
+    partyType: Union[str, None] = None
+    personCompany: Union[str, None] = None
+    personDepartmentId: Union[str, None] = None
+    personRoleId: Union[str, None] = None
+    phone: Union[str, None] = None
+    phoneHome: Union[str, None] = None
+    primaryAddressId: Union[str, None] = None
+    primaryContactId: Union[str, None] = None
+    publicPageExpirationDate: Union[int, None] = None
+    publicPageUuid: Union[str, None] = None
+    purchaseEmailAddressesId: Union[str, None] = None
+    purchaseViaPlafond: Union[bool, None] = None
+    quotationEmailAddressesId: Union[str, None] = None
+    ratingId: Union[str, None] = None
+    ratingName: Union[str, None] = None
+    referenceNumber: Union[str, None] = None
+    regionId: Union[str, None] = None
+    responsibleUserId: Union[str, None] = None
+    responsibleUserUsername: Union[str, None] = None
+    salesInvoiceEmailAddressesId: Union[str, None] = None
+    salesOrderEmailAddressesId: Union[str, None] = None
+    salesPartner: Union[bool, None] = None
+    salesPartnerDefaultCommissionFix: Union[str, None] = None
+    salesPartnerDefaultCommissionPercentage: Union[str, None] = None
+    salesPartnerDefaultCommissionType: Union[str, None] = None
+    salutation: Union[str, None] = None
+    sectorId: Union[str, None] = None
+    sectorName: Union[str, None] = None
+    supplier: Union[bool, None] = None
+    supplierCreditorAccountId: Union[str, None] = None
+    supplierCreditorAccountNumber: Union[str, None] = None
+    supplierCreditorAccountingCodeId: Union[str, None] = None
+    supplierCustomerNumberAtSupplier: Union[str, None] = None
+    supplierDefaultShippingCarrierId: Union[str, None] = None
+    supplierInternalNote: Union[str, None] = None
+    supplierMergeItemsForOcrInvoiceUpload: Union[bool, None] = None
+    supplierMinimumPurchaseOrderAmount: Union[str, None] = None
+    supplierNonStandardTaxId: Union[str, None] = None
+    supplierNumber: Union[str, None] = None
+    supplierNumberOld: Union[str, None] = None
+    supplierOrderBlock: Union[bool, None] = None
+    supplierPaymentMethodId: Union[str, None] = None
+    supplierPaymentMethodName: Union[str, None] = None
+    supplierShipmentMethodId: Union[str, None] = None
+    supplierShipmentMethodName: Union[str, None] = None
+    supplierTermOfPaymentId: Union[str, None] = None
+    supplierTermOfPaymentName: Union[str, None] = None
+    tags: list = []
+    taxId: Union[str, None] = None
+    title: Union[str, None] = None
+    titleId: Union[str, None] = None
     topics: List[Topics] = []
-    vatIdentificationNumber: Optional[str] = None
-    xRechnungLeitwegId: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    vatIdentificationNumber: Union[str, None] = None
+    website: Union[str, None] = None
+    xRechnungLeitwegId: Union[str, None] = None

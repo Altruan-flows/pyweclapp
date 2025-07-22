@@ -1,90 +1,78 @@
-# This code was dynamically created using WeclappClassCreator from pyWeclapp
+"""This code was dynamically created using WeclappClassCreator from pyweclapp"""
 
-from .blueprint import Blueprint, WeclappMetaData
-from typing import Optional, List, ClassVar
+from typing import Union, List
+from .blueprints import Blueprint, WeclappMetaData
 
 
 class Addresses(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    city: Optional[str] = None
-    company: Optional[str] = None
-    company2: Optional[str] = None
-    countryCode: Optional[str] = None
-    deliveryAddress: Optional[bool] = None
-    firstName: Optional[str] = None
-    globalLocationNumber: Optional[str] = None
-    invoiceAddress: Optional[bool] = None
-    lastName: Optional[str] = None
-    phoneNumber: Optional[str] = None
-    postOfficeBoxCity: Optional[str] = None
-    postOfficeBoxNumber: Optional[str] = None
-    postOfficeBoxZipCode: Optional[str] = None
-    primeAddress: Optional[bool] = None
-    salutation: Optional[str] = None
-    state: Optional[str] = None
-    street1: Optional[str] = None
-    street2: Optional[str] = None
-    title: Optional[str] = None
-    titleId: Optional[str] = None
-    zipcode: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for addresses in Contact."""
 
-
-class OnlineAccounts(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    accountName: Optional[str] = None
-    accountType: Optional[str] = None
-    url: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    id: Union[str, None]
+    version: Union[str, None]
+    city: Union[str, None] = None
+    company: Union[str, None] = None
+    company2: Union[str, None] = None
+    countryCode: Union[str, None] = None
+    createdDate: Union[int, None]
+    deliveryAddress: Union[bool, None] = None
+    firstName: Union[str, None] = None
+    globalLocationNumber: Union[str, None] = None
+    invoiceAddress: Union[bool, None] = None
+    lastModifiedDate: Union[int, None]
+    lastName: Union[str, None] = None
+    phoneNumber: Union[str, None] = None
+    postOfficeBoxCity: Union[str, None] = None
+    postOfficeBoxNumber: Union[str, None] = None
+    postOfficeBoxZipCode: Union[str, None] = None
+    primeAddress: Union[bool, None] = None
+    salutation: Union[str, None] = None
+    state: Union[str, None] = None
+    street1: Union[str, None] = None
+    street2: Union[str, None] = None
+    title: Union[str, None] = None
+    titleId: Union[str, None] = None
+    zipcode: Union[str, None] = None
 
 
 class Contact(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    customAttributes: List[WeclappMetaData] = []
+    """Subclass for contact endpoint."""
+
+    id: Union[str, None]
+    version: Union[str, None]
     addresses: List[Addresses] = []
-    birthDate: Optional[int] = None
-    company: Optional[str] = None
-    company2: Optional[str] = None
-    deliveryAddressId: Optional[str] = None
-    email: Optional[str] = None
-    fax: Optional[str] = None
-    firstName: Optional[str] = None
-    invoiceAddressId: Optional[str] = None
-    lastName: Optional[str] = None
-    middleName: Optional[str] = None
-    mobilePhone1: Optional[str] = None
-    onlineAccounts: List[OnlineAccounts] = []
-    partyType: Optional[str] = None
-    personCompany: Optional[str] = None
-    personDepartmentId: Optional[str] = None
-    personRoleId: Optional[str] = None
-    phone: Optional[str] = None
-    primaryAddressId: Optional[str] = None
-    salutation: Optional[str] = None
+    birthDate: Union[int, None] = None
+    company: Union[str, None] = None
+    company2: Union[str, None] = None
+    createdDate: Union[int, None]
+    customAttributes: List[WeclappMetaData] = []
+    customerCategoryId: Union[str, None] = None
+    customerCategoryName: Union[str, None] = None
+    deliveryAddressId: Union[str, None] = None
+    description: Union[str, None] = None
+    email: Union[str, None] = None
+    fax: Union[str, None] = None
+    firstName: Union[str, None] = None
+    fixPhone2: Union[str, None] = None
+    invoiceAddressId: Union[str, None] = None
+    lastModifiedDate: Union[int, None]
+    lastName: Union[str, None] = None
+    middleName: Union[str, None] = None
+    mobilePhone1: Union[str, None] = None
+    mobilePhone2: Union[str, None] = None
+    onlineAccounts: list = []
+    optIn: Union[bool, None] = None
+    optInLetter: Union[bool, None] = None
+    optInPhone: Union[bool, None] = None
+    optInSms: Union[bool, None] = None
+    partyType: Union[str, None] = None
+    personCompany: Union[str, None] = None
+    personDepartmentId: Union[str, None] = None
+    personRoleId: Union[str, None] = None
+    phone: Union[str, None] = None
+    phoneHome: Union[str, None] = None
+    primaryAddressId: Union[str, None] = None
+    salutation: Union[str, None] = None
     tags: list = []
-    title: Optional[str] = None
-    titleId: Optional[str] = None
-    website: Optional[str] = None
-    customerCategoryId: Optional[str] = None
-    customerCategoryName: Optional[str] = None
-    description: Optional[str] = None
-    fixPhone2: Optional[str] = None
-    mobilePhone2: Optional[str] = None
-    optIn: Optional[bool] = None
-    optInLetter: Optional[bool] = None
-    optInPhone: Optional[bool] = None
-    optInSms: Optional[bool] = None
-    phoneHome: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    title: Union[str, None] = None
+    titleId: Union[str, None] = None
+    website: Union[str, None] = None

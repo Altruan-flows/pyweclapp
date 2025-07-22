@@ -1,16 +1,13 @@
-# dynamic File please do not edit
+"""Module for weclapp classes package imports. Add more classes if necessary."""
 
-from .blueprint.custom_attributes_model import WeclappMetaData
-from .contract_Model import Contract, ContractItems
-from .contact_Model import Contact
-from .customer_Model import Customer
-from .party_Model import Party
-from .article_Model import Article, ArticlePrices, VariantArticle
-from .salesOrder_Model import SalesOrder, OrderItems
-from .shipment_Model import Shipment, ShipmentItems
-from .quotation_Model import Quotation
-from .ticket_Model import Ticket
-from .salesInvoice_Model import SalesInvoice, SalesInvoiceItems
-from .extraInfoForApp import ExtraInfoForApp
-from .purchaseOrder_Model import PurchaseOrder, PurchaseOrderItems
-from .incomingGoods_Model import IncomingGoods, IncomingGoodsItems
+from .blueprints.custom_attributes_model import WeclappMetaData
+from .sales_order_model import SalesOrder, OrderItems
+from .shipment_model import Shipment, ShipmentItems
+from .customer_model import Customer
+from .party_model import Party
+from .article_model import Article, ArticlePrices
+from .contact_model import Contact
+from .incoming_goods_model import IncomingGoods, IncomingGoodsItems
+from .purchase_order_model import PurchaseOrder, PurchaseOrderItems
+from .quotation_model import Quotation, QuotationItems
+from .sales_invoice_model import SalesInvoice, SalesInvoiceItems

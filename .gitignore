@@ -2,4 +2,5 @@
 .python-version
 .vscode/
 .gitignore
-.ipynb
+
+*.ipynb

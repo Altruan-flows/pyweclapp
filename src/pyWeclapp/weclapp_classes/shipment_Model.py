@@ -1,182 +1,215 @@
-# This code was dynamically created using WeclappClassCreator from pyWeclapp
+"""This code was dynamically created using WeclappClassCreator from pyweclapp"""
 
-from .blueprint import Blueprint, WeclappMetaData
-from typing import Optional, List, ClassVar
-
-
-class Address(Blueprint):
-    city: Optional[str] = None
-    company: Optional[str] = None
-    company2: Optional[str] = None
-    countryCode: Optional[str] = None
-    firstName: Optional[str] = None
-    globalLocationNumber: Optional[str] = None
-    lastName: Optional[str] = None
-    middleName: Optional[str] = None
-    phoneNumber: Optional[str] = None
-    postOfficeBoxCity: Optional[str] = None
-    postOfficeBoxNumber: Optional[str] = None
-    postOfficeBoxZipCode: Optional[str] = None
-    salutation: Optional[str] = None
-    state: Optional[str] = None
-    street1: Optional[str] = None
-    street2: Optional[str] = None
-    title: Optional[str] = None
-    titleId: Optional[str] = None
-    zipcode: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
-
-
-class StatusHistory(Blueprint):
-    status: Optional[str] = None
-    statusDate: Optional[int] = None
-    userId: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+from typing import Union, List
+from .blueprints import Blueprint, WeclappMetaData
 
 
 class PurchaseOrders(Blueprint):
-    id: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for purchaseOrders in Shipment."""
+
+    id: Union[str, None] = None
+
+
+class InvoiceAddress(Blueprint):
+    """Subclass for invoiceAddress in Shipment."""
+
+    city: Union[str, None] = None
+    company: Union[str, None] = None
+    company2: Union[str, None] = None
+    countryCode: Union[str, None] = None
+    firstName: Union[str, None] = None
+    globalLocationNumber: Union[str, None] = None
+    lastName: Union[str, None] = None
+    middleName: Union[str, None] = None
+    phoneNumber: Union[str, None] = None
+    postOfficeBoxCity: Union[str, None] = None
+    postOfficeBoxNumber: Union[str, None] = None
+    postOfficeBoxZipCode: Union[str, None] = None
+    salutation: Union[str, None] = None
+    state: Union[str, None] = None
+    street1: Union[str, None] = None
+    street2: Union[str, None] = None
+    title: Union[str, None] = None
+    titleId: Union[str, None] = None
+    zipcode: Union[str, None] = None
+
+
+class RecipientAddress(Blueprint):
+    """Subclass for recipientAddress in Shipment."""
+
+    city: Union[str, None] = None
+    company: Union[str, None] = None
+    company2: Union[str, None] = None
+    countryCode: Union[str, None] = None
+    firstName: Union[str, None] = None
+    globalLocationNumber: Union[str, None] = None
+    lastName: Union[str, None] = None
+    middleName: Union[str, None] = None
+    phoneNumber: Union[str, None] = None
+    postOfficeBoxCity: Union[str, None] = None
+    postOfficeBoxNumber: Union[str, None] = None
+    postOfficeBoxZipCode: Union[str, None] = None
+    salutation: Union[str, None] = None
+    state: Union[str, None] = None
+    street1: Union[str, None] = None
+    street2: Union[str, None] = None
+    title: Union[str, None] = None
+    titleId: Union[str, None] = None
+    zipcode: Union[str, None] = None
 
 
 class EmailAddresses(Blueprint):
-    bccAddresses: Optional[str] = None
-    ccAddresses: Optional[str] = None
-    toAddresses: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for recordEmailAddresses and salesInvoiceEmailAddresses in Shipment."""
+
+    bccAddresses: Union[str, None] = None
+    ccAddresses: Union[str, None] = None
+    toAddresses: Union[str, None] = None
+
+
+class SalesOrders(Blueprint):
+    """Subclass for salesOrders in Shipment."""
+
+    id: Union[str, None] = None
 
 
 class ShipmentItems(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    articleId: Optional[str] = None
-    articleNumber: Optional[str] = None
-    note: Optional[str] = None
-    positionNumber: Optional[int] = None
-    quantity: Optional[str] = None
-    description: Optional[str] = None
-    descriptionFixed: Optional[bool] = None
-    manualQuantity: Optional[bool] = None
-    parentItemId: Optional[str] = None
-    title: Optional[str] = None
-    unitId: Optional[str] = None
-    unitName: Optional[str] = None
-    addPageBreakBefore: Optional[bool] = None
-    availability: Optional[str] = None
-    availabilityForAllWarehouses: Optional[str] = None
+    """Subclass for shipmentItems in Shipment."""
+
+    id: Union[str, None] = None
+    version: Union[str, None] = None
+    addPageBreakBefore: Union[bool, None] = None
+    articleId: Union[str, None] = None
+    articleNumber: Union[str, None] = None
+    availability: Union[str, None] = None
+    availabilityForAllWarehouses: Union[str, None] = None
+    createdDate: Union[int, None]
     customAttributes: List[WeclappMetaData] = []
-    freeTextItem: Optional[bool] = None
-    groupName: Optional[str] = None
-    purchaseOrderItemId: Optional[str] = None
-    returnAssessmentId: Optional[str] = None
-    returnAssessmentName: Optional[str] = None
-    returnDescription: Optional[str] = None
-    returnErrorId: Optional[str] = None
-    returnErrorName: Optional[str] = None
-    returnReasonId: Optional[str] = None
-    returnReasonName: Optional[str] = None
-    returnRectificationId: Optional[str] = None
-    returnRectificationName: Optional[str] = None
-    salesOrderItemId: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    description: Union[str, None] = None
+    descriptionFixed: Union[bool, None] = None
+    groupName: Union[str, None] = None
+    itemType: Union[str, None] = None
+    lastModifiedDate: Union[int, None]
+    manualQuantity: Union[bool, None] = None
+    note: Union[str, None] = None
+    parentItemId: Union[str, None] = None
+    picks: list = []
+    positionNumber: Union[int, None]
+    purchaseOrderItemId: Union[str, None] = None
+    quantity: Union[str, None] = None
+    returnAssessmentId: Union[str, None] = None
+    returnAssessmentName: Union[str, None] = None
+    returnDescription: Union[str, None] = None
+    returnErrorId: Union[str, None] = None
+    returnErrorName: Union[str, None] = None
+    returnReasonId: Union[str, None] = None
+    returnReasonName: Union[str, None] = None
+    returnRectificationId: Union[str, None] = None
+    returnRectificationName: Union[str, None] = None
+    salesOrderItemId: Union[str, None] = None
+    title: Union[str, None] = None
+    unitId: Union[str, None] = None
+    unitName: Union[str, None] = None
 
 
 class ShippedFromAddress(Blueprint):
-    city: Optional[str] = None
-    company: Optional[str] = None
-    company2: Optional[str] = None
-    countryCode: Optional[str] = None
-    firstName: Optional[str] = None
-    globalLocationNumber: Optional[str] = None
-    lastName: Optional[str] = None
-    middleName: Optional[str] = None
-    phoneNumber: Optional[str] = None
-    postOfficeBoxCity: Optional[str] = None
-    postOfficeBoxNumber: Optional[str] = None
-    postOfficeBoxZipCode: Optional[str] = None
-    salutation: Optional[str] = None
-    state: Optional[str] = None
-    street1: Optional[str] = None
-    street2: Optional[str] = None
-    title: Optional[str] = None
-    titleId: Optional[str] = None
-    zipcode: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for shippedFromAddress in Shipment."""
+
+    city: Union[str, None] = None
+    company: Union[str, None] = None
+    company2: Union[str, None] = None
+    countryCode: Union[str, None] = None
+    firstName: Union[str, None] = None
+    globalLocationNumber: Union[str, None] = None
+    lastName: Union[str, None] = None
+    middleName: Union[str, None] = None
+    phoneNumber: Union[str, None] = None
+    postOfficeBoxCity: Union[str, None] = None
+    postOfficeBoxNumber: Union[str, None] = None
+    postOfficeBoxZipCode: Union[str, None] = None
+    salutation: Union[str, None] = None
+    state: Union[str, None] = None
+    street1: Union[str, None] = None
+    street2: Union[str, None] = None
+    title: Union[str, None] = None
+    titleId: Union[str, None] = None
+    zipcode: Union[str, None] = None
+
+
+class StatusHistory(Blueprint):
+    """Subclass for statusHistory in Shipment."""
+
+    status: Union[str, None] = None
+    statusDate: Union[int, None] = None
+    userId: Union[str, None] = None
 
 
 class Shipment(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
+    """Class for shipment endpoint."""
+
+    id: Union[str, None]
+    version: Union[str, None]
+    additionalDeliveryInformation: Union[str, None] = None
+    availability: Union[str, None] = None
+    availabilityForAllWarehouses: Union[str, None] = None
+    commercialLanguage: Union[str, None] = None
+    consolidationStoragePlaceId: Union[str, None] = None
+    createdDate: Union[int, None]
+    creatorId: Union[str, None] = None
     customAttributes: List[WeclappMetaData] = []
-    commercialLanguage: Optional[str] = None
-    creatorId: Optional[str] = None
-    description: Optional[str] = None
-    disableEmailTemplate: Optional[bool] = None
-    recordComment: Optional[str] = None
-    recordFreeText: Optional[str] = None
-    recordOpening: Optional[str] = None
-    sentToRecipient: Optional[bool] = None
-    tags: list = []
-    invoiceAddress: Address = Address.fromBlank()
-    recipientAddress: Address = Address.fromBlank()
-    salesOrderId: Optional[str] = None
-    salesOrderNumber: Optional[str] = None
-    status: Optional[str] = None
-    statusHistory: List[StatusHistory] = []
-    additionalDeliveryInformation: Optional[str] = None
-    availability: Optional[str] = None
-    availabilityForAllWarehouses: Optional[str] = None
-    consolidationStoragePlaceId: Optional[str] = None
-    customerPurchaseOrderNumber: Optional[str] = None
-    declaredValueAmount: Optional[str] = None
-    declaredValueAmountCurrencyId: Optional[str] = None
-    declaredValueAmountCurrencyName: Optional[str] = None
-    deliveryDate: Optional[int] = None
-    destinationStoragePlaceId: Optional[str] = None
-    destinationWarehouseId: Optional[str] = None
-    destinationWarehouseName: Optional[str] = None
-    invoiceRecipientId: Optional[str] = None
-    packageHeight: Optional[int] = None
-    packageLength: Optional[int] = None
-    packageReferenceNumber: Optional[str] = None
-    packageReturnTrackingNumber: Optional[str] = None
-    packageReturnTrackingUrl: Optional[str] = None
-    packageTrackingNumber: Optional[str] = None
-    packageTrackingUrl: Optional[str] = None
-    packageWeight: Optional[str] = None
-    packageWidth: Optional[int] = None
-    pickingInstructions: Optional[str] = None
-    picksComplete: Optional[bool] = None
+    customerPurchaseOrderNumber: Union[str, None] = None
+    declaredValueAmount: Union[str, None] = None
+    declaredValueAmountCurrencyId: Union[str, None] = None
+    declaredValueAmountCurrencyName: Union[str, None] = None
+    deliveryDate: Union[int, None] = None
+    description: Union[str, None] = None
+    destinationStoragePlaceId: Union[str, None] = None
+    destinationWarehouseId: Union[str, None] = None
+    destinationWarehouseName: Union[str, None] = None
+    dhlReceiverId: Union[str, None] = None
+    disableEmailTemplate: Union[bool, None] = None
+    invoiceAddress: InvoiceAddress = InvoiceAddress.from_blank()
+    invoiceRecipientId: Union[str, None] = None
+    lastModifiedDate: Union[int, None]
+    packageHeight: Union[int, None] = None
+    packageLength: Union[int, None] = None
+    packageReferenceNumber: Union[str, None] = None
+    packageReturnTrackingNumber: Union[str, None] = None
+    packageReturnTrackingUrl: Union[str, None] = None
+    packageTrackingNumber: Union[str, None] = None
+    packageTrackingUrl: Union[str, None] = None
+    packageWeight: Union[str, None] = None
+    packageWidth: Union[int, None] = None
+    pickingInstructions: Union[str, None] = None
+    picksComplete: Union[bool, None] = None
     purchaseOrders: List[PurchaseOrders] = []
-    recipientCustomerNumber: Optional[str] = None
-    recipientPartyId: Optional[str] = None
-    recipientSupplierNumber: Optional[str] = None
-    recordEmailAddresses: EmailAddresses = EmailAddresses.fromBlank()
-    responsibleUserId: Optional[str] = None
-    salesInvoiceEmailAddresses: EmailAddresses = EmailAddresses.fromBlank()
+    recipientAddress: RecipientAddress = RecipientAddress.from_blank()
+    recipientCustomerNumber: Union[str, None] = None
+    recipientPartyId: Union[str, None] = None
+    recipientSupplierNumber: Union[str, None] = None
+    recordComment: Union[str, None] = None
+    recordEmailAddresses: EmailAddresses = EmailAddresses.from_blank()
+    recordFreeText: Union[str, None] = None
+    recordOpening: Union[str, None] = None
+    responsibleUserId: Union[str, None] = None
+    salesInvoiceEmailAddresses: EmailAddresses = EmailAddresses.from_blank()
+    salesOrderId: Union[str, None] = None
+    salesOrderNumber: Union[str, None] = None
+    salesOrders: List[SalesOrders] = []
+    sentToRecipient: Union[bool, None] = None
     shipmentItems: List[ShipmentItems] = []
-    shipmentMethodId: Optional[str] = None
-    shipmentMethodName: Optional[str] = None
-    shipmentNumber: Optional[str] = None
-    shipmentType: Optional[str] = None
-    shippedFromAddress: ShippedFromAddress = ShippedFromAddress.fromBlank()
-    shippingCarrierId: Optional[str] = None
-    shippingCarrierName: Optional[str] = None
-    shippingDate: Optional[int] = None
-    shippingLabelsCount: Optional[int] = None
-    shippingReturnCarrierId: Optional[str] = None
-    shippingReturnCarrierName: Optional[str] = None
-    warehouseId: Optional[str] = None
-    warehouseName: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = "shipmentItems"
+    shipmentMethodId: Union[str, None] = None
+    shipmentMethodName: Union[str, None] = None
+    shipmentNumber: Union[str, None] = None
+    shipmentType: Union[str, None] = None
+    shippedFromAddress: ShippedFromAddress = ShippedFromAddress.from_blank()
+    shippingCarrierId: Union[str, None] = None
+    shippingCarrierName: Union[str, None] = None
+    shippingDate: Union[int, None] = None
+    shippingLabelsCount: Union[int, None] = None
+    shippingReturnCarrierId: Union[str, None] = None
+    shippingReturnCarrierName: Union[str, None] = None
+    status: Union[str, None] = None
+    statusHistory: List[StatusHistory] = []
+    tags: list = []
+    warehouseId: Union[str, None] = None
+    warehouseName: Union[str, None] = None

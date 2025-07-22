@@ -4,8 +4,32 @@ from typing import Union, List
 from .blueprints import Blueprint, WeclappMetaData
 
 
+class DeliveryAddress(Blueprint):
+    """Subclass for deliveryAddress in PurchaseOrder."""
+
+    city: Union[str, None] = None
+    company: Union[str, None] = None
+    company2: Union[str, None] = None  # Type estimated
+    countryCode: Union[str, None] = None
+    firstName: Union[str, None] = None  # Type estimated
+    globalLocationNumber: Union[str, None] = None  # Type estimated
+    lastName: Union[str, None] = None  # Type estimated
+    middleName: Union[str, None] = None  # Type estimated
+    phoneNumber: Union[str, None] = None  # Type estimated
+    postOfficeBoxCity: Union[str, None] = None  # Type estimated
+    postOfficeBoxNumber: Union[str, None] = None  # Type estimated
+    postOfficeBoxZipCode: Union[str, None] = None  # Type estimated
+    salutation: Union[str, None] = None  # Type estimated
+    state: Union[str, None] = None  # Type estimated
+    street1: Union[str, None] = None
+    street2: Union[str, None] = None  # Type estimated
+    title: Union[str, None] = None  # Type estimated
+    titleId: Union[str, None] = None  # Type estimated
+    zipcode: Union[str, None] = None
+
+
 class ShippingCostItems(Blueprint):
-    """Subclass for shippingCostItems in Quotation."""
+    """Subclass for shippingCostItems in PurchaseOrder."""
 
     id: Union[str, None] = None
     createdDate: Union[int, None] = None
@@ -22,13 +46,10 @@ class ShippingCostItems(Blueprint):
     taxName: Union[str, None] = None
     unitPrice: Union[str, None] = None
     unitPriceInCompanyCurrency: Union[str, None] = None
-    manualUnitCost: Union[bool, None] = None
-    unitCost: Union[str, None] = None
-    unitCostInCompanyCurrency: Union[str, None] = None
 
 
 class ReductionAdditionItems(Blueprint):
-    """Subclass for reductionAdditionItems in QuotationItems."""
+    """Subclass for reductionAdditionItems in PurchaseOrderItems."""
 
     position: Union[int, None] = None
     source: Union[str, None] = None
@@ -36,46 +57,29 @@ class ReductionAdditionItems(Blueprint):
     value: Union[str, None] = None
 
 
-class CommissionSalesPartners(Blueprint):
-    """Subclass for commissionSalesPartners in QuotationItems and Quotation."""
+class BatchSerialNumbers(Blueprint):
+    """Subclass for batchSerialNumbers in PurchaseOrderItems."""
 
     id: Union[str, None] = None
     createdDate: Union[int, None] = None
     lastModifiedDate: Union[int, None] = None
     version: Union[str, None] = None
-    commissionFix: Union[str, None] = None
-    commissionPercentage: Union[str, None] = None
-    commissionType: Union[str, None] = None
-    salesPartnerSupplierId: Union[str, None] = None
-    salesPartnerSupplierNumber: Union[str, None] = None
+    batchNumber: Union[str, None] = None
+    expirationDate: Union[int, None] = None
+    quantity: Union[str, None] = None
+    serialNumbers: list = []
 
 
-class DeliveryAddress(Blueprint):
-    """Subclass for deliveryAddress in Quotation."""
+class DropshippingDeliveryNoteFormTexts(Blueprint):
+    """Subclass for dropshippingDeliveryNoteFormTexts in PurchaseOrder."""
 
-    city: Union[str, None] = None
-    company: Union[str, None] = None
-    company2: Union[str, None] = None  # Type estimated
-    countryCode: Union[str, None] = None
-    firstName: Union[str, None] = None  # Type estimated
-    globalLocationNumber: Union[str, None] = None  # Type estimated
-    lastName: Union[str, None] = None  # Type estimated
-    middleName: Union[str, None] = None  # Type estimated
-    phoneNumber: Union[str, None] = None  # Type estimated
-    postOfficeBoxCity: Union[str, None] = None  # Type estimated
-    postOfficeBoxNumber: Union[str, None] = None  # Type estimated
-    postOfficeBoxZipCode: Union[str, None] = None  # Type estimated
-    salutation: Union[str, None] = None  # Type estimated
-    state: Union[str, None] = None  # Type estimated
-    street1: Union[str, None] = None
-    street2: Union[str, None] = None  # Type estimated
-    title: Union[str, None] = None  # Type estimated
-    titleId: Union[str, None] = None  # Type estimated
-    zipcode: Union[str, None] = None
+    recordComment: Union[str, None] = None  # Type estimated
+    recordFreeText: Union[str, None] = None  # Type estimated
+    recordOpening: Union[str, None] = None  # Type estimated
 
 
 class InvoiceAddress(Blueprint):
-    """Subclass for invoiceAddress in Quotation."""
+    """Subclass for invoiceAddress in PurchaseOrder."""
 
     city: Union[str, None] = None
     company: Union[str, None] = None
@@ -98,16 +102,17 @@ class InvoiceAddress(Blueprint):
     zipcode: Union[str, None] = None
 
 
-class QuotationItems(Blueprint):
-    """Subclass for quotationItems in Quotation."""
+class PurchaseOrderItems(Blueprint):
+    """Subclass for purchaseOrderItems in PurchaseOrder."""
 
     id: Union[str, None]
     version: Union[str, None]
     addPageBreakBefore: Union[bool, None] = None
-    alternative: Union[bool, None] = None
     articleId: Union[str, None] = None
     articleNumber: Union[str, None] = None
-    commissionSalesPartners: List[CommissionSalesPartners] = []
+    batchSerialNumbers: List[BatchSerialNumbers] = []
+    blanketPurchaseOrderId: Union[str, None] = None  # Type estimated
+    blanketPurchaseOrderReleaseId: Union[str, None] = None  # Type estimated
     createdDate: Union[int, None]
     customAttributes: List[WeclappMetaData] = []
     description: Union[str, None] = None
@@ -116,13 +121,10 @@ class QuotationItems(Blueprint):
     grossAmount: Union[str, None] = None
     grossAmountInCompanyCurrency: Union[str, None] = None
     groupName: Union[str, None] = None  # Type estimated
-    invoicingType: Union[str, None] = None  # Type estimated
-    itScopeId: Union[str, None] = None  # Type estimated
+    invoicedQuantity: Union[str, None] = None
     itemType: Union[str, None] = None
     lastModifiedDate: Union[int, None]
-    manualPlannedWorkingTimePerUnit: Union[bool, None] = None
     manualQuantity: Union[bool, None] = None
-    manualUnitCost: Union[bool, None] = None
     manualUnitPrice: Union[bool, None] = None
     netAmount: Union[str, None] = None
     netAmountForStatistics: Union[str, None] = None
@@ -130,21 +132,20 @@ class QuotationItems(Blueprint):
     netAmountInCompanyCurrency: Union[str, None] = None
     note: Union[str, None] = None  # Type estimated
     parentItemId: Union[str, None] = None  # Type estimated
-    plannedDeliveryDate: Union[int, None] = None  # Type estimated
+    plannedDeliveryDate: Union[int, None] = None
     plannedShippingDate: Union[int, None] = None  # Type estimated
-    plannedWorkingTimePerUnit: Union[str, None] = None  # Type estimated
     positionNumber: Union[int, None]
+    purchaseOrderRequestOfferItemId: Union[str, None] = None  # Type estimated
     quantity: Union[str, None] = None
-    recommendedRetailPrice: Union[str, None] = None  # Type estimated
+    receivedQuantity: Union[str, None] = None
     reductionAdditionItems: List[ReductionAdditionItems] = []
-    scaleValues: list = []
-    servicePeriodFrom: Union[str, None] = None  # Type estimated
-    servicePeriodTo: Union[str, None] = None  # Type estimated
+    salesOrderItemId: Union[str, None] = None  # Type estimated
+    servicePeriodFromDate: Union[int, None] = None  # Type estimated
+    servicePeriodToDate: Union[int, None] = None  # Type estimated
+    supplierArticleId: Union[str, None] = None
     taxId: Union[str, None] = None
     taxName: Union[str, None] = None
     title: Union[str, None] = None
-    unitCost: Union[str, None] = None
-    unitCostInCompanyCurrency: Union[str, None] = None
     unitId: Union[str, None] = None
     unitName: Union[str, None] = None
     unitPrice: Union[str, None] = None
@@ -152,7 +153,7 @@ class QuotationItems(Blueprint):
 
 
 class RecordAddress(Blueprint):
-    """Subclass for recordAddress in Quotation."""
+    """Subclass for recordAddress in PurchaseOrder."""
 
     city: Union[str, None] = None
     company: Union[str, None] = None
@@ -175,119 +176,100 @@ class RecordAddress(Blueprint):
     zipcode: Union[str, None] = None
 
 
-class EmailAddresses(Blueprint):
-    """Subclass for salesInvoiceEmailAddresses, deliveryEmailAddresses,
-    salesOrderEmailAddresses, recordEmailAddresses in Quotation."""
+class RecordEmailAddresses(Blueprint):
+    """Subclass for recordEmailAddresses in PurchaseOrder."""
 
-    bccAddresses: Union[str, None] = None
-    ccAddresses: Union[str, None] = None
+    bccAddresses: Union[str, None] = None  # Type estimated
+    ccAddresses: Union[str, None] = None  # Type estimated
     toAddresses: Union[str, None] = None
 
 
-class SalesStageHistory(Blueprint):
-    """Subclass for salesStageHistory in Quotation."""
-
-    id: Union[str, None]
-    version: Union[str, None]
-    createdDate: Union[int, None]
-    lastModifiedDate: Union[int, None]
-    salesStageId: Union[str, None] = None
-    salesStageName: Union[str, None] = None
-    userId: Union[str, None] = None
-
-
 class StatusHistory(Blueprint):
-    """Subclass for statusHistory in Quotation."""
+    """Subclass for statusHistory in PurchaseOrder."""
 
     status: Union[str, None] = None
     statusDate: Union[int, None] = None
     userId: Union[str, None] = None
 
 
-class Quotation(Blueprint):
-    """Class for quotation endpoint."""
+class PurchaseOrder(Blueprint):
+    """Class for purchaseOrder endpoint."""
 
     id: Union[str, None]
     version: Union[str, None]
-    activeVersion: Union[bool, None] = None
+    advancePaymentStatus: Union[str, None] = None  # Type estimated
     commercialLanguage: Union[str, None] = None  # Type estimated
+    commercialLanguageCustomer: Union[str, None] = None  # Type estimated
     commission: Union[str, None] = None  # Type estimated
-    commissionSalesPartners: List[CommissionSalesPartners] = []
+    confirmationNumber: Union[str, None] = None  # Type estimated
     createdDate: Union[int, None]
     creatorId: Union[str, None] = None
     currencyConversionDate: Union[int, None] = None
     currencyConversionRate: Union[str, None] = None
     customAttributes: List[WeclappMetaData] = []
-    customerId: Union[str, None] = None
-    customerNumber: Union[str, None] = None
-    defaultShippingCarrierId: Union[str, None] = None
-    defaultShippingCarrierName: Union[str, None] = None
     deliveryAddress: DeliveryAddress = DeliveryAddress.from_blank()
-    deliveryEmailAddresses: EmailAddresses = EmailAddresses.from_blank()
     description: Union[str, None] = None  # Type estimated
     disableEmailTemplate: Union[bool, None] = None
-    dispatchCountryCode: Union[str, None] = None
-    expectedSignatureDate: Union[int, None] = None  # Type estimated
-    factoring: Union[bool, None] = None
+    dropshippingDeliveryNoteFormTexts: DropshippingDeliveryNoteFormTexts = (
+        DropshippingDeliveryNoteFormTexts.from_blank()
+    )
+    externalPurchaseOrderNumber: Union[str, None] = None  # Type estimated
+    formSettingsFromSalesChannel: Union[str, None] = None  # Type estimated
     grossAmount: Union[str, None] = None
     grossAmountInCompanyCurrency: Union[str, None] = None
     headerDiscount: Union[str, None] = None
     headerSurcharge: Union[str, None] = None
     invoiceAddress: InvoiceAddress = InvoiceAddress.from_blank()
-    invoiceRecipientId: Union[str, None] = None  # Type estimated
+    invoiced: Union[bool, None] = None
     lastModifiedDate: Union[int, None]
-    mergedToQuotationId: Union[str, None] = None  # Type estimated
+    mergedToPurchaseOrderId: Union[str, None] = None  # Type estimated
     netAmount: Union[str, None] = None
     netAmountInCompanyCurrency: Union[str, None] = None
     nonStandardTaxId: Union[str, None] = None  # Type estimated
     nonStandardTaxName: Union[str, None] = None  # Type estimated
-    opportunityId: Union[str, None] = None  # Type estimated
-    opportunityNumber: Union[str, None] = None  # Type estimated
+    note: Union[str, None] = None  # Type estimated
+    orderDate: Union[int, None] = None
+    packageTrackingNumber: Union[str, None] = None  # Type estimated
+    packageTrackingUrl: Union[str, None] = None  # Type estimated
+    paid: Union[bool, None] = None
     paymentMethodId: Union[str, None] = None
     paymentMethodName: Union[str, None] = None
-    plannedDeliveryDate: Union[int, None] = None  # Type estimated
+    plannedDeliveryDate: Union[int, None] = None
     plannedShippingDate: Union[int, None] = None  # Type estimated
-    pricingDate: Union[int, None] = None
-    publicLink: Union[str, None] = None
-    quotationDate: Union[int, None] = None
-    quotationItems: List[QuotationItems] = []
-    quotationNumber: Union[str, None] = None
-    quotationType: Union[str, None] = None
-    quotationVersion: Union[int, None] = None
+    purchaseOrderItems: List[PurchaseOrderItems] = []
+    purchaseOrderNumber: Union[str, None] = None
+    purchaseOrderRequestId: Union[str, None] = None  # Type estimated
+    purchaseOrderType: Union[str, None] = None
+    received: Union[bool, None] = None
+    recipientCountryCode: Union[str, None] = None
     recordAddress: RecordAddress = RecordAddress.from_blank()
     recordComment: Union[str, None] = None  # Type estimated
-    recordCommentInheritance: Union[bool, None] = None
     recordCurrencyId: Union[str, None] = None
     recordCurrencyName: Union[str, None] = None
-    recordEmailAddresses: EmailAddresses = EmailAddresses.from_blank()
-    recordFreeText: Union[str, None] = None
-    recordFreeTextInheritance: Union[bool, None] = None
-    recordOpening: Union[str, None] = None
-    recordOpeningInheritance: Union[bool, None] = None
-    rejectionReason: Union[str, None] = None  # Type estimated
-    requestDate: Union[int, None] = None
+    recordEmailAddresses: RecordEmailAddresses = RecordEmailAddresses.from_blank()
+    recordFreeText: Union[str, None] = None  # Type estimated
+    recordOpening: Union[str, None] = None  # Type estimated
     responsibleUserId: Union[str, None] = None
     responsibleUserUsername: Union[str, None] = None
-    salesChannel: Union[str, None] = None
-    salesInvoiceEmailAddresses: EmailAddresses = EmailAddresses.from_blank()
-    salesOrderEmailAddresses: EmailAddresses = EmailAddresses.from_blank()
-    salesProbability: Union[int, None] = None
-    salesStageHistory: List[SalesStageHistory] = []
-    salesStageId: Union[str, None] = None
-    salesStageName: Union[str, None] = None
+    salesOrderId: Union[str, None] = None  # Type estimated
+    salesOrderNumber: Union[str, None] = None  # Type estimated
+    senderCountryCode: Union[str, None] = None
     sentToRecipient: Union[bool, None] = None
     servicePeriodFrom: Union[str, None] = None  # Type estimated
     servicePeriodTo: Union[str, None] = None  # Type estimated
-    shipmentMethodId: Union[str, None] = None
-    shipmentMethodName: Union[str, None] = None
+    shipmentMethodId: Union[str, None] = None  # Type estimated
+    shipmentMethodName: Union[str, None] = None  # Type estimated
+    shippingCarrierId: Union[str, None] = None  # Type estimated
     shippingCostItems: List[ShippingCostItems] = []
+    shippingNotificationDate: Union[int, None] = None  # Type estimated
     status: Union[str, None] = None
     statusHistory: List[StatusHistory] = []
+    supplierHabitualExporterLetterOfIntentId: Union[str, None] = None  # Type estimated
+    supplierId: Union[str, None] = None
+    supplierNumber: Union[str, None] = None
+    supplierQuotationNumber: Union[str, None] = None  # Type estimated
     tags: list = []
-    template: Union[bool, None] = None
     termOfPaymentId: Union[str, None] = None
     termOfPaymentName: Union[str, None] = None
-    validFrom: Union[int, None] = None
-    validTo: Union[int, None] = None
-    warehouseId: Union[str, None] = None  # Type estimated
-    warehouseName: Union[str, None] = None  # Type estimated
+    warehouseId: Union[str, None] = None
+    warehouseName: Union[str, None] = None

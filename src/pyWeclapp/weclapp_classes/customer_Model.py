@@ -1,219 +1,219 @@
-# This code was dynamically created using WeclappClassCreator from pyWeclapp
+"""This code was dynamically created using WeclappClassCreator from pyweclapp"""
 
-from .blueprint import Blueprint, WeclappMetaData
-from typing import Optional, List, ClassVar
+from typing import Union, List
+from .blueprints import Blueprint, WeclappMetaData
 
 
 class Addresses(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    city: Optional[str] = None
-    company: Optional[str] = None
-    company2: Optional[str] = None
-    countryCode: Optional[str] = None
-    deliveryAddress: Optional[bool] = None
-    firstName: Optional[str] = None
-    globalLocationNumber: Optional[str] = None
-    invoiceAddress: Optional[bool] = None
-    lastName: Optional[str] = None
-    phoneNumber: Optional[str] = None
-    postOfficeBoxCity: Optional[str] = None
-    postOfficeBoxNumber: Optional[str] = None
-    postOfficeBoxZipCode: Optional[str] = None
-    primeAddress: Optional[bool] = None
-    salutation: Optional[str] = None
-    state: Optional[str] = None
-    street1: Optional[str] = None
-    street2: Optional[str] = None
-    title: Optional[str] = None
-    titleId: Optional[str] = None
-    zipcode: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for addresses in Customer and Contact."""
+
+    id: Union[str, None]
+    version: Union[str, None]
+    city: Union[str, None] = None
+    company: Union[str, None] = None
+    company2: Union[str, None] = None
+    countryCode: Union[str, None] = None
+    createdDate: Union[int, None]
+    deliveryAddress: Union[bool, None] = None
+    firstName: Union[str, None] = None
+    globalLocationNumber: Union[str, None] = None
+    invoiceAddress: Union[bool, None] = None
+    lastModifiedDate: Union[int, None]
+    lastName: Union[str, None] = None
+    phoneNumber: Union[str, None] = None
+    postOfficeBoxCity: Union[str, None] = None
+    postOfficeBoxNumber: Union[str, None] = None
+    postOfficeBoxZipCode: Union[str, None] = None
+    primeAddress: Union[bool, None] = None
+    salutation: Union[str, None] = None
+    state: Union[str, None] = None
+    street1: Union[str, None] = None
+    street2: Union[str, None] = None
+    title: Union[str, None] = None
+    titleId: Union[str, None] = None
+    zipcode: Union[str, None] = None
 
 
 class OnlineAccounts(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    accountName: Optional[str] = None
-    accountType: Optional[str] = None
-    url: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for onlineAccounts in Contact."""
+
+    id: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    version: Union[str, None] = None
+    accountName: Union[str, None] = None
+    accountType: Union[str, None] = None
+    url: Union[str, None] = None
 
 
 class Contacts(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
+    """Subclass for contact in Customer."""
+
+    id: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    version: Union[str, None] = None
     customAttributes: List[WeclappMetaData] = []
     addresses: List[Addresses] = []
-    birthDate: Optional[int] = None
-    company: Optional[str] = None
-    company2: Optional[str] = None
-    deliveryAddressId: Optional[str] = None
-    email: Optional[str] = None
-    fax: Optional[str] = None
-    firstName: Optional[str] = None
-    invoiceAddressId: Optional[str] = None
-    lastName: Optional[str] = None
-    middleName: Optional[str] = None
-    mobilePhone1: Optional[str] = None
+    birthDate: Union[int, None] = None
+    company: Union[str, None] = None
+    company2: Union[str, None] = None
+    deliveryAddressId: Union[str, None] = None
+    email: Union[str, None] = None
+    fax: Union[str, None] = None
+    firstName: Union[str, None] = None
+    invoiceAddressId: Union[str, None] = None
+    lastName: Union[str, None] = None
+    middleName: Union[str, None] = None
+    mobilePhone1: Union[str, None] = None
     onlineAccounts: List[OnlineAccounts] = []
-    partyType: Optional[str] = None
-    personCompany: Optional[str] = None
-    personDepartmentId: Optional[str] = None
-    personRoleId: Optional[str] = None
-    phone: Optional[str] = None
-    primaryAddressId: Optional[str] = None
-    salutation: Optional[str] = None
-    tags: list = []
-    title: Optional[str] = None
-    titleId: Optional[str] = None
-    website: Optional[str] = None
-    customerCategoryId: Optional[str] = None
-    customerCategoryName: Optional[str] = None
-    description: Optional[str] = None
-    fixPhone2: Optional[str] = None
-    mobilePhone2: Optional[str] = None
-    optIn: Optional[bool] = None
-    optInLetter: Optional[bool] = None
-    optInPhone: Optional[bool] = None
-    optInSms: Optional[bool] = None
-    phoneHome: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    partyType: Union[str, None] = None
+    personCompany: Union[str, None] = None
+    personDepartmentId: Union[str, None] = None
+    personRoleId: Union[str, None] = None
+    phone: Union[str, None] = None
+    primaryAddressId: Union[str, None] = None
+    salutation: Union[str, None] = None
+    tags: List[str] = []
+    title: Union[str, None] = None
+    titleId: Union[str, None] = None
+    website: Union[str, None] = None
+    customerCategoryId: Union[str, None] = None
+    customerCategoryName: Union[str, None] = None
+    description: Union[str, None] = None
+    fixPhone2: Union[str, None] = None
+    mobilePhone2: Union[str, None] = None
+    optIn: Union[bool, None] = None
+    optInLetter: Union[bool, None] = None
+    optInPhone: Union[bool, None] = None
+    optInSms: Union[bool, None] = None
+    phoneHome: Union[str, None] = None
 
 
 class BankAccounts(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    accountHolder: Optional[str] = None
-    accountNumber: Optional[str] = None
-    bankCode: Optional[str] = None
-    creditInstitute: Optional[str] = None
-    partyId: Optional[str] = None
-    primary: Optional[bool] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for bankAccounts in Customer."""
+
+    id: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    version: Union[str, None] = None
+    accountHolder: Union[str, None] = None
+    accountNumber: Union[str, None] = None
+    bankCode: Union[str, None] = None
+    creditInstitute: Union[str, None] = None
+    partyId: Union[str, None] = None
+    primary: Union[bool, None] = None
 
 
 class CommissionSalesPartners(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    commissionFix: Optional[str] = None
-    commissionPercentage: Optional[str] = None
-    commissionType: Optional[str] = None
-    salesPartnerSupplierId: Optional[str] = None
-    salesPartnerSupplierNumber: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for commissionSalesPartners in Customer."""
+
+    id: Union[str, None] = None
+    createdDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    version: Union[str, None] = None
+    commissionFix: Union[str, None] = None
+    commissionPercentage: Union[str, None] = None
+    commissionType: Union[str, None] = None
+    salesPartnerSupplierId: Union[str, None] = None
+    salesPartnerSupplierNumber: Union[str, None] = None
 
 
 class CustomerTopics(Blueprint):
-    id: Optional[str] = None
-    name: Optional[str] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    """Subclass for customerTopics in Customer."""
+
+    id: Union[str, None] = None
+    name: Union[str, None] = None
 
 
 class Customer(Blueprint):
-    id: Optional[str] = None
-    createdDate: Optional[int] = None
-    lastModifiedDate: Optional[int] = None
-    version: Optional[str] = None
-    customAttributes: List[WeclappMetaData] = []
+    """Class for customer endpoint."""
+
+    id: Union[str, None]
+    version: Union[str, None]
     addresses: List[Addresses] = []
-    birthDate: Optional[int] = None
-    company: Optional[str] = None
-    company2: Optional[str] = None
-    deliveryAddressId: Optional[str] = None
-    email: Optional[str] = None
-    fax: Optional[str] = None
-    firstName: Optional[str] = None
-    invoiceAddressId: Optional[str] = None
-    lastName: Optional[str] = None
-    middleName: Optional[str] = None
-    mobilePhone1: Optional[str] = None
-    onlineAccounts: List[OnlineAccounts] = []
-    partyType: Optional[str] = None
-    personCompany: Optional[str] = None
-    personDepartmentId: Optional[str] = None
-    personRoleId: Optional[str] = None
-    phone: Optional[str] = None
-    primaryAddressId: Optional[str] = None
-    salutation: Optional[str] = None
-    tags: list = []
-    title: Optional[str] = None
-    titleId: Optional[str] = None
-    website: Optional[str] = None
-    commercialLanguageId: Optional[str] = None
-    contacts: List[Contacts] = []
-    currencyId: Optional[str] = None
-    currencyName: Optional[str] = None
-    primaryContactId: Optional[str] = None
-    sectorId: Optional[str] = None
-    sectorName: Optional[str] = None
-    annualRevenue: Optional[str] = None
-    companySizeId: Optional[str] = None
-    companySizeName: Optional[str] = None
-    customerCategoryId: Optional[str] = None
-    customerCategoryName: Optional[str] = None
-    parentPartyId: Optional[str] = None
-    paymentMethodId: Optional[str] = None
-    paymentMethodName: Optional[str] = None
-    responsibleUserId: Optional[str] = None
-    responsibleUserUsername: Optional[str] = None
-    shipmentMethodId: Optional[str] = None
-    shipmentMethodName: Optional[str] = None
-    termOfPaymentId: Optional[str] = None
-    termOfPaymentName: Optional[str] = None
-    vatRegistrationNumber: Optional[str] = None
-    amountInsured: Optional[str] = None
+    amountInsured: Union[str, None] = None
+    annualRevenue: Union[str, None] = None
     bankAccounts: List[BankAccounts] = []
-    blockNotice: Optional[str] = None
-    blocked: Optional[bool] = None
+    birthDate: Union[int, None] = None
+    blockNotice: Union[str, None] = None
+    blocked: Union[bool, None] = None
+    commercialLanguageId: Union[str, None] = None
     commissionSalesPartners: List[CommissionSalesPartners] = []
-    creditLimit: Optional[str] = None
-    customerNumber: Optional[str] = None
-    customerRatingId: Optional[str] = None
-    customerRatingName: Optional[str] = None
-    customerSupplierNumber: Optional[str] = None
+    company: Union[str, None] = None
+    company2: Union[str, None] = None
+    companySizeId: Union[str, None] = None
+    companySizeName: Union[str, None] = None
+    contacts: List[Contacts] = []
+    createdDate: Union[int, None]
+    creditLimit: Union[str, None] = None
+    currencyId: Union[str, None] = None
+    currencyName: Union[str, None] = None
+    customAttributes: List[WeclappMetaData] = []
+    customerCategoryId: Union[str, None] = None
+    customerCategoryName: Union[str, None] = None
+    customerNumber: Union[str, None] = None
+    customerRatingId: Union[str, None] = None
+    customerRatingName: Union[str, None] = None
+    customerSupplierNumber: Union[str, None] = None
     customerTopics: List[CustomerTopics] = []
-    defaultHeaderDiscount: Optional[str] = None
-    defaultHeaderSurcharge: Optional[str] = None
-    deliveryBlock: Optional[bool] = None
-    description: Optional[str] = None
-    insolvent: Optional[bool] = None
-    insured: Optional[bool] = None
-    invoiceBlock: Optional[bool] = None
-    invoiceRecipientId: Optional[str] = None
-    leadSourceId: Optional[str] = None
-    leadSourceName: Optional[str] = None
-    lossDescription: Optional[str] = None
-    lossReasonId: Optional[str] = None
-    lossReasonName: Optional[str] = None
-    nonStandardTaxId: Optional[str] = None
-    oldCustomerNumber: Optional[str] = None
-    optIn: Optional[bool] = None
-    optInLetter: Optional[bool] = None
-    optInPhone: Optional[bool] = None
-    optInSms: Optional[bool] = None
-    referenceNumber: Optional[str] = None
-    responsibleUserFixed: Optional[bool] = None
-    salesChannel: Optional[str] = None
-    salesStageId: Optional[str] = None
-    salesStageName: Optional[str] = None
-    satisfaction: Optional[str] = None
-    useCustomsTariffNumber: Optional[bool] = None
-    # AutomationData
-    ITEMS_NAME: ClassVar[str] = None
+    defaultHeaderDiscount: Union[str, None] = None
+    defaultHeaderSurcharge: Union[str, None] = None
+    deliveryAddressId: Union[str, None] = None
+    deliveryBlock: Union[bool, None] = None
+    description: Union[str, None] = None
+    email: Union[str, None] = None
+    fax: Union[str, None] = None
+    firstName: Union[str, None] = None
+    insolvent: Union[bool, None] = None
+    insured: Union[bool, None] = None
+    invoiceAddressId: Union[str, None] = None
+    invoiceBlock: Union[bool, None] = None
+    invoiceRecipientId: Union[str, None] = None
+    lastModifiedDate: Union[int, None]
+    lastName: Union[str, None] = None
+    leadSourceId: Union[str, None] = None
+    leadSourceName: Union[str, None] = None
+    lossDescription: Union[str, None] = None
+    lossReasonId: Union[str, None] = None
+    lossReasonName: Union[str, None] = None
+    middleName: Union[str, None] = None
+    mobilePhone1: Union[str, None] = None
+    nonStandardTaxId: Union[str, None] = None
+    oldCustomerNumber: Union[str, None] = None
+    onlineAccounts: list = []
+    optIn: Union[bool, None] = None
+    optInLetter: Union[bool, None] = None
+    optInPhone: Union[bool, None] = None
+    optInSms: Union[bool, None] = None
+    parentPartyId: Union[str, None] = None
+    partyType: Union[str, None] = None
+    paymentMethodId: Union[str, None] = None
+    paymentMethodName: Union[str, None] = None
+    personCompany: Union[str, None] = None
+    personDepartmentId: Union[str, None] = None
+    personRoleId: Union[str, None] = None
+    phone: Union[str, None] = None
+    primaryAddressId: Union[str, None] = None
+    primaryContactId: Union[str, None] = None
+    referenceNumber: Union[str, None] = None
+    responsibleUserFixed: Union[bool, None] = None
+    responsibleUserId: Union[str, None] = None
+    responsibleUserUsername: Union[str, None] = None
+    salesChannel: Union[str, None] = None
+    salesStageId: Union[str, None] = None
+    salesStageName: Union[str, None] = None
+    salutation: Union[str, None] = None
+    satisfaction: Union[str, None] = None
+    sectorId: Union[str, None] = None
+    sectorName: Union[str, None] = None
+    shipmentMethodId: Union[str, None] = None
+    shipmentMethodName: Union[str, None] = None
+    tags: list = []
+    termOfPaymentId: Union[str, None] = None
+    termOfPaymentName: Union[str, None] = None
+    title: Union[str, None] = None
+    titleId: Union[str, None] = None
+    useCustomsTariffNumber: Union[bool, None] = None
+    vatRegistrationNumber: Union[str, None] = None
+    website: Union[str, None] = None
