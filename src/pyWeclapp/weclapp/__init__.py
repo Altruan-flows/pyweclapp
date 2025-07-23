@@ -158,9 +158,6 @@ class Weclapp:
 
         json_response = response.json()
 
-        if config.DEFAULT_RESPONSE_CONTAINER not in json_response:
-            raise WeclappError(response)
-
         if return_full_result is True:
             if as_type != dict:
                 logging.warning(
@@ -168,7 +165,7 @@ class Weclapp:
                 )
             return json_response
 
-        result = json_response[config.DEFAULT_RESPONSE_CONTAINER]
+        result = json_response[config.DEFAULT_RESPONSE_CONTAINER] if config.DEFAULT_RESPONSE_CONTAINER in json_response else json_response
 
         if config.COUNT_REQUEST_IDENTIFIER in response.url:
             if isinstance(result, int):
