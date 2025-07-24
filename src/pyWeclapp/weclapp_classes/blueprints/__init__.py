@@ -2,8 +2,9 @@
 
 import logging
 import re
-from typing import Any, Union, Literal, Optional, List
+from typing import Any, Union, Literal, Optional, List, get_args
 from pydantic import BaseModel
+from types import SimpleNamespace
 from ...weclapp import Weclapp
 from .custom_attributes_model import WeclappMetaData
 
@@ -33,22 +34,18 @@ class Blueprint(BaseModel):
                 attribute_id = attribute_identifier
             elif isinstance(attribute_identifier, int):
                 attribute_id = str(attribute_identifier)
-            elif (
-                isinstance(attribute_identifier, tuple)
-                and hasattr(attribute_identifier, "_fields")
-                and hasattr(attribute_identifier, "id")
-            ):
+            elif isinstance(attribute_identifier, SimpleNamespace):
                 attribute_id = attribute_identifier.id
             else:
                 raise TypeError(
-                    f"Value must be a string or an integer, "
+                    f"Value must be a string, an integer, or a SimpleNamespace, "
                     f"not {type(attribute_identifier).__name__}"
                 )
 
             for custom_attribute in self.customAttributes:
                 if (
                     isinstance(custom_attribute, WeclappMetaData)
-                    and custom_attribute.name == attribute_id
+                    and custom_attribute.attributeDefinitionId == attribute_id
                 ):
                     return custom_attribute
             raise KeyError(f"Custom attribute with id {attribute_id} not found")
@@ -216,89 +213,42 @@ class Blueprint(BaseModel):
         else:
             raise KeyError("No tags attribute found in this class")
 
-    # def __setattr__(self, __name: str, __value: Any) -> None:
+    def __setattr__(self, __name: str, __value: Any) -> None:
+        """Sets an attribute of the instance.
+        Args:
+            __name (str): The name of the attribute to set.
+            __value (Any): The value to set the attribute to.
+        """
 
-    #     # Ensure type consistancy
-    #     if type(__value) in [int, str, float, bool]:
-    #         targetType = self.__annotations__.get(__name, type(__value))
-    #         # Check if targetType is a Union and extract its arguments
-    #         if get_origin(targetType) in [Union, Optional]:
-    #             args = []
-    #             for arg in get_args(targetType):
-    #                 if get_origin(arg) in [Literal]:
-    #                     args.append(str)
-    #                 else:
-    #                     args.append(arg)
-    #         # simple args
-    #         elif get_origin(targetType) is None:
-    #             args = [targetType]
-    #         elif get_origin(targetType) is Literal:
-    #             args = [str]
-    #         else:
-    #             logging.warning(
-    #                 f"Could not parse type {targetType} allowed are Union, "
-    #                 f"Optional, Literal, None and base types"
-    #             )
-    #             args = []
+        if type(__value) in [int, str, float, bool]:
+            target_type = self.__annotations__.get(__name, type(__value))
+            args = get_args(target_type)
 
-    #         # Converting value if necessary
-    #         if int in args:
-    #             if not isinstance(__value, int):
-    #                 logging.warning(
-    #                     f"Autoconverting {__value} ({type(__value).__name__}) "
-    #                     f"to required type int"
-    #                 )
-    #                 __value = int(float(__value))
-    #         elif str in args:
-    #             if not isinstance(__value, str):
-    #                 logging.warning(
-    #                     f"Autoconverting {__value} ({type(__value).__name__}) "
-    #                     f"to required type str"
-    #                 )
-    #                 __value = str(__value)
-    #         elif bool in args:
-    #             if not isinstance(__value, bool):
-    #                 logging.warning(
-    #                     f"Autoconverting {__value} ({type(__value).__name__}) "
-    #                     f"to required type bool"
-    #                 )
-    #                 __value = bool(__value)
-    #         elif float in args:
-    #             if not isinstance(__value, float):
-    #                 logging.warning(
-    #                     f"Autoconverting {__value} ({type(__value).__name__}) "
-    #                     f"to required type float"
-    #                 )
-    #                 __value = float(__value)
-    #         else:
-    #             logging.error("failed to correct it...")
-    #             raise TypeError(
-    #                 f"You tried to assign {type(__value).__name__} to "
-    #                 f"the {targetType.__name__} attribute {__name} -> could "
-    #                 f"not correct it"
-    #             )
+            # Converting value if necessary
+            if int in args:
+                if not isinstance(__value, int):
+                    __value = int(float(__value))
+            elif str in args:
+                if not isinstance(__value, str):
+                    __value = str(__value)
+            elif bool in args:
+                if not isinstance(__value, bool):
+                    __value = bool(__value)
+            elif float in args:
+                if not isinstance(__value, float):
+                    __value = float(__value)
+            else:
+                raise TypeError(
+                    f"You tried to assign {type(__value).__name__} to "
+                    f"the {target_type.__name__} attribute {__name} -> could "
+                    f"not correct it."
+                )
 
-    #     # Check if somthing would change
-    #     if __value != getattr(self, __name):
-    #         if isinstance(__value, tuple):
-    #             if len(__value) == 2:
-    #                 __value, justUsedKeys = __value
-    #                 if justUsedKeys:
-    #                     if __name not in ["USED_ATTRIBUTES", "ITEMS_NAME"]:
-    #                         self.USED_ATTRIBUTES[__name] = getattr(self, __name)
-    #                 else:
-    #                     logging.warning(
-    #                         f"Not Adding >{__name}< in >{type(self).__name__}< "
-    #                         f"to used keys"
-    #                     )
-    #         elif __name not in ["USED_ATTRIBUTES", "ITEMS_NAME"]:
-    #             self.USED_ATTRIBUTES[__name] = getattr(self, __name)
+        if __value != getattr(self, __name):
+            if __name not in ["used_attributes"]:
+                self.used_attributes[__name] = getattr(self, __name)
 
-    #         object.__setattr__(self, __name, __value)
-    #     elif __name not in ["USED_ATTRIBUTES", "ITEMS_NAME"]:
-    #         logging.info(
-    #             f"Attribute {__name} is already set to {__value} -> nothing changed"
-    #         )
+            object.__setattr__(self, __name, __value)
 
     def _handle_list_values(
         self, value: list, update_type: Literal["full", "used", "used+"] = "used"
@@ -342,7 +292,7 @@ class Blueprint(BaseModel):
         """
         updated_custom_attributes = []
         for custom_attribute in value:
-            if issubclass(type(custom_attribute), WeclappMetaData):
+            if isinstance(custom_attribute, WeclappMetaData):
                 cat = custom_attribute.build_update_dictionary(update_type=update_type)
                 if cat:
                     updated_custom_attributes.append(cat)

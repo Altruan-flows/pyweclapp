@@ -46,16 +46,7 @@ FLOAT_CUSTOM_ATTRIBUTE_TYPES = ["numberValue"]
 
 # --------- Weclapp Class Creator ---------
 CREATION_QUERY = {"serializeNulls": "", "sort": "-createdDate"}
-# ITEMS_NAMES = {
-#     "salesOrder": "orderItems",
-#     "shipment": "shipmentItems",
-#     "contract": "contractItems",
-#     "article": "articlePrices",
-#     "salesInvoice": "salesInvoiceItems",
-#     "ticket": "entityReferences",
-#     "party": "addresses",
-#     "customer": "addresses",
-# }
+
 MANDATORY_FIELDS = [
     "id",
     "version",

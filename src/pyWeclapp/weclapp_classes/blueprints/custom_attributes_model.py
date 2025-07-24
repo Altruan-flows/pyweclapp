@@ -32,6 +32,7 @@ class WeclappMetaData(BaseModel):
                 value_name = key
                 value = data.get(key)
                 break
+
         super().__init__(
             attributeDefinitionId=attribute_definition_id,
             valueName=value_name,
@@ -60,20 +61,16 @@ class WeclappMetaData(BaseModel):
                     return False
         return True
 
-    # def __setattr__(self, name, value):
-    #     if name in config.CUSTOM_ATTRIBUTE_TYPES:
-    #         self.set_value(value, name)
-    #     else:
-    #         super().__setattr__(name, value)
-
     def set_value(
         self,
         value: Any,
+        value_name: config.CUSTOM_ATTRIBUTE_TYPES_LITERAL,
         empty_field: bool = False,
     ) -> None:
         """Method to set a new value to a custom attribute. If empty_field is True,
         the update dictionary will not contain field value and the custom attribute
         field will be empty in Weclapp after update."""
+        self.valueName = value_name
 
         if self.valueName not in config.SINGLE_VALUE_CUSTOM_ATTRIBUTE_TYPES:
             raise AssertionError(
@@ -88,18 +85,17 @@ class WeclappMetaData(BaseModel):
         else:
             self.value = self.validate_value(value)
 
-    def add_value(self, value: Any) -> None:
+    def add_value(self, value: Any, value_name: config.CUSTOM_ATTRIBUTE_TYPES_LITERAL) -> None:
         """Add a value to a list of values. This function is only for
         custom attributes that have multiselection capabilities, such as
         selectedValues and entityReferences."""
+        self.valueName = value_name
 
         if self.valueName not in config.LIST_CUSTOM_ATTRIBUTE_TYPES:
             raise AssertionError(
                 "Function add_value() is only for list custom attributes, "
                 f"not for {self.valueName}"
             )
-
-        self.value = self.validate_value(value)
 
         if self.valueName == "selectedValues":
             selected_value_ids = {element["id"] for element in self.value}
@@ -118,17 +114,17 @@ class WeclappMetaData(BaseModel):
 
         self.value = self.validate_value(updated_values_list)
 
-    def remove_value(self, value: Any) -> None:
+    def remove_value(self, value: Any, value_name: config.CUSTOM_ATTRIBUTE_TYPES_LITERAL) -> None:
         """Removes a value from a list of values. This function is only for
         custom attributes that have multiselection capabilities, such as
         selectedValues and entityReferences."""
+        self.valueName = value_name
+
         if self.valueName not in config.LIST_CUSTOM_ATTRIBUTE_TYPES:
             raise AssertionError(
                 "Function add_value() is only for list custom attributes, "
                 f"not for {self.valueName}"
             )
-
-        self.value = self.validate_value(value)
 
         updated_values_list = []
         key = "id" if self.valueName == "selectedValues" else "entityId"
@@ -139,18 +135,28 @@ class WeclappMetaData(BaseModel):
         self.value = self.validate_value(updated_values_list)
 
     def has_value(self, target_value: Any) -> bool:
-        """Checks for selectedValues and entityReferences if a targetValue is present."""
+        """Checks for selectedValues and entityReferences if a targetValue is
+        present. Here valueName will always be provided, because Weclapp API
+        always shows multiselection values as lists, even if it is empty. If not
+        provided, it is then assumed that this is not a multiselection
+        custom attribute."""
         if target_value is None:
             logging.error("target_value is None, cannot check for presence")
+            return False
+        if self.valueName is None:
+            logging.error(
+                "valueName is None, check if this is a custom attribute of "
+                "multiselection type"
+            )
             return False
 
         if self.valueName == "selectedValues":
             return target_value in [
-                el["id"] for el in self.get_value(as_type=list, default=[])
+                el["id"] for el in self.value
             ]
         if self.valueName == "entityReferences":
             return target_value in [
-                el["entityId"] for el in self.get_value(as_type=list, default=[])
+                el["entityId"] for el in self.value
             ]
         return self.value == target_value
 
@@ -225,7 +231,7 @@ class WeclappMetaData(BaseModel):
         """
         data_to_send = {}
         if self.updated or update_type == "full":
-            data_to_send["attributeDefinitionId"] = self.attribute_definition_id
+            data_to_send["attributeDefinitionId"] = self.attributeDefinitionId
             if self.valueName is not None:
                 data_to_send[self.valueName] = self.value
         return data_to_send
