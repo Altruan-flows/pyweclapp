@@ -60,11 +60,12 @@ MANDATORY_FIELDS = [
 
 STATIC_IMPORTS_MODEL_FILES = (
     '"""This code was dynamically created using WeclappClassCreator from pyweclapp"""'
-    '\n\n'
-    'from typing import Union, List\nfrom .blueprints import Blueprint, WeclappMetaData\n\n\n'
+    "\n\n"
+    "from typing import Union, List\n"
+    "from .blueprints import Blueprint, WeclappMetaData\n\n\n"
 )
-INIT_FILE_NAME = '__init__.py'
-STATIC_IMPORTS_INIT = (
-    'from .blueprints.custom_attributes_model import WeclappMetaData'
+INIT_FILE_NAME = "__init__.py"
+STATIC_IMPORTS_INIT = "from .blueprints.custom_attributes_model import WeclappMetaData"
+INIT_FILE_DOC_STRING = (
+    '"""Module for weclapp classes package imports. Add more classes if necessary."""\n'
 )
-INIT_FILE_DOC_STRING = '"""Module for weclapp classes package imports. Add more classes if necessary."""\n'
