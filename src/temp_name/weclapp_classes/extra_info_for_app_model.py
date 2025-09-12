@@ -2,7 +2,7 @@
 for articles."""
 
 from pydantic import BaseModel
-from pyWeclapp import weclapp
+from temp_name import weclapp
 
 
 class ExtraInfoForApp(BaseModel):
