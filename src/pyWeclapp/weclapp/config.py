@@ -1,50 +1,18 @@
-from typing import Literal
+"""Configuration settings for Weclapp API interactions."""
 
-ODATA_EXCEPTIONS = [
-    "properties",
-    "entityId",
-    "entityName",
-    "name",
-    "description",
-    "pageSize",
-    "page",
-    "additionalProperties",
-    "includeReferencedEntities",
-    "serializeNulls",
-    "sort",
-]
+API_TOKEN_ENV_VAR = "WECLAPP_API_TOKEN"
+DOMAIN_ENV_VAR = "WECLAPP_DOMAIN"
 
-
-# Environment Variable NAMES
-ENV_DOMAIN_NAME = "weclappDomain"
-ENV_AUTHENTICATION_TOKEN_NAME_BASE = "Weclapp_AuthenticationToken"
-
-
-# authentication
-AVAILABLE_APIKEYS = Literal["key0", "key1"]
-ENTITY_NAMES = Literal[
-    "salesOrder",
-    "shipment",
-    "salesInvoice",
-    "contract",
-    "article",
-    "quotation",
-    "customer",
-    "ticket",
-]
-DEFAULT_KEY = "key0"
+API_VERSION = "v2"
+WECLAPP_DOMAIN_ENDING = ".weclapp.com"
 AUTHENTICATION_TOKEN_NAME = "AuthenticationToken"
 DEFAULT_CONTENT_TYPE = "application/json"
+REQUEST_TIMEOUT = 120  # seconds
 
-API_VERSION = "v1"
-
-
-# response Handling
+# ----------------- Response Processing -----------------
 DEFAULT_RESPONSE_CONTAINER = "result"
 COUNT_REQUEST_IDENTIFIER = "/count"
-BYTE_TYPE_BODYS_ENTITIES = ["document"]
-
-
-# weclapp Error
 OPTIMISTIC_LOCK_IDENTIFIER = "optimistic lock error"
-HAS_WRONG_STATUS_IDENTIFIER = "Sales order confirmation created"
+
+# ----------------- Entity Specifics -----------------
+BYTE_TYPE_BODY_ENTITIES = ["document"]

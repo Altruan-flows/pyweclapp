@@ -1,9 +1,6 @@
-just4testing.ipynb
-just4Testing.ipynb
 .venv/
 .python-version
 .vscode/
 .gitignore
-justForTesting.ipynb
-justForTesting2.ipynb
-testing.ipynb
+
+*.ipynb

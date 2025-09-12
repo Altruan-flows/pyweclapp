@@ -13,18 +13,17 @@ except FileNotFoundError:
     required = ["requests>=2.28.2",
                 "pydantic>=1.10.4",
                 "jsonschema>=4.17.3",
-                # "pymupdf>=1.21.1",
                 "pytz>=2022.7.1"]
 
 setup(
-    name="pyWeclapp",
-    version="0.0.13",
+    name="pyweclapp",
+    version="0.0.14",
     description="Provides methods, classes and classbuilders to integrate with the Weclapp API",
     package_dir={"": "src"},
     packages=find_packages(where="src"),
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/AltruanGmbH/weclappFunctions",
+    url="https://github.com/AltruanGmbH/pyweclapp",
     author="Altruan GmbH",
     author_email="admin@altruan.de",
     license="MIT",
