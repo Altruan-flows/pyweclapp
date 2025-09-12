@@ -1,27 +1,33 @@
+"""Setup script for the pyweclapp package."""
+
 from setuptools import find_packages, setup
 
 try:
-    with open("src/README.md", "r") as f:
-        long_description = f.read()
+    with open("src/README.md", "r", encoding="utf-8") as f:
+        LONG_DESCRIPTION = f.read()
 except FileNotFoundError:
-    long_description = "Provides methods, classes and classbuilders to integrate with the Weclapp API"
+    LONG_DESCRIPTION = (
+        "Provides methods, classes and classbuilders to integrate with the Weclapp API"
+    )
 
 try:
-    with open('requirements.txt') as f:
-        required = f.read().splitlines()
+    with open("requirements.txt", "r", encoding="utf-8") as f:
+        REQUIRED = f.read().splitlines()
 except FileNotFoundError:
-    required = ["requests>=2.28.2",
-                "pydantic>=1.10.4",
-                "jsonschema>=4.17.3",
-                "pytz>=2022.7.1"]
+    REQUIRED = [
+        "requests>=2.28.2",
+        "pydantic>=1.10.4",
+        "jsonschema>=4.17.3",
+        "pytz>=2022.7.1",
+    ]
 
 setup(
     name="pyweclapp",
-    version="0.0.14",
+    version="0.1.0",
     description="Provides methods, classes and classbuilders to integrate with the Weclapp API",
     package_dir={"": "src"},
     packages=find_packages(where="src"),
-    long_description=long_description,
+    long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
     url="https://github.com/AltruanGmbH/pyweclapp",
     author="Altruan GmbH",
@@ -32,7 +38,7 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Operating System :: OS Independent",
     ],
-    install_requires=required,
+    install_requires=REQUIRED,
     extras_require={
         "dev": ["twine>=4.0.2"],
     },
