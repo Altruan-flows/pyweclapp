@@ -212,20 +212,17 @@ class WeclappMetaData(BaseModel):
 
     def build_update_dictionary(
         self,
-        update_type: Literal["full", "used", "used+"] = "used",
+        update_type: Literal["full", "used"] = "used",
     ) -> dict:
         """Builds a dictionary for updating or creating an entity in Weclapp.
         Args:
-            update_type (Literal[full, used, used+]): Type of update. Defaults to
+            update_type (Literal[full, used]): Type of update. Defaults to
                 "used".
                 - "full": Update dictionary will include all attributes of the
                     instance. This type of update should be used with caution as it
                     may lead to optimistic lock errors and could potentially overwrite
                     some values to empty if they are not set in the instance.
                 - "used": Update dictionary will include only attributes that have been used.
-                - "used+": Update dictionary will include used attributes and version.
-                    This type of update should be used cautiously as it may lead to
-                    optimistic lock errors.
         Returns:
             dict: Dictionary representing the entity to be updated or created.
         """

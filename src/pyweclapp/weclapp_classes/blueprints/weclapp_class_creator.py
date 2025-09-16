@@ -80,7 +80,7 @@ class WeclappClassCreator:
 
             elif isinstance(value, dict):
                 child_name = self.create_class_templates(key, value)
-                file_content += f"    {key}: {child_name} = {child_name}.from_blank()\n"
+                file_content += f"    {key}: {child_name} = None\n"
 
             else:
                 file_content += self.generate_type_hint(value, key)

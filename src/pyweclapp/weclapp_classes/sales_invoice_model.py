@@ -219,7 +219,7 @@ class SalesInvoice(Blueprint):
     costTypeId: Union[str, None] = None
     creditResetsOrderState: Union[bool, None] = None
     customerHabitualExporterLetterOfIntentId: Union[str, None] = None
-    deliveryAddress: DeliveryAddress = DeliveryAddress.from_blank()
+    deliveryAddress: DeliveryAddress = None
     deliveryDate: Union[int, None] = None
     directDebitFileCreated: Union[bool, None] = None
     directDebitFileLatestDate: Union[int, None] = None
@@ -233,9 +233,9 @@ class SalesInvoice(Blueprint):
     paid: Union[bool, None] = None
     paymentStatus: Union[str, None] = None
     precedingSalesInvoiceId: Union[str, None] = None
-    recordAddress: RecordAddress = RecordAddress.from_blank()
+    recordAddress: RecordAddress = None
     recordCommentInheritance: Union[bool, None] = None
-    recordEmailAddresses: RecordEmailAddresses = RecordEmailAddresses.from_blank()
+    recordEmailAddresses: RecordEmailAddresses = None
     recordFreeTextInheritance: Union[bool, None] = None
     recordOpeningInheritance: Union[bool, None] = None
     salesInvoiceItems: List[SalesInvoiceItems] = []

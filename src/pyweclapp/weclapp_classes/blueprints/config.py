@@ -2,6 +2,8 @@
 
 from typing import Literal
 
+SALES_ORDER = "salesOrder"
+
 CUSTOM_ATTRIBUTE_TYPES = [
     "selectedValueId",
     "stringValue",

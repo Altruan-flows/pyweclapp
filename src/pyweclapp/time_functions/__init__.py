@@ -40,7 +40,7 @@ def convert_to_datetime(
 def convert_to_time_format(
     input_time: Union[datetime.date, datetime.datetime, str, int, float],
     conversion_format: str = "weclapp",
-    timezone: str = "Europe/Berlin"
+    timezone: str = "Europe/Berlin",
 ) -> Union[str, int]:
     """Converts a time object to a string or integer representation.
     Args:
@@ -56,8 +56,6 @@ def convert_to_time_format(
     Returns:
         Union[str, int]: The converted time in the specified format.
     """
-    input_time = convert_to_datetime(timestamp=input_time)
-
     try:
         if conversion_format == "unix":
             return int(input_time.timestamp())
@@ -76,7 +74,7 @@ def convert_to_time_format(
                 input_time.hour,
                 input_time.minute,
                 input_time.second,
-                input_time.astimezone(zoneinfo.ZoneInfo(timezone))
+                input_time.astimezone(zoneinfo.ZoneInfo(timezone)),
             )
             return aware_time.isoformat().replace("T", " ")
 

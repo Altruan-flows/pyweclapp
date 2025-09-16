@@ -165,7 +165,11 @@ class Weclapp:
                 )
             return json_response
 
-        result = json_response[config.DEFAULT_RESPONSE_CONTAINER] if config.DEFAULT_RESPONSE_CONTAINER in json_response else json_response
+        result = (
+            json_response[config.DEFAULT_RESPONSE_CONTAINER]
+            if config.DEFAULT_RESPONSE_CONTAINER in json_response
+            else json_response
+        )
 
         if config.COUNT_REQUEST_IDENTIFIER in response.url:
             if isinstance(result, int):

@@ -2,21 +2,65 @@
 
 import logging
 import re
-from typing import Any, Union, Literal, Optional, List, get_args
-from pydantic import BaseModel
+from typing import Any, Union, Literal, Optional, List, get_args, Set
 from types import SimpleNamespace
+from pydantic import BaseModel
 from ...weclapp import Weclapp
 from .custom_attributes_model import WeclappMetaData
+
+
+class UpdateSettings:
+    """Class to hold settings for building update dictionaries.
+    Args:
+        update_type (str): Type of update. Can be 'full' or 'used'.
+        include_version (bool): Whether to include the version in the update.
+        creation_mode (bool): Whether the update is for creation mode.
+    """
+
+    def __init__(self, update_type: str, include_version: bool, creation_mode: bool):
+        self.update_type: str = update_type
+        self.include_version: bool = include_version
+        self.creation_mode: bool = creation_mode
+        self.excluded_keys: Set[str] = {
+            "used_attributes",
+            "used_keys",
+            "statusHistory",
+        }
+        if include_version is False:
+            self.excluded_keys.add("version")
+        if creation_mode:
+            self.excluded_keys.update(["id", "version"])
+            self.update_type = "full"
 
 
 class Blueprint(BaseModel):
     """Base class for Weclapp entities, providing methods for handling custom
     attributes and entity updates."""
+
     used_attributes: Union[dict, None] = {}
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.used_attributes = {}
+
+    @classmethod
+    def from_weclapp(cls, entity_id: str):
+        """Gets an entity from weclapp by its id and returns a new instance of
+        the corresponding class with the attributes set to the values."""
+        if not entity_id:
+            raise AssertionError(
+                "Entity ID must not be None or empty for from_weclapp()"
+            )
+        entity_name = cls.__name__
+        entity_name = entity_name[:1].lower() + entity_name[1:]
+        response = Weclapp().get(
+            entity_name=entity_name, entity_id=entity_id, as_type=dict
+        )
+        if not isinstance(response, dict):
+            raise AssertionError(
+                f"Response from weclapp is not a dict, but a {type(response).__name__}"
+            )
+        return cls(**response)
 
     def custom_attribute(
         self, attribute_identifier: Union[str, int, tuple]
@@ -64,27 +108,6 @@ class Blueprint(BaseModel):
         """
 
         return self.custom_attribute(attribute_identifier=attribute_identifier)
-
-    def reset_used_attributes(self) -> None:
-        """Resets the used_attributes dictionary to an empty state."""
-        self.used_attributes = {}
-
-    def reset_all_used_attributes(self) -> None:
-        """Resets the used_attributes dictionary of the current instance
-        and all its subclasses."""
-        self.reset_used_attributes()
-        for _, value in self.__dict__.items():
-            if isinstance(value, list):
-                for list_item in value:
-                    if hasattr(list_item, "reset_used_attributes"):
-                        list_item.reset_used_attributes()
-                    elif (
-                        hasattr(list_item, "updated")
-                        and getattr(list_item, "updated") is True
-                    ):
-                        list_item.updated = False
-            elif hasattr(value, "resetUsedAtts"):
-                value.resetUsedAtts()
 
     def add_used_attribute(self, attribute_name: str) -> None:
         """Adds an attribute to the used_attributes dictionary if it exists in
@@ -213,6 +236,253 @@ class Blueprint(BaseModel):
         else:
             raise KeyError("No tags attribute found in this class")
 
+    def build_update_dictionary(
+        self,
+        update_type: Literal["full", "used"] = "used",
+        include_version: bool = False,
+        creation_mode: bool = False,
+    ) -> dict:
+        """Builds a dictionary for updating or creating an entity in Weclapp.
+        Args:
+            update_type (Literal[full, used]): Type of update. Defaults to 'used'.
+                - 'full': Update dictionary will include all attributes of the
+                    instance. This type of update should be used with caution
+                    as it could potentially overwrite some values to empty if
+                    they are not set in the instance.
+                - 'used': Update dictionary will include only attributes that
+                    have been used.
+            include_version (bool): If True, includes the version in the update.
+                Be cautious when using this option as it may lead to optimistic
+                lock errors. Defaults to False.
+            enable_logging (bool): If True, logs the update action. Defaults to False.
+        Returns:
+            dict: Dictionary representing the entity to be updated or created.
+        """
+        update_settings = UpdateSettings(
+            update_type=update_type,
+            include_version=include_version,
+            creation_mode=creation_mode,
+        )
+
+        data_to_send = {}
+        for key, value in self.__dict__.items():
+            if key in update_settings.excluded_keys:
+                continue
+            if update_settings.creation_mode and value is None:
+                continue
+            if key == "customAttributes":
+                updated_custom_attributes = self._handle_custom_attributes(
+                    value, update_settings.update_type
+                )
+                if updated_custom_attributes:
+                    data_to_send[key] = updated_custom_attributes
+
+            elif isinstance(value, list):
+                value = self._handle_list_values(key, value, update_settings)
+                if value:
+                    data_to_send[key] = value
+
+            elif hasattr(value, "build_update_dictionary"):
+                object_dictionary = value.build_update_dictionary(
+                    update_settings.update_type,
+                    include_version=False,
+                    creation_mode=update_settings.creation_mode,
+                )
+                if object_dictionary:
+                    data_to_send[key] = object_dictionary
+
+            elif key in self.used_attributes or update_settings.update_type == "full":
+                data_to_send[key] = value
+
+        return data_to_send
+
+    def update_entity(
+        self,
+        update_type: Literal["full", "used"] = "used",
+        include_version: bool = False,
+        enable_logging: bool = False,
+    ) -> None:
+        """Updates the entity in Weclapp with the attributes set in the instance.
+        Args:
+            update_type (Literal[full, used]): Type of update. Defaults to 'used'.
+                - 'full': Update dictionary will include all attributes of the
+                    instance. This type of update should be used with caution
+                    as it could potentially overwrite some values to empty if
+                    they are not set in the instance.
+                - 'used': Update dictionary will include only attributes that
+                    have been used.
+            include_version (bool): If True, includes the version in the update.
+                Be cautious when using this option as it may lead to optimistic
+                lock errors. Defaults to False.
+            enable_logging (bool): If True, logs the update action. Defaults to False.
+        """
+
+        body = self.build_update_dictionary(
+            update_type=update_type, include_version=include_version
+        )
+        if len(body) == 0:
+            logging.warning(
+                "No changes detected in %s -> nothing to update", self.__entity_name__
+            )
+            return
+        if hasattr(self, "id"):
+            updated_entity = Weclapp().put(
+                entity_name=self.__entity_name__, entity_id=self.id, body=body
+            )
+            self._apply_entity_updates(entity=updated_entity)
+            if enable_logging:
+                logging.warning("Updated %s with body: %s", type(self).__name__, body)
+            return
+        raise KeyError(f"Can not update {self.__entity_name__} -> no id found")
+
+    def create_entity(self, enable_logging: bool = False) -> dict:
+        """Creates a new entity in Weclapp with the attributes set in the instance.
+        Returns:
+            dict: The created entity as a dictionary.
+        """
+
+        body = self.build_update_dictionary(update_type="full", creation_mode=True)
+        if enable_logging:
+            logging.warning(
+                "Posting new %s to Weclapp with body: %s", type(self).__name__, body
+            )
+        entity_creation = Weclapp().post(entity_name=self.__entity_name__, body=body)
+
+        self._apply_entity_updates(entity=entity_creation)
+        return entity_creation
+
+    @classmethod
+    def from_blank(cls):
+        """Creates a new empty instance of the class with all attributes set to
+        their default values. This is useful for creating new entities without
+        having to specify all attributes manually.
+        """
+        blank_entity = {}
+        nullified_attributes = []
+
+        for attribute, field_info in cls.model_fields.items():
+
+            if getattr(field_info.annotation, "__origin__", None) in [List, list]:
+                pass
+
+            # Handle attributes that are weclapp subclasses (e.g. SalesOrderItems)
+            elif isinstance(field_info.annotation, type) and issubclass(
+                field_info.annotation, Blueprint
+            ):
+                blank_entity[attribute] = field_info.annotation.from_blank()
+
+            # Handle regular attributes
+            elif getattr(field_info.annotation, "__origin__", None) in [
+                Optional,
+                Union,
+            ]:
+                blank_entity[attribute] = None
+                nullified_attributes.append(attribute)
+
+            else:
+                raise ValueError(
+                    f"Unexpected attribute: {attribute} - {field_info.annotation}"
+                )
+
+        new_entity = cls(**blank_entity)
+
+        for attribute in nullified_attributes:
+            setattr(new_entity, attribute, None)
+
+        new_entity.used_attributes = {}
+        return new_entity
+
+    def _handle_custom_attributes(
+        self, value: list, update_type: Literal["full", "used"] = "used"
+    ) -> List[dict]:
+        """Handles the update of custom attributes. Iterates through the list of
+        custom attributes, and adds their update dictionaries to the list of
+        custom attributes if they were changed, or if update_type is "full".
+        Args:
+            value (list): List of custom attributes. Can be a list of
+                WeclappMetaData instances or dictionaries.
+            update_type (Literal["full", "used"]): Type of update.
+        Returns:
+            List[dict]: List of dictionaries representing the updated custom attributes.
+        """
+        updated_custom_attributes = []
+        for custom_attribute in value:
+            if isinstance(custom_attribute, WeclappMetaData):
+                cat = custom_attribute.build_update_dictionary(update_type=update_type)
+                logging.warning("CAT: %s", cat)
+                if cat:
+                    updated_custom_attributes.append(cat)
+                elif update_type == "full":
+                    updated_custom_attributes.append(cat)
+            elif isinstance(custom_attribute, dict) and hasattr(
+                custom_attribute, "attributeDefinitionId"
+            ):
+                updated_custom_attributes.append(custom_attribute)
+        return updated_custom_attributes
+
+    def _handle_list_values(
+        self, key: str, value: Any, update_settings: UpdateSettings
+    ) -> Any:
+        """Handles the update of list values. If the list contains objects that
+        are subclasses of Blueprint or dictionaries, it will be processed by
+        _handle_list_of_objects method. If the list contains other types of
+        values (e.g. int, str), it will return them as is.
+        """
+        if self.__annotations__.get(key, list) == list:
+            if (
+                len(value) > 0
+                or update_settings.update_type == "full"
+                or key in self.used_attributes
+            ):
+                return value
+
+        else:
+            items = self._handle_list_of_objects(value, update_settings=update_settings)
+            if items:
+                return items
+        return None
+
+    def _handle_list_of_objects(
+        self, value: list, update_settings: UpdateSettings
+    ) -> List[dict]:
+        """Handles the update of list of dictionaries or objects. If the list
+        contains objects that are subclasses of Blueprint, it will call their
+        build_update_dictionary method. If the list contains dictionaries, it
+        will return them as is. Versions of the objects will not be included to
+        avoid optimistic lock errors.
+        """
+        items = []
+
+        for item in value:
+            if isinstance(item, Blueprint):
+                if update_settings.creation_mode is False:
+                    item.add_used_attribute("id")
+                item_dict = item.build_update_dictionary(
+                    update_type=update_settings.update_type,
+                    creation_mode=update_settings.creation_mode,
+                )
+                if len(item_dict) > 1 or update_settings.update_type == "full":
+                    items.append(item_dict)
+            elif isinstance(item, dict):
+                items.append(item)
+
+        return items
+
+    def _apply_entity_updates(self, entity: Union[dict, object]) -> None:
+        """Updates the current instance with the values from the provided entity."""
+        if isinstance(entity, dict):
+            entity = type(self)(**entity)
+
+        if type(entity) is type(self):
+            self.__dict__.update(entity.__dict__)
+            self._reset_all_used_attributes()
+
+        else:
+            raise AssertionError(
+                f"Updated entity type is {type(entity).__name__}, "
+                f"but expected {type(self).__name__}"
+            )
+
     def __setattr__(self, __name: str, __value: Any) -> None:
         """Sets an attribute of the instance.
         Args:
@@ -250,145 +520,26 @@ class Blueprint(BaseModel):
 
             object.__setattr__(self, __name, __value)
 
-    def _handle_list_values(
-        self, value: list, update_type: Literal["full", "used", "used+"] = "used"
-    ) -> List[dict]:
-        """Handles the update of list of dictionaries or objects. If the list
-        contains objects that are subclasses of Blueprint, it will call their
-        build_update_dictionary method. If the list contains dictionaries, it
-        will return them as is. Versions of the objects will not be included to
-        avoid optimistic lock errors.
-        """
-        items = []
+    def _reset_used_attributes(self) -> None:
+        """Resets the used_attributes dictionary to an empty state."""
+        self.used_attributes = {}
 
-        for item in value:
-            if isinstance(item, Blueprint):
-                if update_type == "full":
-                    item_dict = item.build_update_dictionary(update_type=update_type)
-                    del item_dict["version"]  # Remove version if present
-                    items.append(item_dict)
-                elif update_type in ["used+", "used"]:
-                    item.add_used_attribute("id")
-                    item_dict = item.build_update_dictionary(update_type="used")
-                    if len(item_dict) > 1:
-                        items.append(item_dict)
-            elif isinstance(item, dict):
-                items.append(item)
-
-        return items
-
-    def _handle_custom_attributes(
-        self, value: list, update_type: Literal["full", "used", "used+"] = "used"
-    ) -> List[dict]:
-        """Handles the update of custom attributes. Iterates through the list of
-        custom attributes, and adds their update dictionaries to the list of
-        custom attributes if they were changed, or if update_type is "full".
-        Args:
-            value (list): List of custom attributes. Can be a list of
-                WeclappMetaData instances or dictionaries.
-            update_type (Literal["full", "used", "used+"]): Type of update.
-        Returns:
-            List[dict]: List of dictionaries representing the updated custom attributes.
-        """
-        updated_custom_attributes = []
-        for custom_attribute in value:
-            if isinstance(custom_attribute, WeclappMetaData):
-                cat = custom_attribute.build_update_dictionary(update_type=update_type)
-                if cat:
-                    updated_custom_attributes.append(cat)
-                elif update_type == "full":
-                    updated_custom_attributes.append(cat)
-            elif isinstance(custom_attribute, dict) and hasattr(
-                custom_attribute, "attributeDefinitionId"
-            ):
-                updated_custom_attributes.append(custom_attribute)
-        return updated_custom_attributes
-
-    def build_update_dictionary(
-        self,
-        update_type: Literal["full", "used", "used+"] = "used",
-        creation_mode: bool = False,
-    ) -> dict:
-        """Builds a dictionary for updating or creating an entity in Weclapp.
-        Args:
-            update_type (Literal[full, used, used+]): Type of update. Defaults to
-                "used".
-                - "full": Update dictionary will include all attributes of the
-                    instance. This type of update should be used with caution as it
-                    may lead to optimistic lock errors and could potentially overwrite
-                    some values to empty if they are not set in the instance.
-                - "used": Update dictionary will include only attributes that have been used.
-                - "used+": Update dictionary will include used attributes and version.
-                    This type of update should be used cautiously as it may lead to
-                    optimistic lock errors.
-            creation_mode (bool): If True, the dictionary will be built for creating
-                a new entity. Defaults to False.
-        Returns:
-            dict: Dictionary representing the entity to be updated or created.
-        """
-        if creation_mode:
-            update_type = "full"
-
-        excluded_keys = [
-            "used_attributes",
-            "used_keys",
-            "statusHistory",
-        ]
-
-        data_to_send = {}
-        for key, value in self.__dict__.items():
-            if key in excluded_keys:
-                continue
-            if key == "customAttributes":
-                updated_custom_attributes = self._handle_custom_attributes(
-                    value, update_type=update_type
-                )
-                if len(updated_custom_attributes) > 0:
-                    data_to_send[key] = updated_custom_attributes
-
-            elif isinstance(value, list):
-                # Handle regular lists.
-                if self.__annotations__.get(key, list) == list:
-                    if (
-                        len(value) > 0
-                        or update_type == "full"
-                        or key in self.used_attributes
+    def _reset_all_used_attributes(self) -> None:
+        """Resets the used_attributes dictionary of the current instance
+        and all its subclasses."""
+        self._reset_used_attributes()
+        for _, value in self.__dict__.items():
+            if isinstance(value, list):
+                for list_item in value:
+                    if hasattr(list_item, "_reset_used_attributes"):
+                        list_item._reset_used_attributes()
+                    elif (
+                        hasattr(list_item, "updated")
+                        and getattr(list_item, "updated") is True
                     ):
-                        data_to_send[key] = value
-                # Handle lists of Weclapp subclasses or dictionaries.
-                else:
-                    items = self._handle_list_values(value, update_type=update_type)
-                    if len(items) > 0:
-                        data_to_send[key] = items
-
-            # Handle Weclapp subclasses.
-            elif hasattr(value, "build_update_dictionary"):
-                object_dictionary = value.build_update_dictionary(
-                    update_type=update_type
-                )
-                if object_dictionary:
-                    del object_dictionary["version"]  # Remove version if present
-                    data_to_send[key] = object_dictionary
-
-            # Handle regular attributes.
-            elif (
-                key in self.used_attributes
-                or update_type == "full"
-                or (key in ["version"] and update_type == "used+")
-            ):
-                if creation_mode and key in ["id", "version"]:
-                    raise AssertionError(
-                        f"Can not post new entity {type(self).__name__} -> "
-                        "id or version already set"
-                    )
-                data_to_send[key] = value
-
-        # Remove keys that are not needed for the update.
-        data_to_send = {k: v for k, v in data_to_send.items() if k not in excluded_keys}
-
-        if len(data_to_send) == 1 and "version" in data_to_send:
-            data_to_send = {}
-        return data_to_send
+                        list_item.updated = False
+            elif hasattr(value, "_reset_used_attributes"):
+                value._reset_used_attributes()
 
     @property
     def __entity_name__(self) -> str:
@@ -396,128 +547,3 @@ class Blueprint(BaseModel):
         entity_name = str(class_type.__name__)
         entity_name = entity_name[:1].lower() + entity_name[1:]
         return entity_name
-
-    def apply_entity_updates(self, entity: Union[dict, object]) -> None:
-        """Updates the current instance with the values from the provided entity."""
-        if isinstance(entity, dict):
-            entity = type(self)(**entity)
-
-        if type(entity) is type(self):
-            self.__dict__.update(entity.__dict__)
-            self.reset_all_used_attributes()
-
-        else:
-            raise AssertionError(
-                f"Updated entity type is {type(entity).__name__}, "
-                f"but expected {type(self).__name__}"
-            )
-
-    def update_entity(
-        self,
-        update_type: Literal["full", "used", "used+"] = "used",
-        enable_logging: bool = False,
-    ) -> None:
-        """Updates the entity in Weclapp with the attributes set in the instance.
-        Args:
-            update_type (Literal[full, used, used+]): Type of update. Defaults to 'used'.
-                - 'full': Update dictionary will include all attributes of the instance.
-                    This type of update should be used with caution as it may lead
-                    to optimistic lock errors and could potentially overwrite
-                    some values to empty if they are not set in the instance.
-                - 'used': Update dictionary will include only attributes that have been used.
-                - 'used+': Update dictionary will include used attributes and version.
-                    This type of update should be used cautiously as it may lead
-                    to optimistic lock errors.
-            enable_logging (bool): If True, logs the update action. Defaults to False.
-        """
-
-        body = self.build_update_dictionary(update_type=update_type)
-        if len(body) == 0:
-            logging.warning(
-                "No changes detected in %s -> nothing to update", self.__entity_name__
-            )
-            return
-        if hasattr(self, "id"):
-            updated_entity = Weclapp().put(
-                entity_name=self.__entity_name__, entity_id=self.id, body=body
-            )
-            self.apply_entity_updates(entity=updated_entity)
-            if enable_logging:
-                logging.warning("Updated %s with body: %s", type(self).__name__, body)
-            return
-        raise KeyError(f"Can not update {self.__entity_name__} -> no id found")
-
-    def create_entity(self, enable_logging: bool = False) -> dict:
-        """Creates a new entity in Weclapp with the attributes set in the instance.
-        Returns:
-            dict: The created entity as a dictionary.
-        """
-
-        body = self.build_update_dictionary(update_type="full", creation_mode=True)
-        if enable_logging:
-            logging.warning(
-                "Posting new %s to Weclapp with body: %s", type(self).__name__, body
-            )
-        entity_creation = Weclapp().post(entity_name=self.__entity_name__, body=body)
-
-        self.apply_entity_updates(entity=entity_creation)
-        return entity_creation
-
-    @classmethod
-    def from_weclapp(cls, entity_id: str):
-        """Gets an entity from weclapp by its id and returns a new instance of
-        the corresponding class with the attributes set to the values."""
-        if not entity_id:
-            raise AssertionError(
-                "Entity ID must not be None or empty for from_weclapp()"
-            )
-        entity_name = cls.__name__
-        entity_name = entity_name[:1].lower() + entity_name[1:]
-        response = Weclapp().get(
-            entity_name=entity_name, entity_id=entity_id, as_type=dict
-        )
-        if not isinstance(response, dict):
-            raise AssertionError(
-                f"Response from weclapp is not a dict, but a {type(response).__name__}"
-            )
-        return cls(**response)
-
-    @classmethod
-    def from_blank(cls):
-        """Creates a new empty instance of the class with all attributes set to
-        their default values. This is useful for creating new entities without
-        having to specify all attributes manually.
-        """
-        blank_entity = {}
-        nullified_attributes = []
-
-        for attribute, field_info in cls.model_fields.items():
-
-            if getattr(field_info.annotation, "__origin__", None) in [List, list]:
-                pass
-
-            # Handle attributes that are weclapp subclasses (e.g. SalesOrderItems)
-            elif isinstance(field_info.annotation, type) and issubclass(
-                field_info.annotation, Blueprint
-            ):
-                blank_entity[attribute] = field_info.annotation.from_blank()
-
-            # Handle regular attributes
-            elif (
-                getattr(field_info.annotation, "__origin__", None) in [Optional, Union]
-            ):
-                blank_entity[attribute] = None
-                nullified_attributes.append(attribute)
-
-            else:
-                raise ValueError(
-                    f"Unexpected attribute: {attribute} - {field_info.annotation}"
-                )
-
-        new_entity = cls(**blank_entity)
-
-        for attribute in nullified_attributes:
-            setattr(new_entity, attribute, None)
-
-        new_entity.used_attributes = {}
-        return new_entity
