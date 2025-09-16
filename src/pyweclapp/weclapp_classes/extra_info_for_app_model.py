@@ -2,7 +2,7 @@
 for articles."""
 
 from pydantic import BaseModel
-from pyweclapp import weclapp
+from ..weclapp import Weclapp
 
 
 class ExtraInfoForApp(BaseModel):
@@ -37,5 +37,5 @@ class ExtraInfoForApp(BaseModel):
     @classmethod
     def from_weclapp(cls, article_id: str):
         """Fetch extra info for an article from Weclapp."""
-        response = weclapp.GET(f"article/id/{article_id}/extraInfoForApp")
+        response = Weclapp().get(f"article/id/{article_id}/extraInfoForApp")
         return cls(**response)

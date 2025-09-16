@@ -47,21 +47,10 @@ FLOAT_CUSTOM_ATTRIBUTE_TYPES = ["numberValue"]
 # --------- Weclapp Class Creator ---------
 CREATION_QUERY = {"serializeNulls": "", "sort": "-createdDate"}
 
-MANDATORY_FIELDS = [
-    "id",
-    "version",
-    "active",
-    "createdDate",
-    "lastModifiedDate",
-    "articleType",
-    "priceScaleType",
-    "positionNumber",
-]
-
 STATIC_IMPORTS_MODEL_FILES = (
     '"""This code was dynamically created using WeclappClassCreator from pyweclapp"""'
     "\n\n"
-    "from typing import Union, List\n"
+    "from typing import Union, Optional, List\n"
     "from .blueprints import Blueprint, WeclappMetaData\n\n\n"
 )
 INIT_FILE_NAME = "__init__.py"

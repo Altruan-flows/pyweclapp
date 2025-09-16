@@ -7,7 +7,7 @@ try:
         LONG_DESCRIPTION = f.read()
 except FileNotFoundError:
     LONG_DESCRIPTION = (
-        "Provides methods, classes and classbuilders to integrate with the Weclapp API"
+        "Provides methods, classes and classbuilders to interact with the Weclapp API"
     )
 
 try:
@@ -23,8 +23,8 @@ except FileNotFoundError:
 
 setup(
     name="pyweclapp",
-    version="0.1.0",
-    description="Provides methods, classes and classbuilders to integrate with the Weclapp API",
+    version="0.1.1",
+    description="Provides methods, classes and classbuilders to interact with the Weclapp API",
     package_dir={"": "src"},
     packages=find_packages(where="src"),
     long_description=LONG_DESCRIPTION,
