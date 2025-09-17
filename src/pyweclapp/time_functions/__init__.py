@@ -38,14 +38,14 @@ def convert_to_datetime(
 
 
 def convert_to_time_format(
-    input_time: Union[datetime.date, datetime.datetime, str, int, float],
+    input_time: Union[datetime.date, datetime.datetime],
     conversion_format: str = "weclapp",
     timezone: str = "Europe/Berlin",
 ) -> Union[str, int]:
-    """Converts a time object to a string or integer representation.
+    """Converts a datetime object to a string or integer representation.
     Args:
-        input_time (Union[datetime.date, datetime.datetime, str, int, float]): The
-            time to convert. Can be a datetime object, date object, string, or number.
+        input_time (Union[datetime.date, datetime.datetime]): The
+            time to convert. Can be a datetime object or date object.
         conversion_format (str): The format to convert the time to. Must be one of
             'unix', 'weclapp', 'emailDate', 'utcDate', or 'ads'.
             - 'unix': Returns the time as a Unix timestamp (int).
