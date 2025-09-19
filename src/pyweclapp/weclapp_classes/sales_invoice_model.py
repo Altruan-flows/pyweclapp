@@ -233,9 +233,9 @@ class SalesInvoice(Blueprint):
     paid: Union[bool, None] = None
     paymentStatus: Union[str, None] = None
     precedingSalesInvoiceId: Union[str, None] = None
-    recordAddress: RecordAddress = None
+    recordAddress: RecordAddress = RecordAddress()
     recordCommentInheritance: Union[bool, None] = None
-    recordEmailAddresses: RecordEmailAddresses = None
+    recordEmailAddresses: RecordEmailAddresses = RecordEmailAddresses()
     recordFreeTextInheritance: Union[bool, None] = None
     recordOpeningInheritance: Union[bool, None] = None
     salesInvoiceItems: List[SalesInvoiceItems] = []

@@ -194,7 +194,7 @@ class PurchaseOrder(Blueprint):
     paymentMethodId: Union[str, None] = None
     recordCurrencyId: Union[str, None] = None
     termOfPaymentId: Union[str, None] = None
-    recordEmailAddresses: RecordEmailAddresses = None
+    recordEmailAddresses: RecordEmailAddresses = RecordEmailAddresses()
     responsibleUserId: Union[str, None] = None
     servicePeriodFrom: Union[int, None] = None
     servicePeriodTo: Union[int, None] = None
@@ -203,11 +203,11 @@ class PurchaseOrder(Blueprint):
     commercialLanguageCustomer: Union[str, None] = None
     commission: Union[str, None] = None
     confirmationNumber: Union[str, None] = None
-    deliveryAddress: DeliveryAddress = None
-    dropshippingDeliveryNoteFormTexts: DropshippingDeliveryNoteFormTexts = None
+    deliveryAddress: DeliveryAddress = DeliveryAddress()
+    dropshippingDeliveryNoteFormTexts: DropshippingDeliveryNoteFormTexts = DropshippingDeliveryNoteFormTexts()
     externalPurchaseOrderNumber: Union[str, None] = None
     formSettingsFromSalesChannel: Union[str, None] = None
-    invoiceAddress: InvoiceAddress = None
+    invoiceAddress: InvoiceAddress = InvoiceAddress()
     invoiced: Union[bool, None] = None
     mergedToPurchaseOrderId: Union[str, None] = None
     note: Union[str, None] = None
@@ -223,7 +223,7 @@ class PurchaseOrder(Blueprint):
     purchaseOrderType: Union[str, None] = None
     received: Union[bool, None] = None
     recipientCountryCode: Union[str, None] = None
-    recordAddress: RecordAddress = None
+    recordAddress: RecordAddress = RecordAddress()
     salesOrderId: Union[str, None] = None
     senderCountryCode: Union[str, None] = None
     shipmentMethodId: Union[str, None] = None

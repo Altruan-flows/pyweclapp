@@ -74,7 +74,7 @@ def convert_to_time_format(
                 input_time.hour,
                 input_time.minute,
                 input_time.second,
-                input_time.astimezone(zoneinfo.ZoneInfo(timezone)),
+                tzinfo=zoneinfo.ZoneInfo(timezone),
             )
             return aware_time.isoformat().replace("T", " ")
 

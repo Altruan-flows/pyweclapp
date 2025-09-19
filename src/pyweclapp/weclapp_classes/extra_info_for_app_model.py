@@ -37,5 +37,5 @@ class ExtraInfoForApp(BaseModel):
     @classmethod
     def from_weclapp(cls, article_id: str):
         """Fetch extra info for an article from Weclapp."""
-        response = Weclapp().get(f"article/id/{article_id}/extraInfoForApp")
+        response = Weclapp(api_version="v1").get(f"article/id/{article_id}/extraInfoForApp")
         return cls(**response)

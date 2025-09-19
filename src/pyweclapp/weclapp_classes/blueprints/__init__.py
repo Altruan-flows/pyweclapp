@@ -145,7 +145,7 @@ class Blueprint(BaseModel):
                     self.__dict__["tags"] = current_tags
                     self.add_used_attribute("tags")
                 else:
-                    logging.warning("Tag %s is already in tags!", new_tag)
+                    logging.info("Tag %s is already in tags!", new_tag)
             else:
                 raise TypeError("Tags attribute of the entity is not a list!")
         else:
@@ -321,7 +321,7 @@ class Blueprint(BaseModel):
             update_type=update_type, include_version=include_version
         )
         if len(body) == 0:
-            logging.warning(
+            logging.info(
                 "No changes detected in %s -> nothing to update", self.__entity_name__
             )
             return
@@ -409,7 +409,6 @@ class Blueprint(BaseModel):
         for custom_attribute in value:
             if isinstance(custom_attribute, WeclappMetaData):
                 cat = custom_attribute.build_update_dictionary(update_type=update_type)
-                logging.warning("CAT: %s", cat)
                 if cat:
                     updated_custom_attributes.append(cat)
                 elif update_type == "full":

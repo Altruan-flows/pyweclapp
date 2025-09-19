@@ -176,14 +176,14 @@ class Weclapp:
                 return result
         elif as_type == dict:
             if not isinstance(result, dict):
-                logging.warning(
+                logging.info(
                     "Not a dict object was returned by Weclapp -> turned it into dict"
                 )
                 result = {config.DEFAULT_RESPONSE_CONTAINER: result}
             return result
         elif as_type == list:
             if not isinstance(result, list):
-                logging.warning(
+                logging.info(
                     "Not a list object was returned by Weclapp -> turned it into list"
                 )
                 result = [result]

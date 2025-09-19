@@ -156,8 +156,8 @@ class Shipment(Blueprint):
     recordOpening: Union[str, None] = None
     sentToRecipient: Union[bool, None] = None
     tags: list = []
-    invoiceAddress: InvoiceAddress = None
-    recipientAddress: RecipientAddress = None
+    invoiceAddress: InvoiceAddress = InvoiceAddress()
+    recipientAddress: RecipientAddress = RecipientAddress()
     salesOrders: List[SalesOrders] = []
     status: Union[str, None] = None
     statusHistory: List[StatusHistory] = []
@@ -189,12 +189,12 @@ class Shipment(Blueprint):
     recipientSupplierNumber: Union[str, None] = None
     recordEmailAddresses: RecordEmailAddresses = None
     responsibleUserId: Union[str, None] = None
-    salesInvoiceEmailAddresses: SalesInvoiceEmailAddresses = None
+    salesInvoiceEmailAddresses: SalesInvoiceEmailAddresses = SalesInvoiceEmailAddresses()
     shipmentItems: List[ShipmentItems] = []
     shipmentMethodId: Union[str, None] = None
     shipmentNumber: Union[str, None] = None
     shipmentType: Union[str, None] = None
-    shippedFromAddress: ShippedFromAddress = None
+    shippedFromAddress: ShippedFromAddress = ShippedFromAddress()
     shippingCarrierId: Union[str, None] = None
     shippingDate: Union[int, None] = None
     shippingLabelsCount: Union[int, None] = None

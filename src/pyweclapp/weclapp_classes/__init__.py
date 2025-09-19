@@ -10,3 +10,4 @@ from .quotation_model import Quotation
 from .party_model import Party
 from .extra_info_for_app_model import ExtraInfoForApp
 from .article_model import Article, ArticlePrices
+from .currency_model import Currency

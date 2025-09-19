@@ -166,13 +166,13 @@ class IncomingGoods(Blueprint):
     recordOpening: Union[str, None] = None
     sentToRecipient: Union[bool, None] = None
     tags: list = []
-    invoiceAddress: InvoiceAddress = None
-    recipientAddress: RecipientAddress = None
+    invoiceAddress: InvoiceAddress = InvoiceAddress()
+    recipientAddress: RecipientAddress = RecipientAddress()
     salesOrders: List[SalesOrders] = []
     status: Union[str, None] = None
     statusHistory: List[StatusHistory] = []
-    customerDeliveryAddress: CustomerDeliveryAddress = None
-    customerInvoiceAddress: CustomerInvoiceAddress = None
+    customerDeliveryAddress: CustomerDeliveryAddress = CustomerDeliveryAddress()
+    customerInvoiceAddress: CustomerInvoiceAddress = CustomerInvoiceAddress()
     deliveryNoteNumber: Union[str, None] = None
     dhlReceiverId: Union[str, None] = None
     dropshippingShipmentId: Union[str, None] = None
@@ -183,7 +183,7 @@ class IncomingGoods(Blueprint):
     purchaseOrders: List[PurchaseOrders] = []
     relatedShipmentId: Union[str, None] = None
     responsibleUserId: Union[str, None] = None
-    returnAddress: ReturnAddress = None
+    returnAddress: ReturnAddress = ReturnAddress()
     senderCustomerNumber: Union[str, None] = None
     senderPartyId: Union[str, None] = None
     senderSupplierNumber: Union[str, None] = None
