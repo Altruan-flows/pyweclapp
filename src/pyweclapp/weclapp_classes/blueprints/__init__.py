@@ -30,7 +30,8 @@ class UpdateSettings:
             "lastModifiedDate",
             "paid",
             "picksComplete",
-            "invoiceDate"
+            "invoiceDate",
+            "unitCostInCompanyCurrency"
         }
         if include_version is False:
             self.excluded_keys.add("version")
