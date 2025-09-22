@@ -25,6 +25,9 @@ class UpdateSettings:
             "used_attributes",
             "used_keys",
             "statusHistory",
+            "lastModifiedByUserId",
+            "createdDate",
+            "lastModifiedDate",
         }
         if include_version is False:
             self.excluded_keys.add("version")
@@ -272,10 +275,9 @@ class Blueprint(BaseModel):
                 continue
             if key == "customAttributes":
                 updated_custom_attributes = self._handle_custom_attributes(
-                    value, update_settings.update_type
+                    value, "full"
                 )
-                if updated_custom_attributes:
-                    data_to_send[key] = updated_custom_attributes
+                data_to_send[key] = updated_custom_attributes
 
             elif isinstance(value, list):
                 value = self._handle_list_values(key, value, update_settings)
@@ -301,7 +303,7 @@ class Blueprint(BaseModel):
         update_type: Literal["full", "used"] = "used",
         include_version: bool = False,
         enable_logging: bool = False,
-    ) -> None:
+    ) -> dict:
         """Updates the entity in Weclapp with the attributes set in the instance.
         Args:
             update_type (Literal[full, used]): Type of update. Defaults to 'used'.
@@ -324,15 +326,14 @@ class Blueprint(BaseModel):
             logging.info(
                 "No changes detected in %s -> nothing to update", self.__entity_name__
             )
-            return
+            return self.build_update_dictionary(update_type="full")
         if hasattr(self, "id"):
             updated_entity = Weclapp().put(
                 entity_name=self.__entity_name__, entity_id=self.id, body=body
             )
-            self._apply_entity_updates(entity=updated_entity)
             if enable_logging:
                 logging.warning("Updated %s with body: %s", type(self).__name__, body)
-            return
+            return updated_entity
         raise KeyError(f"Can not update {self.__entity_name__} -> no id found")
 
     def create_entity(self, enable_logging: bool = False) -> dict:
@@ -348,7 +349,6 @@ class Blueprint(BaseModel):
             )
         entity_creation = Weclapp().post(entity_name=self.__entity_name__, body=body)
 
-        self._apply_entity_updates(entity=entity_creation)
         return entity_creation
 
     @classmethod
@@ -455,32 +455,17 @@ class Blueprint(BaseModel):
         for item in value:
             if isinstance(item, Blueprint):
                 if update_settings.creation_mode is False:
-                    item.add_used_attribute("id")
+                    update_settings.update_type = "full"
                 item_dict = item.build_update_dictionary(
                     update_type=update_settings.update_type,
                     creation_mode=update_settings.creation_mode,
                 )
-                if len(item_dict) > 1 or update_settings.update_type == "full":
+                if item_dict:
                     items.append(item_dict)
             elif isinstance(item, dict):
                 items.append(item)
 
         return items
-
-    def _apply_entity_updates(self, entity: Union[dict, object]) -> None:
-        """Updates the current instance with the values from the provided entity."""
-        if isinstance(entity, dict):
-            entity = type(self)(**entity)
-
-        if type(entity) is type(self):
-            self.__dict__.update(entity.__dict__)
-            self._reset_all_used_attributes()
-
-        else:
-            raise AssertionError(
-                f"Updated entity type is {type(entity).__name__}, "
-                f"but expected {type(self).__name__}"
-            )
 
     def __setattr__(self, __name: str, __value: Any) -> None:
         """Sets an attribute of the instance.
@@ -518,27 +503,6 @@ class Blueprint(BaseModel):
                 self.used_attributes[__name] = getattr(self, __name)
 
             object.__setattr__(self, __name, __value)
-
-    def _reset_used_attributes(self) -> None:
-        """Resets the used_attributes dictionary to an empty state."""
-        self.used_attributes = {}
-
-    def _reset_all_used_attributes(self) -> None:
-        """Resets the used_attributes dictionary of the current instance
-        and all its subclasses."""
-        self._reset_used_attributes()
-        for _, value in self.__dict__.items():
-            if isinstance(value, list):
-                for list_item in value:
-                    if hasattr(list_item, "_reset_used_attributes"):
-                        list_item._reset_used_attributes()
-                    elif (
-                        hasattr(list_item, "updated")
-                        and getattr(list_item, "updated") is True
-                    ):
-                        list_item.updated = False
-            elif hasattr(value, "_reset_used_attributes"):
-                value._reset_used_attributes()
 
     @property
     def __entity_name__(self) -> str:

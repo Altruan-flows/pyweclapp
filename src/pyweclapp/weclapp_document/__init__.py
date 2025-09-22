@@ -21,6 +21,7 @@ class DocManager:
         response = self.weclapp.get(
             entity_name="document",
             query={"entityName": self.entity_name, "entityId": self.entity_id},
+            as_type=list
         )
         for doc in response:
             self.documents.append(Document(**doc))
