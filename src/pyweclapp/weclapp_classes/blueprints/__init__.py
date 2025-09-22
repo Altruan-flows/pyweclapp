@@ -28,6 +28,9 @@ class UpdateSettings:
             "lastModifiedByUserId",
             "createdDate",
             "lastModifiedDate",
+            "paid",
+            "picksComplete",
+            "invoiceDate"
         }
         if include_version is False:
             self.excluded_keys.add("version")
