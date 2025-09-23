@@ -60,3 +60,17 @@ STATIC_IMPORTS_INIT = "from .blueprints.custom_attributes_model import WeclappMe
 INIT_FILE_DOC_STRING = (
     '"""Module for weclapp classes package imports. Add more classes if necessary."""\n'
 )
+
+EXCLUDED_KEYS = {
+    "used_attributes",
+    "used_keys",
+    "statusHistory",
+    "lastModifiedByUserId",
+    "createdDate",
+    "lastModifiedDate",
+    "paid",
+    "picksComplete",
+    "invoiceDate",
+    "unitCostInCompanyCurrency",
+    "invoicedQuantity"
+}

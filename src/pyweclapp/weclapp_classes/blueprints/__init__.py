@@ -7,6 +7,7 @@ from types import SimpleNamespace
 from pydantic import BaseModel
 from ...weclapp import Weclapp
 from .custom_attributes_model import WeclappMetaData
+from . import config
 
 
 class UpdateSettings:
@@ -21,18 +22,7 @@ class UpdateSettings:
         self.update_type: str = update_type
         self.include_version: bool = include_version
         self.creation_mode: bool = creation_mode
-        self.excluded_keys: Set[str] = {
-            "used_attributes",
-            "used_keys",
-            "statusHistory",
-            "lastModifiedByUserId",
-            "createdDate",
-            "lastModifiedDate",
-            "paid",
-            "picksComplete",
-            "invoiceDate",
-            "unitCostInCompanyCurrency"
-        }
+        self.excluded_keys: Set[str] = config.EXCLUDED_KEYS.copy()
         if include_version is False:
             self.excluded_keys.add("version")
         if creation_mode:
