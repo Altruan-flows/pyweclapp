@@ -267,6 +267,11 @@ class Blueprint(BaseModel):
                 continue
             if update_settings.creation_mode and value is None:
                 continue
+            if (
+                key in config.PROBLEMATIC_KEYS
+                and key not in self.used_attributes
+            ):
+                continue
             if key == "customAttributes":
                 updated_custom_attributes = self._handle_custom_attributes(
                     value, "full"

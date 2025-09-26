@@ -72,5 +72,14 @@ EXCLUDED_KEYS = {
     "picksComplete",
     "invoiceDate",
     "unitCostInCompanyCurrency",
-    "invoicedQuantity"
+    "unitPriceInCompanyCurrency",
+    "invoicedQuantity",
+    "shipped",
+    "invoiced",
+    "lowLevelCode"
 }
+
+PROBLEMATIC_KEYS = [
+    "tags",
+    "description"
+]
