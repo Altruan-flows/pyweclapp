@@ -89,7 +89,9 @@ class Blueprint(BaseModel):
                     and custom_attribute.attributeDefinitionId == attribute_id
                 ):
                     return custom_attribute
-            raise KeyError(f"Custom attribute with id {attribute_id} not found")
+            return WeclappMetaData(
+                attributeDefinitionId=attribute_id
+            )
 
         raise KeyError(f"Attribute customAttributes not found in {type(self).__name__}")
 
