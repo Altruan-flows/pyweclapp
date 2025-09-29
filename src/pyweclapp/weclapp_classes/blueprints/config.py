@@ -73,6 +73,7 @@ EXCLUDED_KEYS = {
     "invoiceDate",
     "unitCostInCompanyCurrency",
     "unitPriceInCompanyCurrency",
+    "shippedQuantity",
     "invoicedQuantity",
     "shipped",
     "invoiced",
