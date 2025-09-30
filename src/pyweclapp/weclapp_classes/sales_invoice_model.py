@@ -275,5 +275,10 @@ class SalesInvoice(Blueprint):
     excluded_keys: Set[str] = {
         "paid",
         "unitCostInCompanyCurrency",
-        "unitPriceInCompanyCurrency"
+        "unitPriceInCompanyCurrency",
+        "netAmount",
+        "netAmountInCompanyCurrency",
+        "grossAmount",
+        "grossAmountInCompanyCurrency",
+        "salesInvoiceItemRelationships"
     }
