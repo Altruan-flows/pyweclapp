@@ -1,6 +1,6 @@
 """This code was dynamically created using WeclappClassCreator from pyweclapp"""
 
-from typing import Union, List
+from typing import Union, List, Set
 from .blueprints import Blueprint, WeclappMetaData
 
 
@@ -213,3 +213,7 @@ class Article(Blueprint):
     useSalesBillOfMaterialItemPrices: Union[bool, None] = None
     useSalesBillOfMaterialItemPricesForPurchase: Union[bool, None] = None
     useSalesBillOfMaterialSubitemCosts: Union[bool, None] = None
+
+    excluded_keys: Set[str] = {
+        "lowLevelCode"
+    }

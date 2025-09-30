@@ -1,6 +1,6 @@
 """This code was dynamically created using WeclappClassCreator from pyweclapp"""
 
-from typing import Union, List
+from typing import Union, List, Set
 from .blueprints import Blueprint, WeclappMetaData
 
 
@@ -119,6 +119,10 @@ class ShipmentItems(Blueprint):
     returnRectificationId: Union[str, None] = None
     salesOrderItemId: Union[str, None] = None
 
+    excluded_keys: Set[str] = {
+        "version"
+    }
+
 
 class ShippedFromAddress(Blueprint):
     city: Union[str, None] = None
@@ -200,3 +204,7 @@ class Shipment(Blueprint):
     shippingLabelsCount: Union[int, None] = None
     shippingReturnCarrierId: Union[str, None] = None
     warehouseId: Union[str, None] = None
+
+    excluded_keys: Set[str] = {
+        "picksComplete"
+    }

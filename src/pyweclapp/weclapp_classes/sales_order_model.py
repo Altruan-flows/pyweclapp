@@ -1,6 +1,6 @@
 """This code was dynamically created using WeclappClassCreator from pyweclapp"""
 
-from typing import Union, List
+from typing import Union, List, Set
 from .blueprints import Blueprint, WeclappMetaData
 
 
@@ -180,6 +180,22 @@ class OrderItems(Blueprint):
     shippedQuantity: Union[str, None] = None
     tasks: List[Tasks] = []
 
+    excluded_keys: Set[str] = {
+        "version",
+        "grossAmount",
+        "grossAmountInCompanyCurrency",
+        "netAmount",
+        "netAmountForStatistics",
+        "netAmountForStatisticsInCompanyCurrency",
+        "netAmountInCompanyCurrency",
+        "unitPriceInCompanyCurrency",
+        "unitCostInCompanyCurrency",
+        "invoicedQuantity",
+        "shippedQuantity",
+        "returnedQuantity",
+        "shipped",
+    }
+
 
 class SalesInvoices(Blueprint):
     id: Union[str, None] = None
@@ -233,6 +249,16 @@ class ShippingCostItems(Blueprint):
     unitCost: Union[str, None] = None
     unitCostInCompanyCurrency: Union[str, None] = None
     ecommerceOrderItemIds: list = []
+
+    excluded_keys: Set[str] = {
+        "version",
+        "grossAmount",
+        "grossAmountInCompanyCurrency",
+        "netAmount",
+        "netAmountInCompanyCurrency",
+        "unitPriceInCompanyCurrency",
+        "unitCostInCompanyCurrency",
+    }
 
 
 class StatusHistory(Blueprint):
@@ -328,3 +354,14 @@ class SalesOrder(Blueprint):
     statusHistory: List[StatusHistory] = []
     template: Union[bool, None] = None
     warehouseId: Union[str, None] = None
+
+    excluded_keys: Set[str] = {
+        "paid",
+        "unitCostInCompanyCurrency",
+        "unitPriceInCompanyCurrency",
+        "shippedQuantity",
+        "invoicedQuantity",
+        "returnedQuantity",
+        "shipped",
+        "invoiced",
+    }

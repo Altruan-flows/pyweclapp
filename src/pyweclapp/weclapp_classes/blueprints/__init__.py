@@ -18,11 +18,17 @@ class UpdateSettings:
         creation_mode (bool): Whether the update is for creation mode.
     """
 
-    def __init__(self, update_type: str, include_version: bool, creation_mode: bool):
+    def __init__(
+        self,
+        update_type: str,
+        include_version: bool,
+        creation_mode: bool,
+        excluded_keys: Optional[Set[str]] = None,
+    ):
         self.update_type: str = update_type
         self.include_version: bool = include_version
         self.creation_mode: bool = creation_mode
-        self.excluded_keys: Set[str] = config.EXCLUDED_KEYS.copy()
+        self.excluded_keys: Optional[Set[str]] = excluded_keys
         if include_version is False:
             self.excluded_keys.add("version")
         if creation_mode:
@@ -89,9 +95,7 @@ class Blueprint(BaseModel):
                     and custom_attribute.attributeDefinitionId == attribute_id
                 ):
                     return custom_attribute
-            return WeclappMetaData(
-                attributeDefinitionId=attribute_id
-            )
+            return WeclappMetaData(attributeDefinitionId=attribute_id)
 
         raise KeyError(f"Attribute customAttributes not found in {type(self).__name__}")
 
@@ -257,22 +261,22 @@ class Blueprint(BaseModel):
         Returns:
             dict: Dictionary representing the entity to be updated or created.
         """
+        excluded_keys = config.EXCLUDED_KEYS.copy()
+        if hasattr(self, "excluded_keys"):
+            excluded_keys.update(self.excluded_keys)
         update_settings = UpdateSettings(
             update_type=update_type,
             include_version=include_version,
             creation_mode=creation_mode,
+            excluded_keys=excluded_keys
         )
+        logging.warning("Excluded keys for update: %s", update_settings.excluded_keys)
 
         data_to_send = {}
         for key, value in self.__dict__.items():
             if key in update_settings.excluded_keys:
                 continue
             if update_settings.creation_mode and value is None:
-                continue
-            if (
-                key in config.PROBLEMATIC_KEYS
-                and key not in self.used_attributes
-            ):
                 continue
             if key == "customAttributes":
                 updated_custom_attributes = self._handle_custom_attributes(

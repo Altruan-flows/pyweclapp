@@ -64,23 +64,9 @@ INIT_FILE_DOC_STRING = (
 EXCLUDED_KEYS = {
     "used_attributes",
     "used_keys",
-    "statusHistory",
-    "lastModifiedByUserId",
+    "excluded_keys",
     "createdDate",
     "lastModifiedDate",
-    "paid",
-    "picksComplete",
-    "invoiceDate",
-    "unitCostInCompanyCurrency",
-    "unitPriceInCompanyCurrency",
-    "shippedQuantity",
-    "invoicedQuantity",
-    "shipped",
-    "invoiced",
-    "lowLevelCode"
+    "statusHistory",
+    "lastModifiedByUserId"
 }
-
-PROBLEMATIC_KEYS = [
-    "tags",
-    "description"
-]
