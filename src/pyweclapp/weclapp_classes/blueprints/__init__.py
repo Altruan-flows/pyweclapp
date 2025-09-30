@@ -295,7 +295,7 @@ class Blueprint(BaseModel):
                     creation_mode=update_settings.creation_mode,
                 )
                 if object_dictionary:
-                    object_dictionary = self.postprocess_dictionary(object_dictionary)
+                    object_dictionary = self._postprocess_dictionary(object_dictionary)
                     data_to_send[key] = object_dictionary
 
             elif key in self.used_attributes or update_settings.update_type == "full":
@@ -397,13 +397,17 @@ class Blueprint(BaseModel):
         new_entity.used_attributes = {}
         return new_entity
 
-    def postprocess_dictionary(self, data: dict) -> dict:
+    def _postprocess_dictionary(self, data: dict) -> dict:
         """Postprocesses the dictionary before sending it to Weclapp. This is
         needed for some entities where certain attributes depend on each other.
         """
+        if "id" in data and data["id"] is None:
+            data.pop("id")
+        if "positionNumber" in data and data["positionNumber"] is None:
+            data.pop("positionNumber")
         if "manualUnitCost" in data and "unitCost" in data:
             if data["manualUnitCost"] is False:
-                data = data.pop("unitCost")
+                data.pop("unitCost")
         return data
 
     def _handle_custom_attributes(
@@ -475,8 +479,10 @@ class Blueprint(BaseModel):
                     creation_mode=update_settings.creation_mode,
                 )
                 if item_dict:
+                    item_dict = self._postprocess_dictionary(item_dict)
                     items.append(item_dict)
             elif isinstance(item, dict):
+                item = self._postprocess_dictionary(item)
                 items.append(item)
 
         return items
