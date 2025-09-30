@@ -270,7 +270,6 @@ class Blueprint(BaseModel):
             creation_mode=creation_mode,
             excluded_keys=excluded_keys
         )
-        logging.warning("Excluded keys for update: %s", update_settings.excluded_keys)
 
         data_to_send = {}
         for key, value in self.__dict__.items():
@@ -296,6 +295,7 @@ class Blueprint(BaseModel):
                     creation_mode=update_settings.creation_mode,
                 )
                 if object_dictionary:
+                    object_dictionary = self.postprocess_dictionary(object_dictionary)
                     data_to_send[key] = object_dictionary
 
             elif key in self.used_attributes or update_settings.update_type == "full":
@@ -396,6 +396,15 @@ class Blueprint(BaseModel):
 
         new_entity.used_attributes = {}
         return new_entity
+
+    def postprocess_dictionary(self, data: dict) -> dict:
+        """Postprocesses the dictionary before sending it to Weclapp. This is
+        needed for some entities where certain attributes depend on each other.
+        """
+        if "manualUnitCost" in data and "unitCost" in data:
+            if data["manualUnitCost"] is False:
+                data = data.pop("unitCost")
+        return data
 
     def _handle_custom_attributes(
         self, value: list, update_type: Literal["full", "used"] = "used"
