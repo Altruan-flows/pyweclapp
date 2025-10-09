@@ -90,6 +90,11 @@ class Picks(Blueprint):
     sourceStoragePlaceId: Union[str, None] = None
     transportationOrderId: Union[str, None] = None
 
+    excluded_keys: Set[str] = {
+        "version",
+        "sourceStoragePlaceId"
+    }
+
 
 class ShipmentItems(Blueprint):
     id: Union[str, None] = None

@@ -364,4 +364,8 @@ class SalesOrder(Blueprint):
         "returnedQuantity",
         "shipped",
         "invoiced",
+        "netAmount",
+        "netAmountInCompanyCurrency",
+        "grossAmount",
+        "grossAmountInCompanyCurrency",
     }

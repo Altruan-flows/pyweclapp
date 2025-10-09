@@ -98,6 +98,11 @@ class QuantityConversions(Blueprint):
     oppositeDirection: Union[bool, None] = None
     unitId: Union[str, None] = None
 
+    excluded_keys: Set[str] = {
+        "createdUserId",
+        "lastEditedUserId",
+    }
+
 
 class SalesBillOfMaterialItems(Blueprint):
     id: Union[str, None] = None
