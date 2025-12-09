@@ -57,12 +57,11 @@ class Blueprint(BaseModel):
         entity_name = cls.__name__
         entity_name = entity_name[:1].lower() + entity_name[1:]
         response = Weclapp().get(
-            entity_name=entity_name, entity_id=entity_id, as_type=dict
+            entity_name=entity_name, query={"id-eq": entity_id}, as_type=list
         )
-        if not isinstance(response, dict):
-            raise AssertionError(
-                f"Response from weclapp is not a dict, but a {type(response).__name__}"
-            )
+        if not response:
+            raise ValueError(f"No entity found for id {entity_id}")
+        response = response[0]
         return cls(**response)
 
     def custom_attribute(
@@ -268,7 +267,7 @@ class Blueprint(BaseModel):
             update_type=update_type,
             include_version=include_version,
             creation_mode=creation_mode,
-            excluded_keys=excluded_keys
+            excluded_keys=excluded_keys,
         )
 
         data_to_send = {}

@@ -34,7 +34,12 @@ class Document(BaseModel):
                 raise TypeError("document_id must be a string.")
             if not document_id.isdigit():
                 raise ValueError("document_id must be a numeric string.")
-            json_document = Weclapp().get(entity_name="document", entity_id=document_id)
+            json_document = Weclapp().get(
+                entity_name="document", query={"id-eq": document_id}, as_type=list
+            )
+            if not json_document:
+                raise ValueError(f"No document found for id {document_id}")
+            json_document = json_document[0]
         return cls(**json_document)
 
     def download_doc(self) -> io.BytesIO:

@@ -92,7 +92,12 @@ class Picks(Blueprint):
 
     excluded_keys: Set[str] = {
         "version",
-        "sourceStoragePlaceId"
+        "confirmedByUserId",
+        "confirmedDate",
+        "bookedDate",
+        "sourceInternalTransportReferenceId",
+        "sourceStoragePlaceId",
+        "transportationOrderId",
     }
 
 

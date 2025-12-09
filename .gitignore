@@ -2,5 +2,6 @@
 .python-version
 .vscode/
 .gitignore
+.DS_Store
 
 *.ipynb
