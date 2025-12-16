@@ -216,5 +216,6 @@ class Shipment(Blueprint):
     warehouseId: Union[str, None] = None
 
     excluded_keys: Set[str] = {
-        "picksComplete"
+        "picksComplete",
+        "shippedFromAddress"
     }
