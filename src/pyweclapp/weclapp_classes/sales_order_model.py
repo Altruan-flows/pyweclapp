@@ -270,6 +270,8 @@ class StatusHistory(Blueprint):
 
 class SalesOrder(Blueprint):
     id: Union[str, None] = None
+    availability: Union[str, None] = None
+    availabilityForAllWarehouses: Union[str, None] = None
     createdDate: Union[int, None] = None
     lastModifiedDate: Union[int, None] = None
     version: Union[str, None] = None

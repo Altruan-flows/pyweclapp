@@ -125,6 +125,14 @@ class SupplySources(Blueprint):
 
 class Article(Blueprint):
     id: Union[str, None] = None
+    aggregateStock: list = []
+    totalStockQuantity: list = []
+    totalStockQuantity: list = []
+    reservedStockQuantity: list = []
+    pickableStockQuantity: list = []
+    currentSalesPrice: dict = {}
+    averagePrice: dict = {}
+    currentStockMinusTotalSalesVolume: Union[str, None] = None
     createdDate: Union[int, None] = None
     lastModifiedDate: Union[int, None] = None
     version: Union[str, None] = None
