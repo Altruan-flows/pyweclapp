@@ -339,6 +339,42 @@ class Weclapp:
         if not response.ok:
             raise WeclappError(response)
 
+    def _enrich_entities(
+        self,
+        response: dict,
+        merge_additional_properties: bool = False,
+        merge_referenced_entities: bool = False,
+    ) -> list:
+        """Enriches entities with additionalProperties and/or referencedEntities.
+
+        Args:
+            response (dict): The full API response containing 'result' and
+                optionally 'additionalProperties' and/or 'referencedEntities'.
+            merge_additional_properties (bool): If True, merges additionalProperties
+                into each entity by index.
+            merge_referenced_entities (bool): If True, adds referencedEntities
+                to each entity under '_referencedEntities' key.
+
+        Returns:
+            list: List of entities with additional data merged in.
+        """
+        result = response.get(config.DEFAULT_RESPONSE_CONTAINER, [])
+
+        if merge_additional_properties:
+            additional_properties = response.get("additionalProperties", {})
+            for index, entity in enumerate(result):
+                for prop_name, prop_values in additional_properties.items():
+                    if index < len(prop_values):
+                        entity[prop_name] = prop_values[index]
+
+        if merge_referenced_entities:
+            referenced_entities = response.get("referencedEntities", {})
+            if referenced_entities:
+                for entity in result:
+                    entity["_referencedEntities"] = referenced_entities
+
+        return result
+
     def _check_iteration_parameters(
         self,
         query: dict,
@@ -392,6 +428,8 @@ class Weclapp:
         start_page: int = 1,
         max_entities: int = None,
         enable_logging: bool = True,
+        include_additional_properties: bool = False,
+        include_referenced_entities: bool = False,
     ) -> Generator[dict, None, None]:
         """Yields all items (dict) of an entityName, that satisfy the query.
         Arguments:
@@ -404,6 +442,12 @@ class Weclapp:
                 If None, all entities will be yielded.
             enable_logging (bool, optional): If True, enables logging of the
                 iteration process.
+            include_additional_properties (bool, optional): If True, merges
+                additionalProperties from the API response into each entity.
+                Use this when the query includes additionalProperties parameter.
+            include_referenced_entities (bool, optional): If True, adds
+                referencedEntities to each entity under '_referencedEntities' key.
+                Use this when the query includes includeReferencedEntities parameter.
         Yields:
             dict: The next entity in the iteration.
         """
@@ -418,11 +462,25 @@ class Weclapp:
 
         while True:
             query["page"] = page
-            entity_list = self.get(
-                entity_name=entity_name,
-                query=query,
-                as_type=list,
-            )
+
+            if include_additional_properties or include_referenced_entities:
+                response = self.get(
+                    entity_name=entity_name,
+                    query=query,
+                    as_type=dict,
+                    include_result=True,
+                )
+                entity_list = self._enrich_entities(
+                    response,
+                    merge_additional_properties=include_additional_properties,
+                    merge_referenced_entities=include_referenced_entities,
+                )
+            else:
+                entity_list = self.get(
+                    entity_name=entity_name,
+                    query=query,
+                    as_type=list,
+                )
 
             if not isinstance(entity_list, list):
                 raise ValueError(
