@@ -370,4 +370,6 @@ class SalesOrder(Blueprint):
         "netAmountInCompanyCurrency",
         "grossAmount",
         "grossAmountInCompanyCurrency",
+        "availabilityForAllWarehouses",
+        "availability",
     }

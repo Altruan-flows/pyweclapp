@@ -127,7 +127,6 @@ class Article(Blueprint):
     id: Union[str, None] = None
     aggregateStock: list = []
     totalStockQuantity: list = []
-    totalStockQuantity: list = []
     reservedStockQuantity: list = []
     pickableStockQuantity: list = []
     currentSalesPrice: dict = {}
@@ -228,5 +227,12 @@ class Article(Blueprint):
     useSalesBillOfMaterialSubitemCosts: Union[bool, None] = None
 
     excluded_keys: Set[str] = {
-        "lowLevelCode"
+        "lowLevelCode",
+        "aggregateStock",
+        "totalStockQuantity",
+        "reservedStockQuantity",
+        "pickableStockQuantity",
+        "currentSalesPrice",
+        "averagePrice",
+        "currentStockMinusTotalSalesVolume",
     }

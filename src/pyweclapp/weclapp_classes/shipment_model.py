@@ -219,5 +219,7 @@ class Shipment(Blueprint):
 
     excluded_keys: Set[str] = {
         "picksComplete",
-        "shippedFromAddress"
+        "shippedFromAddress",
+        "availabilityForAllWarehouses",
+        "availability",
     }
