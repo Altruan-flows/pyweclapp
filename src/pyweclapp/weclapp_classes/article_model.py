@@ -1,7 +1,40 @@
 """This code was dynamically created using WeclappClassCreator from pyweclapp"""
 
-from typing import Union, List, Set
+from typing import Union, Optional, List
 from .blueprints import Blueprint, WeclappMetaData
+
+
+class AveragePrice(Blueprint):
+    amountInCompanyCurrency: Union[str, None] = None
+
+
+class ReductionAdditionItems(Blueprint):
+    position: Union[int, None] = None
+    source: Union[str, None] = None
+    specialPriceReduction: Union[bool, None] = None
+    title: Union[str, None] = None
+    type: Union[str, None] = None
+    value: Union[str, None] = None
+
+
+class CurrentSalesPrice(Blueprint):
+    articleUnitPrice: Union[str, None] = None
+    currencyId: Union[str, None] = None
+    endDate: Union[int, None] = None
+    lastModifiedDate: Union[int, None] = None
+    quantity: Union[str, None] = None
+    reductionAdditionItems: List[ReductionAdditionItems] = []
+    startDate: Union[int, None] = None
+
+
+class AdditionalProperties(Blueprint):
+    aggregateStock: list = []
+    averagePrice: List[AveragePrice] = []
+    currentSalesPrice: List[CurrentSalesPrice] = []
+    currentStockMinusTotalSalesVolume: list = []
+    pickableStockQuantity: list = []
+    reservedStockQuantity: list = []
+    totalStockQuantity: list = []
 
 
 class ArticleAlternativeQuantities(Blueprint):
@@ -98,11 +131,6 @@ class QuantityConversions(Blueprint):
     oppositeDirection: Union[bool, None] = None
     unitId: Union[str, None] = None
 
-    excluded_keys: Set[str] = {
-        "createdUserId",
-        "lastEditedUserId",
-    }
-
 
 class SalesBillOfMaterialItems(Blueprint):
     id: Union[str, None] = None
@@ -123,15 +151,8 @@ class SupplySources(Blueprint):
     positionNumber: Union[int, None] = None
 
 
-class Article(Blueprint):
+class Result(Blueprint):
     id: Union[str, None] = None
-    aggregateStock: list = []
-    totalStockQuantity: list = []
-    reservedStockQuantity: list = []
-    pickableStockQuantity: list = []
-    currentSalesPrice: dict = {}
-    averagePrice: dict = {}
-    currentStockMinusTotalSalesVolume: Union[str, None] = None
     createdDate: Union[int, None] = None
     lastModifiedDate: Union[int, None] = None
     version: Union[str, None] = None
@@ -145,6 +166,7 @@ class Article(Blueprint):
     matchCode: Union[str, None] = None
     minimumPurchaseQuantity: Union[str, None] = None
     name: Union[str, None] = None
+    procurementLeadDays: Union[int, None] = None
     shortDescription1: Union[str, None] = None
     shortDescription2: Union[str, None] = None
     taxRateType: Union[str, None] = None
@@ -197,7 +219,6 @@ class Article(Blueprint):
     packagingUnitParentArticleId: Union[str, None] = None
     plannedWorkingTimePerUnit: Union[int, None] = None
     primarySupplySourceId: Union[str, None] = None
-    procurementLeadDays: Union[int, None] = None
     producerType: Union[str, None] = None
     productionArticle: Union[bool, None] = None
     productionBillOfMaterialItems: List[ProductionBillOfMaterialItems] = []
@@ -226,13 +247,7 @@ class Article(Blueprint):
     useSalesBillOfMaterialItemPricesForPurchase: Union[bool, None] = None
     useSalesBillOfMaterialSubitemCosts: Union[bool, None] = None
 
-    excluded_keys: Set[str] = {
-        "lowLevelCode",
-        "aggregateStock",
-        "totalStockQuantity",
-        "reservedStockQuantity",
-        "pickableStockQuantity",
-        "currentSalesPrice",
-        "averagePrice",
-        "currentStockMinusTotalSalesVolume",
-    }
+
+class Article(Blueprint):
+    additionalProperties: AdditionalProperties = AdditionalProperties()
+    result: List[Result] = []
