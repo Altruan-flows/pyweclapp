@@ -43,7 +43,12 @@ class WeclappClassCreator:
             self.additional_properties_keys = set(add_props.keys())
             result = self.entity.get("result", [])
             if result and isinstance(result, list) and isinstance(result[0], dict):
-                self.entity = result[0]
+                # Merge additionalProperties into result[0] so class fields are
+                # generated for them (readable from GET responses). They will be
+                # added to excluded_keys so they are never sent in PUT requests.
+                merged = dict(result[0])
+                merged.update(add_props)
+                self.entity = merged
 
     @staticmethod
     def parse_read_only_keys(docs_text: str, section: str = "result") -> Set[str]:
