@@ -1,6 +1,6 @@
 """This code was dynamically created using WeclappClassCreator from pyweclapp"""
 
-from typing import Union, List, Set
+from typing import Union, Optional, List, Set
 from .blueprints import Blueprint, WeclappMetaData
 
 
@@ -98,11 +98,6 @@ class QuantityConversions(Blueprint):
     oppositeDirection: Union[bool, None] = None
     unitId: Union[str, None] = None
 
-    excluded_keys: Set[str] = {
-        "createdUserId",
-        "lastEditedUserId",
-    }
-
 
 class SalesBillOfMaterialItems(Blueprint):
     id: Union[str, None] = None
@@ -125,13 +120,6 @@ class SupplySources(Blueprint):
 
 class Article(Blueprint):
     id: Union[str, None] = None
-    aggregateStock: list = []
-    totalStockQuantity: list = []
-    reservedStockQuantity: list = []
-    pickableStockQuantity: list = []
-    currentSalesPrice: dict = {}
-    averagePrice: dict = {}
-    currentStockMinusTotalSalesVolume: Union[str, None] = None
     createdDate: Union[int, None] = None
     lastModifiedDate: Union[int, None] = None
     version: Union[str, None] = None
@@ -145,6 +133,7 @@ class Article(Blueprint):
     matchCode: Union[str, None] = None
     minimumPurchaseQuantity: Union[str, None] = None
     name: Union[str, None] = None
+    procurementLeadDays: Union[int, None] = None
     shortDescription1: Union[str, None] = None
     shortDescription2: Union[str, None] = None
     taxRateType: Union[str, None] = None
@@ -197,7 +186,6 @@ class Article(Blueprint):
     packagingUnitParentArticleId: Union[str, None] = None
     plannedWorkingTimePerUnit: Union[int, None] = None
     primarySupplySourceId: Union[str, None] = None
-    procurementLeadDays: Union[int, None] = None
     producerType: Union[str, None] = None
     productionArticle: Union[bool, None] = None
     productionBillOfMaterialItems: List[ProductionBillOfMaterialItems] = []
@@ -226,13 +214,4 @@ class Article(Blueprint):
     useSalesBillOfMaterialItemPricesForPurchase: Union[bool, None] = None
     useSalesBillOfMaterialSubitemCosts: Union[bool, None] = None
 
-    excluded_keys: Set[str] = {
-        "lowLevelCode",
-        "aggregateStock",
-        "totalStockQuantity",
-        "reservedStockQuantity",
-        "pickableStockQuantity",
-        "currentSalesPrice",
-        "averagePrice",
-        "currentStockMinusTotalSalesVolume",
-    }
+    excluded_keys: Set[str] = {"aggregateStock", "averagePrice", "createdDate", "createdUserId", "currentSalesPrice", "currentStockMinusTotalSalesVolume", "id", "lastEditedUserId", "lastModifiedDate", "lowLevelCode", "pickableStockQuantity", "reservedStockQuantity", "totalStockQuantity", "version"}
