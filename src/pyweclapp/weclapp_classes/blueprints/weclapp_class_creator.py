@@ -23,7 +23,6 @@ class WeclappClassCreator:
         entity_name: str,
         target_directory: str,
         entity_dict: dict = None,
-        read_only_keys: set = None,
     ):
         if entity_dict is not None:
             self.entity = entity_dict
@@ -32,7 +31,6 @@ class WeclappClassCreator:
         self.entity_name = entity_name
         self.target_directory = target_directory
         self.class_templates = []
-        self.read_only_keys = read_only_keys or set()
 
         # If entity has the API response structure {result: [...], additionalProperties: {...}},
         # extract the actual entity from result[0] and collect additionalProperties keys
@@ -85,12 +83,9 @@ class WeclappClassCreator:
         file_name = f"{'_'.join(splitted_entity_name).lower()}_model"
         file_path = f"{self.target_directory}/{file_name}.py"
 
-        # Carry forward any excluded_keys that were already in the file
-        self.read_only_keys.update(self._read_existing_excluded_keys(file_path))
-
         self.create_class_templates(self.entity_name, self.entity)
 
-        all_excluded = self.additional_properties_keys | self.read_only_keys
+        all_excluded = self.additional_properties_keys | self._read_existing_excluded_keys(file_path)
         if all_excluded:
             keys_str = "\n".join(f'        "{k}",' for k in sorted(all_excluded))
             self.class_templates[-1] += (
