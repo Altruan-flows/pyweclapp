@@ -102,6 +102,8 @@ class CustomAttributeGenerator:
         selectable_values = {}
         if "selectableValues" in attribute_dict and attribute_dict["selectableValues"]:
             for value in attribute_dict["selectableValues"]:
+                if value["active"] is False:
+                    continue
                 name = value["value"].replace("___", "_").strip()
                 match = re.search(r"\((.*?)\)", name)
                 if match:
