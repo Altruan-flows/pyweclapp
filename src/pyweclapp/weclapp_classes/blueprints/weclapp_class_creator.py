@@ -19,7 +19,11 @@ class WeclappClassCreator:
     """
 
     def __init__(
-        self, entity_name: str, target_directory: str, entity_dict: dict = None
+        self,
+        entity_name: str,
+        target_directory: str,
+        entity_dict: dict = None,
+        read_only_keys: set = None,
     ):
         if entity_dict is not None:
             self.entity = entity_dict
@@ -28,6 +32,18 @@ class WeclappClassCreator:
         self.entity_name = entity_name
         self.target_directory = target_directory
         self.class_templates = []
+        self.read_only_keys = read_only_keys or set()
+
+        # If entity has the API response structure {result: [...], additionalProperties: {...}},
+        # extract the actual entity from result[0] and collect additionalProperties keys
+        # as excluded_keys (they are computed/read-only and must not be sent in PUT requests).
+        self.additional_properties_keys: set = set()
+        if "result" in self.entity and "additionalProperties" in self.entity:
+            add_props = self.entity.get("additionalProperties", {})
+            self.additional_properties_keys = set(add_props.keys())
+            result = self.entity.get("result", [])
+            if result and isinstance(result, list) and isinstance(result[0], dict):
+                self.entity = result[0]
 
     def get_example_entity(self, entity_name: str) -> dict:
         """Fetches an example entity from the Weclapp API to create a class
@@ -48,7 +64,7 @@ class WeclappClassCreator:
         if not os.path.exists(self.target_directory):
             os.makedirs(self.target_directory)
 
-        self.create_class_templates(self.entity_name, self.entity)
+        self.create_class_templates(self.entity_name, self.entity, is_main=True)
         file_content = config.STATIC_IMPORTS_MODEL_FILES
 
         file_content += "\n\n".join(self.class_templates)
@@ -62,7 +78,9 @@ class WeclappClassCreator:
 
         self.update_init_file(file_name)
 
-    def create_class_templates(self, entity_name: str, entity: dict) -> str:
+    def create_class_templates(
+        self, entity_name: str, entity: dict, is_main: bool = False
+    ) -> str:
         """Generates the python class code string for a given entity"""
         class_name = self.capitalize(entity_name)
         file_content = f"class {class_name}(Blueprint):\n"
@@ -84,6 +102,12 @@ class WeclappClassCreator:
 
             else:
                 file_content += self.generate_type_hint(value, key)
+
+        if is_main:
+            all_excluded = self.additional_properties_keys | self.read_only_keys
+            if all_excluded:
+                keys_str = ", ".join(f'"{k}"' for k in sorted(all_excluded))
+                file_content += f"\n    excluded_keys: Set[str] = {{{keys_str}}}\n"
 
         self.class_templates.append(file_content)
         return class_name
