@@ -50,7 +50,6 @@ class WeclappClassCreator:
                 merged.update(add_props)
                 self.entity = merged
 
-
     def get_example_entity(self, entity_name: str) -> dict:
         """Fetches an example entity from the Weclapp API to create a class
         blueprint."""
