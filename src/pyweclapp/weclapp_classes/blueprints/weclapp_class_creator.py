@@ -112,7 +112,7 @@ class WeclappClassCreator:
             return set()
         with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
-        match = re.search(r"excluded_keys:\s*Set\[str\]\s*=\s*\{([^}]*)\}", content)
+        match = re.search(r"excluded_keys:\s*Set\[str\]\s*=\s*\{([^}]*)\}", content, re.DOTALL)
         if match:
             return set(re.findall(r'"([^"]+)"', match.group(1)))
         return set()
@@ -167,8 +167,8 @@ class WeclappClassCreator:
         if is_main:
             all_excluded = self.additional_properties_keys | self.read_only_keys
             if all_excluded:
-                keys_str = ", ".join(f'"{k}"' for k in sorted(all_excluded))
-                file_content += f"\n    excluded_keys: Set[str] = {{{keys_str}}}\n"
+                keys_str = "\n".join(f'        "{k}",' for k in sorted(all_excluded))
+                file_content += f"\n    excluded_keys: Set[str] = {{\n{keys_str}\n    }}\n"
 
         self.class_templates.append(file_content)
         return class_name
