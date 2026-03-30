@@ -1,6 +1,6 @@
 """This code was dynamically created using WeclappClassCreator from pyweclapp"""
 
-from typing import Union, Optional, List, Set
+from typing import Union, List, Set
 from .blueprints import Blueprint, WeclappMetaData
 
 
@@ -214,4 +214,19 @@ class Article(Blueprint):
     useSalesBillOfMaterialItemPricesForPurchase: Union[bool, None] = None
     useSalesBillOfMaterialSubitemCosts: Union[bool, None] = None
 
-    excluded_keys: Set[str] = {"aggregateStock", "averagePrice", "createdDate", "createdUserId", "currentSalesPrice", "currentStockMinusTotalSalesVolume", "id", "lastEditedUserId", "lastModifiedDate", "lowLevelCode", "pickableStockQuantity", "reservedStockQuantity", "totalStockQuantity", "version"}
+    excluded_keys: Set[str] = {
+        "aggregateStock",
+        "averagePrice",
+        "createdDate",
+        "createdUserId",
+        "currentSalesPrice",
+        "currentStockMinusTotalSalesVolume",
+        "id",
+        "lastEditedUserId",
+        "lastModifiedDate",
+        "lowLevelCode",
+        "pickableStockQuantity",
+        "reservedStockQuantity",
+        "totalStockQuantity",
+        "version",
+    }
