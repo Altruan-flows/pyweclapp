@@ -213,6 +213,13 @@ class Article(Blueprint):
     useSalesBillOfMaterialItemPrices: Union[bool, None] = None
     useSalesBillOfMaterialItemPricesForPurchase: Union[bool, None] = None
     useSalesBillOfMaterialSubitemCosts: Union[bool, None] = None
+    aggregateStock: list = []
+    averagePrice: list = []
+    currentSalesPrice: list = []
+    currentStockMinusTotalSalesVolume: list = []
+    pickableStockQuantity: list = []
+    reservedStockQuantity: list = []
+    totalStockQuantity: list = []
 
     excluded_keys: Set[str] = {
         "aggregateStock",

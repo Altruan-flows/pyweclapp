@@ -134,9 +134,16 @@ class WeclappClassCreator:
         # Carry forward any excluded_keys that were already in the file
         self.read_only_keys.update(self._read_existing_excluded_keys(file_path))
 
-        self.create_class_templates(self.entity_name, self.entity, is_main=True)
-        file_content = config.STATIC_IMPORTS_MODEL_FILES
+        self.create_class_templates(self.entity_name, self.entity)
 
+        all_excluded = self.additional_properties_keys | self.read_only_keys
+        if all_excluded:
+            keys_str = "\n".join(f'        "{k}",' for k in sorted(all_excluded))
+            self.class_templates[-1] += (
+                f"\n    excluded_keys: Set[str] = {{\n{keys_str}\n    }}\n"
+            )
+
+        file_content = config.STATIC_IMPORTS_MODEL_FILES
         file_content += "\n\n".join(self.class_templates)
 
         with open(file_path, "w+", encoding="utf-8") as file:
@@ -144,9 +151,7 @@ class WeclappClassCreator:
 
         self.update_init_file(file_name)
 
-    def create_class_templates(
-        self, entity_name: str, entity: dict, is_main: bool = False
-    ) -> str:
+    def create_class_templates(self, entity_name: str, entity: dict) -> str:
         """Generates the python class code string for a given entity"""
         class_name = self.capitalize(entity_name)
         file_content = f"class {class_name}(Blueprint):\n"
@@ -154,6 +159,15 @@ class WeclappClassCreator:
         for key, value in entity.items():
             if key == "customAttributes":
                 file_content += f"    {key}: List[WeclappMetaData] = []\n"
+
+            elif key in self.additional_properties_keys:
+                # Use flat types — no child class generation for computed fields
+                if isinstance(value, list):
+                    file_content += f"    {key}: list = []\n"
+                elif isinstance(value, dict):
+                    file_content += f"    {key}: dict = {{}}\n"
+                else:
+                    file_content += self.generate_type_hint(value, key)
 
             elif isinstance(value, list):
                 if len(value) > 0 and isinstance(value[0], dict):
@@ -168,12 +182,6 @@ class WeclappClassCreator:
 
             else:
                 file_content += self.generate_type_hint(value, key)
-
-        if is_main:
-            all_excluded = self.additional_properties_keys | self.read_only_keys
-            if all_excluded:
-                keys_str = "\n".join(f'        "{k}",' for k in sorted(all_excluded))
-                file_content += f"\n    excluded_keys: Set[str] = {{\n{keys_str}\n    }}\n"
 
         self.class_templates.append(file_content)
         return class_name
