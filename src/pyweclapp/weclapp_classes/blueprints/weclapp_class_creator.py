@@ -50,51 +50,6 @@ class WeclappClassCreator:
                 merged.update(add_props)
                 self.entity = merged
 
-    @staticmethod
-    def parse_read_only_keys(docs_text: str, section: str = "result") -> Set[str]:
-        """Parses Weclapp API documentation text and returns the set of top-level
-        field names marked as read-only (🆁) within the given section.
-
-        Only extracts fields at the immediate (top) level of the section —
-        read-only fields inside nested sub-objects are ignored because those
-        are already handled by config.EXCLUDED_KEYS (id, createdDate, etc.).
-
-        Args:
-            docs_text (str): The raw API docs text (copy-paste from Weclapp docs).
-            section (str): Section to scan. Defaults to "result".
-
-        Returns:
-            Set[str]: Field names that should be added to excluded_keys.
-
-        Example::
-
-            read_only = WeclappClassCreator.parse_read_only_keys(ARTICLE_DOCS)
-            WeclappClassCreator("article", "src/...", entity, read_only_keys=read_only)
-        """
-        read_only_keys: Set[str] = set()
-        in_section = False
-        depth = 0
-
-        for line in docs_text.splitlines():
-            stripped = line.strip()
-            if not in_section:
-                if re.match(rf"^{re.escape(section)}\s*:\s*\[{{", stripped):
-                    in_section = True
-                    depth = 0
-                continue
-
-            # At depth 0 = immediate children of result: [{ ... }]
-            if "🆁" in stripped and depth == 0:
-                match = re.match(r"^(\w+)\s*:", stripped)
-                if match:
-                    read_only_keys.add(match.group(1))
-
-            depth += stripped.count("[{")
-            depth -= stripped.count("}]")
-            if depth < 0:
-                break
-
-        return read_only_keys
 
     def get_example_entity(self, entity_name: str) -> dict:
         """Fetches an example entity from the Weclapp API to create a class
