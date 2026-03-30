@@ -222,11 +222,18 @@ class Article(Blueprint):
     totalStockQuantity: list = []
 
     excluded_keys: Set[str] = {
+        "aggregateStock",
+        "averagePrice",
         "createdDate",
         "createdUserId",
+        "currentSalesPrice",
+        "currentStockMinusTotalSalesVolume",
         "id",
         "lastEditedUserId",
         "lastModifiedDate",
         "lowLevelCode",
+        "pickableStockQuantity",
+        "reservedStockQuantity",
+        "totalStockQuantity",
         "version",
     }
