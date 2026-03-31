@@ -229,14 +229,14 @@ class Article(Blueprint):
     excluded_keys: Set[str] = {
         "aggregateStock",
         "averagePrice",
+        "createdDate",
         "currentSalesPrice",
         "currentStockMinusTotalSalesVolume",
+        "id",
+        "lastModifiedDate",
         "lowLevelCode",
         "pickableStockQuantity",
         "reservedStockQuantity",
         "totalStockQuantity",
         "version",
-        "id",
-        "createdDate",
-        "lastModifiedDate",
     }

@@ -2,7 +2,7 @@
 
 import os
 import re
-from typing import Any, Set
+from typing import Any
 from ...weclapp import Weclapp
 from . import config
 
@@ -62,17 +62,26 @@ class WeclappClassCreator:
             f"Response: {entities}"
         )
 
-    def _read_existing_excluded_keys(self, file_path: str) -> Set[str]:
-        """Reads excluded_keys from an already-generated file so they are
-        preserved when the file is regenerated."""
+    def _read_existing_excluded_keys_per_class(self, file_path: str) -> dict:
+        """Reads excluded_keys per class from an already-generated file so they
+        are preserved when the file is regenerated. Returns a dict mapping
+        class name -> Set[str]."""
         if not os.path.exists(file_path):
-            return set()
+            return {}
         with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
-        match = re.search(r"excluded_keys:\s*Set\[str\]\s*=\s*\{([^}]*)\}", content, re.DOTALL)
-        if match:
-            return set(re.findall(r'"([^"]+)"', match.group(1)))
-        return set()
+        result = {}
+        for chunk in re.split(r"\n(?=class )", content):
+            class_match = re.match(r"class\s+(\w+)", chunk)
+            if not class_match:
+                continue
+            keys_match = re.search(
+                r"excluded_keys:\s*Set\[str\]\s*=\s*\{([^}]*)\}", chunk
+            )
+            if keys_match:
+                class_name = class_match.group(1)
+                result[class_name] = set(re.findall(r'"([^"]+)"', keys_match.group(1)))
+        return result
 
     def create_python_file(self) -> None:
         """Main function to generate the python file."""
@@ -85,12 +94,21 @@ class WeclappClassCreator:
 
         self.create_class_templates(self.entity_name, self.entity)
 
-        all_excluded = self.additional_properties_keys | self._read_existing_excluded_keys(file_path)
-        if all_excluded:
-            keys_str = "\n".join(f'        "{k}",' for k in sorted(all_excluded))
-            self.class_templates[-1] += (
-                f"\n    excluded_keys: Set[str] = {{\n{keys_str}\n    }}\n"
-            )
+        existing_keys_per_class = self._read_existing_excluded_keys_per_class(file_path)
+        top_level_class = self.capitalize(self.entity_name)
+        for i, template in enumerate(self.class_templates):
+            class_name_match = re.match(r"class\s+(\w+)", template)
+            if not class_name_match:
+                continue
+            class_name = class_name_match.group(1)
+            excluded = existing_keys_per_class.get(class_name, set())
+            if class_name == top_level_class:
+                excluded = excluded | self.additional_properties_keys
+            if excluded:
+                keys_str = "\n".join(f'        "{k}",' for k in sorted(excluded))
+                self.class_templates[i] += (
+                    f"\n    excluded_keys: Set[str] = {{\n{keys_str}\n    }}\n"
+                )
 
         file_content = config.STATIC_IMPORTS_MODEL_FILES
         file_content += "\n\n".join(self.class_templates)
