@@ -127,7 +127,7 @@ class WeclappClassCreator:
             if key == "customAttributes":
                 file_content += f"    {key}: List[WeclappMetaData] = []\n"
 
-            # TODO: check with Sveta if classes for additional properties are needed
+            # Classes for additional properties are NOT needed
             elif key in self.additional_properties_keys:
                 # Use flat types — no child class generation for computed fields
                 if isinstance(value, list):
