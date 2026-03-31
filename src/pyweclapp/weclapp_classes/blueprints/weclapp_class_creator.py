@@ -19,7 +19,10 @@ class WeclappClassCreator:
     """
 
     def __init__(
-        self, entity_name: str, target_directory: str, entity_dict: dict = None
+        self,
+        entity_name: str,
+        target_directory: str,
+        entity_dict: dict = None,
     ):
         if entity_dict is not None:
             self.entity = entity_dict
@@ -28,6 +31,22 @@ class WeclappClassCreator:
         self.entity_name = entity_name
         self.target_directory = target_directory
         self.class_templates = []
+
+        # If entity has the API response structure {result: [...], additionalProperties: {...}},
+        # extract the actual entity from result[0] and collect additionalProperties keys
+        # as excluded_keys (they are computed/read-only and must not be sent in PUT requests).
+        self.additional_properties_keys: set = set()
+        if "result" in self.entity and "additionalProperties" in self.entity:
+            add_props = self.entity.get("additionalProperties", {})
+            self.additional_properties_keys = set(add_props.keys())
+            result = self.entity.get("result", [])
+            if result and isinstance(result, list) and isinstance(result[0], dict):
+                # Merge additionalProperties into result[0] so class fields are
+                # generated for them (readable from GET responses). They will be
+                # added to excluded_keys so they are never sent in PUT requests.
+                merged = dict(result[0])
+                merged.update(add_props)
+                self.entity = merged
 
     def get_example_entity(self, entity_name: str) -> dict:
         """Fetches an example entity from the Weclapp API to create a class
@@ -43,21 +62,58 @@ class WeclappClassCreator:
             f"Response: {entities}"
         )
 
+    def _read_existing_excluded_keys_per_class(self, file_path: str) -> dict:
+        """Reads excluded_keys per class from an already-generated file so they
+        are preserved when the file is regenerated. Returns a dict mapping
+        class name -> Set[str]."""
+        if not os.path.exists(file_path):
+            return {}
+        with open(file_path, "r", encoding="utf-8") as f:
+            content = f.read()
+        result = {}
+        for chunk in re.split(r"\n(?=class )", content):
+            class_match = re.match(r"class\s+(\w+)", chunk)
+            if not class_match:
+                continue
+            keys_match = re.search(
+                r"excluded_keys:\s*Set\[str\]\s*=\s*\{([^}]*)\}", chunk
+            )
+            if keys_match:
+                class_name = class_match.group(1)
+                result[class_name] = set(re.findall(r'"([^"]+)"', keys_match.group(1)))
+        return result
+
     def create_python_file(self) -> None:
         """Main function to generate the python file."""
         if not os.path.exists(self.target_directory):
             os.makedirs(self.target_directory)
 
-        self.create_class_templates(self.entity_name, self.entity)
-        file_content = config.STATIC_IMPORTS_MODEL_FILES
-
-        file_content += "\n\n".join(self.class_templates)
-
         splitted_entity_name = re.split(r"(?=[A-Z])", self.entity_name)
         file_name = f"{'_'.join(splitted_entity_name).lower()}_model"
-        with open(
-            f"{self.target_directory}/{file_name}.py", "w+", encoding="utf-8"
-        ) as file:
+        file_path = f"{self.target_directory}/{file_name}.py"
+
+        self.create_class_templates(self.entity_name, self.entity)
+
+        existing_keys_per_class = self._read_existing_excluded_keys_per_class(file_path)
+        top_level_class = self.capitalize(self.entity_name)
+        for i, template in enumerate(self.class_templates):
+            class_name_match = re.match(r"class\s+(\w+)", template)
+            if not class_name_match:
+                continue
+            class_name = class_name_match.group(1)
+            excluded = existing_keys_per_class.get(class_name, set())
+            if class_name == top_level_class:
+                excluded = excluded | self.additional_properties_keys
+            if excluded:
+                keys_str = "\n".join(f'        "{k}",' for k in sorted(excluded))
+                self.class_templates[i] += (
+                    f"\n    excluded_keys: Set[str] = {{\n{keys_str}\n    }}\n"
+                )
+
+        file_content = config.STATIC_IMPORTS_MODEL_FILES
+        file_content += "\n\n".join(self.class_templates)
+
+        with open(file_path, "w+", encoding="utf-8") as file:
             file.write(file_content)
 
         self.update_init_file(file_name)
@@ -70,6 +126,16 @@ class WeclappClassCreator:
         for key, value in entity.items():
             if key == "customAttributes":
                 file_content += f"    {key}: List[WeclappMetaData] = []\n"
+
+            # Classes for additional properties are NOT needed
+            elif key in self.additional_properties_keys:
+                # Use flat types — no child class generation for computed fields
+                if isinstance(value, list):
+                    file_content += f"    {key}: list = []\n"
+                elif isinstance(value, dict):
+                    file_content += f"    {key}: dict = {{}}\n"
+                else:
+                    file_content += self.generate_type_hint(value, key)
 
             elif isinstance(value, list):
                 if len(value) > 0 and isinstance(value[0], dict):

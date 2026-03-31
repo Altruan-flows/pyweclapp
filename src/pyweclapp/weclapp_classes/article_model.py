@@ -125,13 +125,6 @@ class SupplySources(Blueprint):
 
 class Article(Blueprint):
     id: Union[str, None] = None
-    aggregateStock: list = []
-    totalStockQuantity: list = []
-    reservedStockQuantity: list = []
-    pickableStockQuantity: list = []
-    currentSalesPrice: dict = {}
-    averagePrice: dict = {}
-    currentStockMinusTotalSalesVolume: Union[str, None] = None
     createdDate: Union[int, None] = None
     lastModifiedDate: Union[int, None] = None
     version: Union[str, None] = None
@@ -145,6 +138,7 @@ class Article(Blueprint):
     matchCode: Union[str, None] = None
     minimumPurchaseQuantity: Union[str, None] = None
     name: Union[str, None] = None
+    procurementLeadDays: Union[int, None] = None
     shortDescription1: Union[str, None] = None
     shortDescription2: Union[str, None] = None
     taxRateType: Union[str, None] = None
@@ -197,7 +191,6 @@ class Article(Blueprint):
     packagingUnitParentArticleId: Union[str, None] = None
     plannedWorkingTimePerUnit: Union[int, None] = None
     primarySupplySourceId: Union[str, None] = None
-    procurementLeadDays: Union[int, None] = None
     producerType: Union[str, None] = None
     productionArticle: Union[bool, None] = None
     productionBillOfMaterialItems: List[ProductionBillOfMaterialItems] = []
@@ -225,14 +218,25 @@ class Article(Blueprint):
     useSalesBillOfMaterialItemPrices: Union[bool, None] = None
     useSalesBillOfMaterialItemPricesForPurchase: Union[bool, None] = None
     useSalesBillOfMaterialSubitemCosts: Union[bool, None] = None
+    aggregateStock: list = []
+    averagePrice: list = []
+    currentSalesPrice: list = []
+    currentStockMinusTotalSalesVolume: list = []
+    pickableStockQuantity: list = []
+    reservedStockQuantity: list = []
+    totalStockQuantity: list = []
 
     excluded_keys: Set[str] = {
-        "lowLevelCode",
         "aggregateStock",
-        "totalStockQuantity",
-        "reservedStockQuantity",
-        "pickableStockQuantity",
-        "currentSalesPrice",
         "averagePrice",
+        "createdDate",
+        "currentSalesPrice",
         "currentStockMinusTotalSalesVolume",
+        "id",
+        "lastModifiedDate",
+        "lowLevelCode",
+        "pickableStockQuantity",
+        "reservedStockQuantity",
+        "totalStockQuantity",
+        "version",
     }

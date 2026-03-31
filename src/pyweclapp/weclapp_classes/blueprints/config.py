@@ -52,7 +52,7 @@ CREATION_QUERY = {"serializeNulls": "", "sort": "-createdDate"}
 STATIC_IMPORTS_MODEL_FILES = (
     '"""This code was dynamically created using WeclappClassCreator from pyweclapp"""'
     "\n\n"
-    "from typing import Union, Optional, List\n"
+    "from typing import Union, List, Set\n"
     "from .blueprints import Blueprint, WeclappMetaData\n\n\n"
 )
 INIT_FILE_NAME = "__init__.py"
