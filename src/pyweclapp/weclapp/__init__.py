@@ -11,10 +11,15 @@ import os
 import random
 import time
 import logging
+from importlib.metadata import PackageNotFoundError, version as _pkg_version
 from typing import Optional, Union, Generator
 import requests
-from setup import PYWECLAPP_VERSION
 from . import config
+
+try:
+    PYWECLAPP_VERSION = _pkg_version("pyweclapp")
+except PackageNotFoundError:
+    PYWECLAPP_VERSION = "0.0.0+unknown"
 
 
 class WeclappError(Exception):
