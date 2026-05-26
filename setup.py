@@ -2,6 +2,8 @@
 
 from setuptools import find_packages, setup
 
+PYWECLAPP_VERSION = "0.1.23"
+
 try:
     with open("src/README.md", "r", encoding="utf-8") as f:
         LONG_DESCRIPTION = f.read()
@@ -23,7 +25,7 @@ except FileNotFoundError:
 
 setup(
     name="pyweclapp",
-    version="0.1.22",
+    version=PYWECLAPP_VERSION,
     description="Provides methods, classes and classbuilders to interact with the Weclapp API",
     package_dir={"": "src"},
     packages=find_packages(where="src"),

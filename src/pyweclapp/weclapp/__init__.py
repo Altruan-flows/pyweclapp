@@ -8,9 +8,12 @@ from the Weclapp API.
 
 import json
 import os
+import random
+import time
 import logging
-from typing import Union, Generator
+from typing import Optional, Union, Generator
 import requests
+from setup import PYWECLAPP_VERSION
 from . import config
 
 
@@ -21,7 +24,10 @@ class WeclappError(Exception):
         self, error_response: requests.Response, api_version: str = config.API_VERSION
     ):
         self.response = error_response
+        self.status_code = error_response.status_code
         self.url = str(self.response.url).split(f"/api/{api_version}", maxsplit=1)[-1]
+        self.wait_ms = _parse_wait_ms(error_response.headers.get("X-Weclapp-Wait-Ms"))
+        self.wait_reason = error_response.headers.get("X-Weclapp-Wait-Reason")
         self.is_json = False
         try:
             error_response = self.response.json()
@@ -47,26 +53,65 @@ class WeclappError(Exception):
             return True
         return False
 
+    @property
+    def is_rate_limited(self) -> bool:
+        """Checks if the error was caused by weclapp's load management (HTTP 429)."""
+        return self.status_code == 429
+
     def __str__(self) -> str:
         """Returns a string representation of the WeclappError."""
         if not self.is_json:
-            return (
+            error_message = (
                 f"{self.response.status_code}: {self.detail} when sending "
                 f"request to {self.url}"
             )
+        else:
+            error_message = (
+                f"Error {self.title} with code {self.response.status_code}: "
+                f"{self.error}, when sending request to {self.url}."
+            )
+            for message in self.messages:
+                if isinstance(message, dict):
+                    error_message += (
+                        f"\n\t\t{message.get('severity')}={message.get('message')};"
+                    )
+            for message in self.validation_errors:
+                error_message += f"\n\t\t{message};"
 
-        error_message = (
-            f"Error {self.title} with code {self.response.status_code}: "
-            f"{self.error}, when sending request to {self.url}."
-        )
-        for message in self.messages:
-            if isinstance(message, dict):
-                error_message += (
-                    f"\n\t\t{message.get('severity')}={message.get('message')};"
-                )
-        for message in self.validation_errors:
-            error_message += f"\n\t\t{message};"
+        if self.wait_ms is not None:
+            reason = self.wait_reason or "unspecified"
+            error_message += (
+                f"\n\t\tWaited {self.wait_ms} ms before failing (reason: {reason})."
+            )
+        if self.is_rate_limited:
+            error_message += (
+                "\n\t\tHint: client exceeded the platform's concurrency/load "
+                "budget. Reduce parallelism or distribute load over time."
+            )
         return error_message
+
+
+def _parse_wait_ms(raw: Optional[str]) -> Optional[int]:
+    """Parses the X-Weclapp-Wait-Ms header into an int, returning None if absent or invalid."""
+    if raw is None:
+        return None
+    try:
+        return int(raw)
+    except (TypeError, ValueError):
+        return None
+
+
+def _backoff_seconds(attempt: int) -> float:
+    """Exponential backoff with +/-25% jitter, capped at config.RETRY_MAX_BACKOFF_S.
+
+    `attempt` is zero-based; the sleep happens between attempts.
+    """
+    base = min(
+        config.RETRY_INITIAL_BACKOFF_S * (2 ** attempt),
+        config.RETRY_MAX_BACKOFF_S,
+    )
+    jitter = base * 0.25 * (2 * random.random() - 1)
+    return max(0.0, base + jitter)
 
 
 class Weclapp:
@@ -74,9 +119,9 @@ class Weclapp:
 
     Attributes:
         api_token (str): The API token for authentication. If not provided, it will be
-            fetched from the environment variable "WECLAPP_API_TOKEN".
+            fetched from the environment variable "weclappApiToken".
         domain (str): The Weclapp domain to connect to. If not provided, it will be
-            fetched from the environment variable "WECLAPP_DOMAIN".
+            fetched from the environment variable "weclappDomain".
         base_url (str): The base URL for the Weclapp API. Generated from domain
             and API version.
         headers (dict): The headers to use for API requests. Generated from the
@@ -119,7 +164,89 @@ class Weclapp:
         return {
             config.AUTHENTICATION_TOKEN_NAME: api_token,
             "Content-Type": config.DEFAULT_CONTENT_TYPE,
+            "Accept": config.DEFAULT_CONTENT_TYPE,
+            "Accept-Encoding": "gzip",
+            "User-Agent": (
+                f"pyweclapp/{PYWECLAPP_VERSION} "
+                f"(Altruan GmbH; +{config.USER_AGENT_CONTACT})"
+            ),
+            "X-Weclapp-Request-Timeout-Ms": config.REQUEST_TIMEOUT_MS,
+            "X-Weclapp-Wait-Timeout-Ms": config.REQUEST_WAIT_TIMEOUT_MS,
         }
+
+    def _request(
+        self,
+        method: str,
+        url: str,
+        *,
+        params: Optional[dict] = None,
+        data: Union[str, bytes, None] = None,
+    ) -> requests.Response:
+        """Sends an HTTP request to the weclapp API with retry on transient failures.
+
+        Retries on configured status codes (429, 5xx) and on connection/timeout
+        errors with exponential backoff + jitter. Honors weclapp's load-management
+        guidance: backs off rather than hammering the API when the platform signals
+        load pressure via 429.
+
+        Args:
+            method: HTTP verb ("GET", "PUT", "POST", "DELETE").
+            url: Fully-qualified request URL.
+            params: Query parameters.
+            data: Request body (already serialized to str/bytes).
+
+        Returns:
+            The final requests.Response. Callers handle response.ok / WeclappError.
+        """
+        last_response: Optional[requests.Response] = None
+        for attempt in range(config.RETRY_MAX_ATTEMPTS):
+            try:
+                response = requests.request(
+                    method,
+                    url,
+                    headers=self.headers,
+                    params=params,
+                    data=data,
+                    timeout=config.REQUEST_TIMEOUT,
+                )
+            except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as exc:
+                if attempt + 1 >= config.RETRY_MAX_ATTEMPTS:
+                    raise
+                sleep_s = _backoff_seconds(attempt)
+                logging.warning(
+                    "weclapp %s %s: network error %r (attempt %s/%s), retrying in %.2fs",
+                    method, url, exc, attempt + 1, config.RETRY_MAX_ATTEMPTS, sleep_s,
+                )
+                time.sleep(sleep_s)
+                continue
+
+            wait_ms = response.headers.get("X-Weclapp-Wait-Ms")
+            wait_reason = response.headers.get("X-Weclapp-Wait-Reason")
+
+            if response.status_code in config.RETRY_STATUS_CODES:
+                last_response = response
+                if attempt + 1 >= config.RETRY_MAX_ATTEMPTS:
+                    return response
+                sleep_s = _backoff_seconds(attempt)
+                logging.warning(
+                    "weclapp %s %s: status %s (attempt %s/%s, wait_ms=%s, reason=%s), retrying in %.2fs",
+                    method, url, response.status_code,
+                    attempt + 1, config.RETRY_MAX_ATTEMPTS,
+                    wait_ms, wait_reason, sleep_s,
+                )
+                time.sleep(sleep_s)
+                continue
+
+            if wait_ms is not None:
+                logging.info(
+                    "weclapp %s %s: server queued request for %s ms (reason: %s)",
+                    method, url, wait_ms, wait_reason,
+                )
+            return response
+
+        # Unreachable in practice — the loop returns or raises on every path —
+        # but keep a safety return for the type checker.
+        return last_response  # type: ignore[return-value]
 
     def _check_domain(self, url: str) -> str:
         """Checks if the provided URL is a valid Weclapp domain."""
@@ -224,12 +351,7 @@ class Weclapp:
         if entity_id is not None:
             url += f"/id/{entity_id}"
 
-        response = requests.get(
-            url,
-            headers=self.headers,
-            params=query,
-            timeout=config.REQUEST_TIMEOUT,
-        )
+        response = self._request("GET", url, params=query)
         return self._parse_response(
             response, as_type=as_type, return_full_result=include_result
         )
@@ -266,14 +388,7 @@ class Weclapp:
         if ignore_missing_properties is True:
             query.update({"ignoreMissingProperties": True})
 
-        response = requests.put(
-            url,
-            headers=self.headers,
-            data=json.dumps(body),
-            params=query,
-            timeout=config.REQUEST_TIMEOUT,
-        )
-
+        response = self._request("PUT", url, params=query, data=json.dumps(body))
         return self._parse_response(response, as_type=dict)
 
     def post(
@@ -309,14 +424,7 @@ class Weclapp:
         if entity_id is not None:
             url += f"/id/{entity_id}"
 
-        response = requests.post(
-            url,
-            headers=self.headers,
-            data=body,
-            params=query,
-            timeout=config.REQUEST_TIMEOUT,
-        )
-
+        response = self._request("POST", url, params=query, data=body)
         return self._parse_response(response=response, as_type=dict)
 
     def delete(
@@ -332,9 +440,7 @@ class Weclapp:
 
         logging.warning("Deleting entity %s with id %s", entity_name, entity_id)
         url = f"{self.base_url}/{entity_name}/id/{entity_id}"
-        response = requests.delete(
-            url, headers=self.headers, timeout=config.REQUEST_TIMEOUT
-        )
+        response = self._request("DELETE", url)
 
         if not response.ok:
             raise WeclappError(response)

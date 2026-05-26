@@ -7,8 +7,8 @@ This Package contains methods to acess weclapp objects via the api.
 Set up your weclapp domain and provide weclapp API token.
 ```{python}
     import os
-    os.environ["WECLAPP_API_TOKEN"] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-    os.environ["WECLAPP_DOMAIN"] = "yourCompany.weclapp.com
+    os.environ["weclappApiToken"] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    os.environ["weclappDomain"] = "yourCompany.weclapp.com
 ```
 
 
