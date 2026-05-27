@@ -119,6 +119,59 @@ def _backoff_seconds(attempt: int) -> float:
     return max(0.0, base + jitter)
 
 
+_rollbar = None
+_rollbar_checked = False
+
+
+def _get_rollbar():
+    """Lazily import rollbar iff reporting is enabled. Returns the module or None."""
+    global _rollbar, _rollbar_checked
+    if _rollbar_checked:
+        return _rollbar
+    _rollbar_checked = True
+    enabled = os.environ.get(config.ROLLBAR_REPORTING_ENV_VAR, "").lower() in (
+        "1", "true", "yes",
+    )
+    if not enabled:
+        return None
+    try:
+        import rollbar as _rb
+
+        _rollbar = _rb
+    except ImportError:
+        logging.warning(
+            "weclapp: %s is set but the 'rollbar' package is not installed; "
+            "load-header reporting disabled. Install pyweclapp[rollbar].",
+            config.ROLLBAR_REPORTING_ENV_VAR,
+        )
+    return _rollbar
+
+
+def _report_wait_to_rollbar(method, url, status_code, wait_ms, wait_reason, attempt):
+    """Best-effort Rollbar report for a throttled response. Never raises."""
+    rb = _get_rollbar()
+    if rb is None:
+        return
+    try:
+        rb.report_message(
+            f"weclapp request queued {wait_ms} ms "
+            f"(reason: {wait_reason or 'unspecified'})",
+            level="warning",
+            extra_data={
+                "method": method,
+                "url": url,
+                "status_code": status_code,
+                "wait_ms": wait_ms,
+                "wait_reason": wait_reason,
+                "attempt": attempt,
+            },
+        )
+    except Exception as exc:  # reporting must never break the request
+        logging.warning(
+            "weclapp: failed to report wait headers to Rollbar: %r", exc
+        )
+
+
 class Weclapp:
     """A class to interact with the Weclapp API.
 
@@ -225,8 +278,12 @@ class Weclapp:
                 time.sleep(sleep_s)
                 continue
 
-            wait_ms = response.headers.get("X-Weclapp-Wait-Ms")
+            wait_ms = _parse_wait_ms(response.headers.get("X-Weclapp-Wait-Ms"))
             wait_reason = response.headers.get("X-Weclapp-Wait-Reason")
+            if wait_ms is not None:
+                _report_wait_to_rollbar(
+                    method, url, response.status_code, wait_ms, wait_reason, attempt + 1
+                )
 
             if response.status_code in config.RETRY_STATUS_CODES:
                 last_response = response

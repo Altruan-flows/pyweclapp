@@ -2,7 +2,7 @@
 
 from setuptools import find_packages, setup
 
-PYWECLAPP_VERSION = "0.1.24"
+PYWECLAPP_VERSION = "0.1.25"
 
 try:
     with open("src/README.md", "r", encoding="utf-8") as f:
@@ -43,6 +43,7 @@ setup(
     install_requires=REQUIRED,
     extras_require={
         "dev": ["twine>=4.0.2"],
+        "rollbar": ["rollbar>=0.16.3"],
     },
     python_requires=">=3.9",
 )

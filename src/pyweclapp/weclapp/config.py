@@ -64,6 +64,12 @@ RETRY_STATUS_CODES = (429, 502, 503, 504)
 # if our traffic shows unusual patterns.
 USER_AGENT_CONTACT = "admin@altruan.de"
 
+# ----------------- Rollbar Load Reporting -----------------
+# When this env var is truthy ("1"/"true"/"yes") AND the `rollbar` package is
+# installed AND the consuming app has called rollbar.init(), pyweclapp reports
+# every response carrying X-Weclapp-Wait-* headers to Rollbar as a warning.
+ROLLBAR_REPORTING_ENV_VAR = "weclappRollbarReporting"
+
 
 # ----------------- Response Processing -----------------
 DEFAULT_RESPONSE_CONTAINER = "result"
