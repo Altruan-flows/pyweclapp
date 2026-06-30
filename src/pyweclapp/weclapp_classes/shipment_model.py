@@ -222,4 +222,5 @@ class Shipment(Blueprint):
         "shippedFromAddress",
         "availabilityForAllWarehouses",
         "availability",
+        "recipientCustomerNumber",
     }

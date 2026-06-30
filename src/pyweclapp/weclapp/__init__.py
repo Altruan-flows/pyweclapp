@@ -96,6 +96,14 @@ class WeclappError(Exception):
         return error_message
 
 
+class WeclappDeadlineError(Exception):
+    """Raised when a single request attempt exceeds the hard wall-clock deadline.
+
+    Treated as a retryable transient failure by the request loop, the same way
+    a connection/read timeout is.
+    """
+
+
 def _parse_wait_ms(raw: Optional[str]) -> Optional[int]:
     """Parses the X-Weclapp-Wait-Ms header into an int, returning None if absent or invalid."""
     if raw is None:
@@ -172,6 +180,51 @@ def _report_wait_to_rollbar(method, url, status_code, wait_ms, wait_reason, atte
         )
 
 
+def _request_with_deadline(
+    method: str,
+    url: str,
+    *,
+    headers: dict,
+    params: Optional[dict],
+    data: Union[str, bytes, None],
+) -> requests.Response:
+    """Performs one request, enforcing a hard wall-clock cap on the response body.
+
+    The (connect, read) timeout still guards connection setup and inter-byte
+    gaps. On top of that, the body is streamed and aborted once the total elapsed
+    time exceeds config.REQUEST_HARD_DEADLINE_S -- the backstop that the requests
+    timeout cannot provide for a slow-trickling server.
+
+    Raises:
+        WeclappDeadlineError: if the hard deadline is exceeded while reading.
+    """
+    started = time.monotonic()
+    response = requests.request(
+        method,
+        url,
+        headers=headers,
+        params=params,
+        data=data,
+        timeout=config.REQUEST_TIMEOUT,
+        stream=True,
+    )
+
+    chunks = []
+    for chunk in response.iter_content(chunk_size=64 * 1024):
+        if time.monotonic() - started > config.REQUEST_HARD_DEADLINE_S:
+            response.close()
+            raise WeclappDeadlineError(
+                f"{method} {url} exceeded the "
+                f"{config.REQUEST_HARD_DEADLINE_S}s hard deadline"
+            )
+        chunks.append(chunk)
+
+    # Reattach the fully-read body so callers can use .json()/.content/.text
+    # exactly as with a non-streamed response.
+    response._content = b"".join(chunks)
+    return response
+
+
 class Weclapp:
     """A class to interact with the Weclapp API.
 
@@ -242,8 +295,9 @@ class Weclapp:
     ) -> requests.Response:
         """Sends an HTTP request to the weclapp API with retry on transient failures.
 
-        Retries on configured status codes (429, 5xx) and on connection/timeout
-        errors with exponential backoff + jitter. Honors weclapp's load-management
+        Retries on configured status codes (429, 5xx), on connection/timeout
+        errors, and on the hard wall-clock deadline (WeclappDeadlineError) with
+        exponential backoff + jitter. Honors weclapp's load-management
         guidance: backs off rather than hammering the API when the platform signals
         load pressure via 429.
 
@@ -259,15 +313,18 @@ class Weclapp:
         last_response: Optional[requests.Response] = None
         for attempt in range(config.RETRY_MAX_ATTEMPTS):
             try:
-                response = requests.request(
+                response = _request_with_deadline(
                     method,
                     url,
                     headers=self.headers,
                     params=params,
                     data=data,
-                    timeout=config.REQUEST_TIMEOUT,
                 )
-            except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as exc:
+            except (
+                requests.exceptions.ConnectionError,
+                requests.exceptions.Timeout,
+                WeclappDeadlineError,
+            ) as exc:
                 if attempt + 1 >= config.RETRY_MAX_ATTEMPTS:
                     raise
                 sleep_s = _backoff_seconds(attempt)

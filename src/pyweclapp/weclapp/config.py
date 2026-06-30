@@ -22,9 +22,23 @@ requests too early that would get a successful response."
 
 Request timeout is twice the recommended request wait timeout: 120 seconds.
 Wait timeout is the recommended request wait timeout: 30 seconds.
+
+The timeout passed to requests is a (connect, read) tuple. The connect value
+caps how long we wait to establish the TCP connection; the read value caps the
+gap allowed between bytes once the connection is open. Note that read is an
+*inactivity* timeout (it resets on every received byte), not a total wall-clock
+deadline -- a server that trickles data can still hold the connection longer
+than the read value.
+
+REQUEST_HARD_DEADLINE_S is an absolute wall-clock cap per attempt, enforced by
+streaming the response body and aborting once the elapsed time exceeds it. This
+is the backstop the (connect, read) tuple cannot provide.
 """
 
-REQUEST_TIMEOUT = 120  # seconds
+REQUEST_CONNECT_TIMEOUT_S = 10  # seconds - cap on establishing the connection
+REQUEST_READ_TIMEOUT_S = 120  # seconds - cap on the gap between received bytes
+REQUEST_HARD_DEADLINE_S = 150  # seconds - absolute wall-clock cap per attempt
+REQUEST_TIMEOUT = (REQUEST_CONNECT_TIMEOUT_S, REQUEST_READ_TIMEOUT_S)  # (connect, read)
 REQUEST_TIMEOUT_MS = "120000"  # milliseconds
 REQUEST_WAIT_TIMEOUT_MS = "30000"  # milliseconds
 
@@ -55,7 +69,7 @@ Retry on transient errors (429, 502, 503, 504) and on connection/timeout failure
 Backoff is exponential with jitter: initial * 2**attempt, capped, randomized +/-25%.
 """
 
-RETRY_MAX_ATTEMPTS = 5  # total attempts (1 initial + up to 4 retries)
+RETRY_MAX_ATTEMPTS = 2  # total attempts (1 initial + up to 1 retry)
 RETRY_INITIAL_BACKOFF_S = 1.0  # seconds - first sleep after a retryable failure
 RETRY_MAX_BACKOFF_S = 30.0  # ceiling per sleep
 RETRY_STATUS_CODES = (429, 502, 503, 504)
