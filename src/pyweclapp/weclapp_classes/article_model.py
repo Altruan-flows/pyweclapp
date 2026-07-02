@@ -4,6 +4,15 @@ from typing import Union, List, Set
 from .blueprints import Blueprint, WeclappMetaData
 
 
+class TotalStockQuantity(Blueprint):
+    quantity: Union[str, None] = None
+    warehouseId: Union[str, None] = None
+
+
+class AveragePrice(Blueprint):
+    amountInCompanyCurrency: Union[str, None] = None
+
+
 class ArticleAlternativeQuantities(Blueprint):
     id: Union[str, None] = None
     createdDate: Union[int, None] = None
@@ -219,12 +228,12 @@ class Article(Blueprint):
     useSalesBillOfMaterialItemPricesForPurchase: Union[bool, None] = None
     useSalesBillOfMaterialSubitemCosts: Union[bool, None] = None
     aggregateStock: list = []
-    averagePrice: list = []
+    averagePrice: AveragePrice = AveragePrice()
     currentSalesPrice: list = []
-    currentStockMinusTotalSalesVolume: list = []
+    currentStockMinusTotalSalesVolume: Union[str, None] = None
     pickableStockQuantity: list = []
     reservedStockQuantity: list = []
-    totalStockQuantity: list = []
+    totalStockQuantity: List[TotalStockQuantity] = []
 
     excluded_keys: Set[str] = {
         "aggregateStock",
