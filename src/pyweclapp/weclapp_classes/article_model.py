@@ -227,6 +227,7 @@ class Article(Blueprint):
     useSalesBillOfMaterialItemPrices: Union[bool, None] = None
     useSalesBillOfMaterialItemPricesForPurchase: Union[bool, None] = None
     useSalesBillOfMaterialSubitemCosts: Union[bool, None] = None
+    referencedEntities: Union[dict, None] = None
     aggregateStock: list = []
     averagePrice: AveragePrice = AveragePrice()
     currentSalesPrice: list = []
@@ -245,6 +246,7 @@ class Article(Blueprint):
         "createdDate",
         "lastModifiedDate",
         "lowLevelCode",
+        "referencedEntities",
         "aggregateStock",
         "averagePrice",
         "currentSalesPrice",

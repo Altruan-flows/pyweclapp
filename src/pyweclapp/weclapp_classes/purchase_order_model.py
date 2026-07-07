@@ -245,3 +245,12 @@ class PurchaseOrder(Blueprint):
     supplierHabitualExporterLetterOfIntentId: Union[str, None] = None
     supplierQuotationNumber: Union[str, None] = None
     warehouseId: Union[str, None] = None
+    referencedEntities: Union[dict, None] = None
+
+    excluded_keys: Set[str] = {
+        "id",
+        "version",
+        "createdDate",
+        "lastModifiedDate",
+        "referencedEntities",
+    }

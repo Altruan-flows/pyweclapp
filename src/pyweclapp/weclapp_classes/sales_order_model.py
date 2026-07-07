@@ -356,8 +356,10 @@ class SalesOrder(Blueprint):
     statusHistory: List[StatusHistory] = []
     template: Union[bool, None] = None
     warehouseId: Union[str, None] = None
+    referencedEntities: Union[dict, None] = None
 
     excluded_keys: Set[str] = {
+        "referencedEntities",
         "paid",
         "unitCostInCompanyCurrency",
         "unitPriceInCompanyCurrency",

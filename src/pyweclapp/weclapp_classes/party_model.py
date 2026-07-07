@@ -1,6 +1,6 @@
 """This code was dynamically created using WeclappClassCreator from pyweclapp"""
 
-from typing import Union, List
+from typing import Union, List, Set
 from .blueprints import Blueprint, WeclappMetaData
 
 
@@ -247,3 +247,12 @@ class Party(Blueprint):
     topics: List[Topics] = []
     vatIdentificationNumber: Union[str, None] = None
     xRechnungLeitwegId: Union[str, None] = None
+    referencedEntities: Union[dict, None] = None
+
+    excluded_keys: Set[str] = {
+        "id",
+        "version",
+        "createdDate",
+        "lastModifiedDate",
+        "referencedEntities",
+    }

@@ -271,8 +271,14 @@ class SalesInvoice(Blueprint):
     status: Union[str, None] = None
     statusHistory: List[StatusHistory] = []
     vatRegistrationNumber: Union[str, None] = None
+    referencedEntities: Union[dict, None] = None
 
     excluded_keys: Set[str] = {
+        "id",
+        "version",
+        "createdDate",
+        "lastModifiedDate",
+        "referencedEntities",
         "paid",
         "unitCostInCompanyCurrency",
         "unitPriceInCompanyCurrency",

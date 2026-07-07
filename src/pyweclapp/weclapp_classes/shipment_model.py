@@ -216,8 +216,10 @@ class Shipment(Blueprint):
     shippingLabelsCount: Union[int, None] = None
     shippingReturnCarrierId: Union[str, None] = None
     warehouseId: Union[str, None] = None
+    referencedEntities: Union[dict, None] = None
 
     excluded_keys: Set[str] = {
+        "referencedEntities",
         "picksComplete",
         "shippedFromAddress",
         "availabilityForAllWarehouses",

@@ -2,7 +2,7 @@
 
 from setuptools import find_packages, setup
 
-PYWECLAPP_VERSION = "0.1.28"
+PYWECLAPP_VERSION = "0.1.29"
 
 try:
     with open("src/README.md", "r", encoding="utf-8") as f:

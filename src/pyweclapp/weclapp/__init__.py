@@ -463,7 +463,7 @@ class Weclapp:
                 additionalProperties from the API response into each entity.
                 Use this when the query includes additionalProperties parameter.
             include_referenced_entities (bool, optional): If True, adds
-                referencedEntities to each entity under '_referencedEntities' key.
+                referencedEntities to each entity under 'referencedEntities' key.
                 Use this when the query includes includeReferencedEntities parameter.
         Returns:
             result (Union[dict, list, bytes, int]): The parsed response in the
@@ -598,7 +598,7 @@ class Weclapp:
             merge_additional_properties (bool): If True, merges additionalProperties
                 into each entity by index.
             merge_referenced_entities (bool): If True, adds referencedEntities
-                to each entity under '_referencedEntities' key.
+                to each entity under 'referencedEntities' key.
 
         Returns:
             list: List of entities with additional data merged in.
@@ -616,7 +616,7 @@ class Weclapp:
             referenced_entities = response.get("referencedEntities", {})
             if referenced_entities:
                 for entity in result:
-                    entity["_referencedEntities"] = referenced_entities
+                    entity["referencedEntities"] = referenced_entities
 
         return result
 
@@ -691,7 +691,7 @@ class Weclapp:
                 additionalProperties from the API response into each entity.
                 Use this when the query includes additionalProperties parameter.
             include_referenced_entities (bool, optional): If True, adds
-                referencedEntities to each entity under '_referencedEntities' key.
+                referencedEntities to each entity under 'referencedEntities' key.
                 Use this when the query includes includeReferencedEntities parameter.
         Yields:
             dict: The next entity in the iteration.
