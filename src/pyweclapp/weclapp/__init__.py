@@ -446,6 +446,8 @@ class Weclapp:
         query: dict = None,
         as_type: Union[dict, bytes, list] = dict,
         include_result: bool = False,
+        include_additional_properties: bool = False,
+        include_referenced_entities: bool = False,
     ) -> Union[dict, list, bytes, int]:
         """Sends a GET request to the Weclapp API.
         Arguments:
@@ -457,9 +459,16 @@ class Weclapp:
             include_result (bool, optional): If True, returns the full result
                 including metadata.
                 In this case, the function will always return a dict.
+            include_additional_properties (bool, optional): If True, merges
+                additionalProperties from the API response into each entity.
+                Use this when the query includes additionalProperties parameter.
+            include_referenced_entities (bool, optional): If True, adds
+                referencedEntities to each entity under '_referencedEntities' key.
+                Use this when the query includes includeReferencedEntities parameter.
         Returns:
             result (Union[dict, list, bytes, int]): The parsed response in the
-                specified format.
+                specified format. When enrichment is requested, returns a list of
+                enriched entities.
         """
         query = query or {}
         if not isinstance(query, dict):
@@ -471,6 +480,17 @@ class Weclapp:
             url += f"/id/{entity_id}"
 
         response = self._request("GET", url, params=query)
+
+        if include_additional_properties or include_referenced_entities:
+            full_result = self._parse_response(
+                response, as_type=dict, return_full_result=True
+            )
+            return self._enrich_entities(
+                full_result,
+                merge_additional_properties=include_additional_properties,
+                merge_referenced_entities=include_referenced_entities,
+            )
+
         return self._parse_response(
             response, as_type=as_type, return_full_result=include_result
         )
@@ -689,16 +709,11 @@ class Weclapp:
             query["page"] = page
 
             if include_additional_properties or include_referenced_entities:
-                response = self.get(
+                entity_list = self.get(
                     entity_name=entity_name,
                     query=query,
-                    as_type=dict,
-                    include_result=True,
-                )
-                entity_list = self._enrich_entities(
-                    response,
-                    merge_additional_properties=include_additional_properties,
-                    merge_referenced_entities=include_referenced_entities,
+                    include_additional_properties=include_additional_properties,
+                    include_referenced_entities=include_referenced_entities,
                 )
             else:
                 entity_list = self.get(

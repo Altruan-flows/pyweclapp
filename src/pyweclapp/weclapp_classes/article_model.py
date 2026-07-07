@@ -234,18 +234,26 @@ class Article(Blueprint):
     pickableStockQuantity: list = []
     reservedStockQuantity: list = []
     totalStockQuantity: List[TotalStockQuantity] = []
+    freeToSaleQuantity: Union[str, None] = None
+    plannedSalesQuantity: Union[str, None] = None
+    openShipmentQuantity: Union[str, None] = None
+    orderedQuantity: Union[str, None] = None
 
     excluded_keys: Set[str] = {
-        "aggregateStock",
-        "averagePrice",
-        "createdDate",
-        "currentSalesPrice",
-        "currentStockMinusTotalSalesVolume",
         "id",
+        "version",
+        "createdDate",
         "lastModifiedDate",
         "lowLevelCode",
+        "aggregateStock",
+        "averagePrice",
+        "currentSalesPrice",
+        "currentStockMinusTotalSalesVolume",
         "pickableStockQuantity",
         "reservedStockQuantity",
         "totalStockQuantity",
-        "version",
+        "freeToSaleQuantity",
+        "plannedSalesQuantity",
+        "openShipmentQuantity",
+        "orderedQuantity",
     }
