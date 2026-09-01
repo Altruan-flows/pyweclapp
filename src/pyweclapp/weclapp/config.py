@@ -65,11 +65,22 @@ They are not present when the request did not have to wait.
 # ----------------- Retry / Load Management -----------------
 
 """
-Retry on transient errors (429, 502, 503, 504) and on connection/timeout failures.
-Backoff is exponential with jitter: initial * 2**attempt, capped, randomized +/-25%.
+Retry on transient errors (429, 502, 503, 504), on connection/timeout failures
+and on transport failures that kill the connection mid-body (a truncated
+chunked body, a truncated gzip stream). Backoff is exponential with jitter:
+initial * 2**attempt, capped, randomized +/-25%.
+
+RETRY_MAX_ATTEMPTS is the total number of attempts, i.e. 1 initial attempt plus
+(RETRY_MAX_ATTEMPTS - 1) retries. It is deliberately kept small: every retry of
+a large page re-issues a request weclapp has already served, so a high value
+adds load exactly when the platform is under pressure. 3 gives a long-running
+feed two chances to get past a one-off truncated body while keeping the
+worst-case added load per request bounded at 2 extra calls. Individual call
+sites that know they are fetching unusually large payloads can pass
+`max_attempts` to Weclapp._request instead of raising this global.
 """
 
-RETRY_MAX_ATTEMPTS = 2  # total attempts (1 initial + up to 1 retry)
+RETRY_MAX_ATTEMPTS = 3  # total attempts (1 initial + up to 2 retries)
 RETRY_INITIAL_BACKOFF_S = 1.0  # seconds - first sleep after a retryable failure
 RETRY_MAX_BACKOFF_S = 30.0  # ceiling per sleep
 RETRY_STATUS_CODES = (429, 502, 503, 504)
