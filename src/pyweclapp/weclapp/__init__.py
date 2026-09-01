@@ -104,6 +104,29 @@ class WeclappDeadlineError(Exception):
     """
 
 
+#: Exceptions that mean "the transport died, the response is unusable, and
+#: re-issuing the identical request is safe and may well succeed".
+#:
+#: Besides the obvious connection/read failures this covers the cases where the
+#: connection survived the headers but died mid-body, leaving a truncated
+#: payload. Those do NOT subclass requests.exceptions.ConnectionError -- they
+#: derive from RequestException directly -- so they have to be listed:
+#:  - ChunkedEncodingError: the chunked body ended early
+#:    (InvalidChunkLength / IncompleteRead).
+#:  - ContentDecodingError: the body decoded as a truncated/corrupt gzip stream,
+#:    the same failure seen through the Accept-Encoding: gzip path we request.
+#: All of them are raised while draining the body in _request_with_deadline,
+#: before any partial content is attached to the response, so a retry always
+#: starts from a clean request.
+RETRYABLE_EXCEPTIONS = (
+    requests.exceptions.ConnectionError,
+    requests.exceptions.Timeout,
+    requests.exceptions.ChunkedEncodingError,
+    requests.exceptions.ContentDecodingError,
+    WeclappDeadlineError,
+)
+
+
 def _parse_wait_ms(raw: Optional[str]) -> Optional[int]:
     """Parses the X-Weclapp-Wait-Ms header into an int, returning None if absent or invalid."""
     if raw is None:
@@ -209,15 +232,22 @@ def _request_with_deadline(
         stream=True,
     )
 
+    # Chunks accumulate in a local list, never on the response. If the stream
+    # dies mid-body (ChunkedEncodingError/ContentDecodingError) or the deadline
+    # trips, the list is dropped with the frame and response._content is never
+    # assigned -- no partial payload can survive into the retry.
     chunks = []
-    for chunk in response.iter_content(chunk_size=64 * 1024):
-        if time.monotonic() - started > config.REQUEST_HARD_DEADLINE_S:
-            response.close()
-            raise WeclappDeadlineError(
-                f"{method} {url} exceeded the "
-                f"{config.REQUEST_HARD_DEADLINE_S}s hard deadline"
-            )
-        chunks.append(chunk)
+    try:
+        for chunk in response.iter_content(chunk_size=64 * 1024):
+            if time.monotonic() - started > config.REQUEST_HARD_DEADLINE_S:
+                raise WeclappDeadlineError(
+                    f"{method} {url} exceeded the "
+                    f"{config.REQUEST_HARD_DEADLINE_S}s hard deadline"
+                )
+            chunks.append(chunk)
+    except BaseException:
+        response.close()
+        raise
 
     # Reattach the fully-read body so callers can use .json()/.content/.text
     # exactly as with a non-streamed response.
@@ -292,26 +322,36 @@ class Weclapp:
         *,
         params: Optional[dict] = None,
         data: Union[str, bytes, None] = None,
+        max_attempts: Optional[int] = None,
     ) -> requests.Response:
         """Sends an HTTP request to the weclapp API with retry on transient failures.
 
-        Retries on configured status codes (429, 5xx), on connection/timeout
-        errors, and on the hard wall-clock deadline (WeclappDeadlineError) with
-        exponential backoff + jitter. Honors weclapp's load-management
-        guidance: backs off rather than hammering the API when the platform signals
-        load pressure via 429.
+        Retries on configured status codes (429, 5xx), on the transport errors
+        listed in RETRYABLE_EXCEPTIONS (connection/timeout failures plus bodies
+        truncated mid-stream), and on the hard wall-clock deadline
+        (WeclappDeadlineError), with exponential backoff + jitter. Honors
+        weclapp's load-management guidance: backs off rather than hammering the
+        API when the platform signals load pressure via 429.
+
+        Each attempt issues a brand-new request; a failed attempt's partial body
+        is discarded by _request_with_deadline and never reused.
 
         Args:
             method: HTTP verb ("GET", "PUT", "POST", "DELETE").
             url: Fully-qualified request URL.
             params: Query parameters.
             data: Request body (already serialized to str/bytes).
+            max_attempts: Total attempts for this call, overriding
+                config.RETRY_MAX_ATTEMPTS. Use sparingly and only for calls
+                known to pull unusually large payloads -- extra attempts add
+                load to the platform.
 
         Returns:
             The final requests.Response. Callers handle response.ok / WeclappError.
         """
+        attempts = max_attempts if max_attempts else config.RETRY_MAX_ATTEMPTS
         last_response: Optional[requests.Response] = None
-        for attempt in range(config.RETRY_MAX_ATTEMPTS):
+        for attempt in range(attempts):
             try:
                 response = _request_with_deadline(
                     method,
@@ -320,17 +360,13 @@ class Weclapp:
                     params=params,
                     data=data,
                 )
-            except (
-                requests.exceptions.ConnectionError,
-                requests.exceptions.Timeout,
-                WeclappDeadlineError,
-            ) as exc:
-                if attempt + 1 >= config.RETRY_MAX_ATTEMPTS:
+            except RETRYABLE_EXCEPTIONS as exc:
+                if attempt + 1 >= attempts:
                     raise
                 sleep_s = _backoff_seconds(attempt)
                 logging.warning(
                     "weclapp %s %s: network error %r (attempt %s/%s), retrying in %.2fs",
-                    method, url, exc, attempt + 1, config.RETRY_MAX_ATTEMPTS, sleep_s,
+                    method, url, exc, attempt + 1, attempts, sleep_s,
                 )
                 time.sleep(sleep_s)
                 continue
@@ -344,13 +380,14 @@ class Weclapp:
 
             if response.status_code in config.RETRY_STATUS_CODES:
                 last_response = response
-                if attempt + 1 >= config.RETRY_MAX_ATTEMPTS:
+                if attempt + 1 >= attempts:
                     return response
                 sleep_s = _backoff_seconds(attempt)
                 logging.warning(
-                    "weclapp %s %s: status %s (attempt %s/%s, wait_ms=%s, reason=%s), retrying in %.2fs",
+                    "weclapp %s %s: status %s (attempt %s/%s, wait_ms=%s, reason=%s),"
+                    "retrying in %.2fs",
                     method, url, response.status_code,
-                    attempt + 1, config.RETRY_MAX_ATTEMPTS,
+                    attempt + 1, attempts,
                     wait_ms, wait_reason, sleep_s,
                 )
                 time.sleep(sleep_s)
