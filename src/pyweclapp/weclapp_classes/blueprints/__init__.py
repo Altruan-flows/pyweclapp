@@ -18,6 +18,8 @@ class UpdateSettings:
         creation_mode (bool): Whether the update is for creation mode.
     """
 
+    __slots__ = ("update_type", "include_version", "creation_mode", "excluded_keys")
+
     def __init__(
         self,
         update_type: str,
@@ -25,15 +27,37 @@ class UpdateSettings:
         creation_mode: bool,
         excluded_keys: Optional[Set[str]] = None,
     ):
-        self.update_type: str = update_type
-        self.include_version: bool = include_version
-        self.creation_mode: bool = creation_mode
-        self.excluded_keys: Optional[Set[str]] = excluded_keys
+        excluded_keys = set(excluded_keys or ())
         if include_version is False:
-            self.excluded_keys.add("version")
+            excluded_keys.add("version")
         if creation_mode:
-            self.excluded_keys.update(["id", "version"])
-            self.update_type = "full"
+            excluded_keys.update(["id", "version"])
+            update_type = "full"
+
+        object.__setattr__(self, "update_type", update_type)
+        object.__setattr__(self, "include_version", include_version)
+        object.__setattr__(self, "creation_mode", creation_mode)
+        object.__setattr__(self, "excluded_keys", frozenset(excluded_keys))
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        raise AttributeError(
+            "UpdateSettings is immutable -> use copy_with() to derive new settings"
+        )
+
+    def __delattr__(self, name: str) -> None:
+        raise AttributeError("UpdateSettings is immutable")
+
+    def copy_with(self, **overrides) -> "UpdateSettings":
+        """Returns a new UpdateSettings with the given fields replaced. Used to
+        give sub-objects their own settings instead of mutating the caller's."""
+        settings = {
+            "update_type": self.update_type,
+            "include_version": self.include_version,
+            "creation_mode": self.creation_mode,
+            "excluded_keys": set(self.excluded_keys),
+        }
+        settings.update(overrides)
+        return UpdateSettings(**settings)
 
 
 class Blueprint(BaseModel):
@@ -471,11 +495,12 @@ class Blueprint(BaseModel):
 
         for item in value:
             if isinstance(item, Blueprint):
-                if update_settings.creation_mode is False:
-                    update_settings.update_type = "full"
+                item_settings = update_settings
+                if item_settings.creation_mode is False:
+                    item_settings = item_settings.copy_with(update_type="full")
                 item_dict = item.build_update_dictionary(
-                    update_type=update_settings.update_type,
-                    creation_mode=update_settings.creation_mode,
+                    update_type=item_settings.update_type,
+                    creation_mode=item_settings.creation_mode,
                 )
                 if item_dict:
                     item_dict = self._postprocess_dictionary(item_dict)
