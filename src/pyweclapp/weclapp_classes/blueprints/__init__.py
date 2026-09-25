@@ -304,6 +304,12 @@ class Blueprint(BaseModel):
                 updated_custom_attributes = self._handle_custom_attributes(
                     value, "full"
                 )
+                # Weclapp validates an empty list on POST against every attribute
+                # definition, including read-only ones, and rejects the request
+                # with "customAttribute <id> is read-only". Omitting the key
+                # leaves the attributes untouched.
+                if update_settings.creation_mode and not updated_custom_attributes:
+                    continue
                 data_to_send[key] = updated_custom_attributes
 
             elif isinstance(value, list):
