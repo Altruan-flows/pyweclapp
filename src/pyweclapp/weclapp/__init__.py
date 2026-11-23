@@ -13,6 +13,7 @@ import time
 import logging
 from importlib.metadata import PackageNotFoundError, version as _pkg_version
 from typing import Optional, Union, Generator
+from dataclasses import dataclass
 import requests
 from . import config
 
@@ -125,6 +126,39 @@ RETRYABLE_EXCEPTIONS = (
     requests.exceptions.ContentDecodingError,
     WeclappDeadlineError,
 )
+
+
+@dataclass(frozen=True)
+class WeclappWait:
+    """One request weclapp queued before processing it (X-Weclapp-Wait-Ms header).
+
+    Attributes:
+        wait_ms: How long the request waited, in milliseconds.
+        reason: X-Weclapp-Wait-Reason ("concurrency", "load" or both), None if absent.
+        at: When the response arrived, as time.time() (epoch seconds).
+    """
+
+    wait_ms: int
+    reason: Optional[str]
+    at: float
+
+
+# Module level, not per instance: callers create many Weclapp() objects, but a job
+# throttling itself needs every wait it caused.
+_last_wait: Optional[WeclappWait] = None
+
+
+def last_wait() -> Optional[WeclappWait]:
+    """The latest request weclapp queued in this process, None if none was queued.
+
+    A job that must back off under load compares `at` with its own start time.
+    """
+    return _last_wait
+
+
+def _record_wait(wait_ms: int, reason: Optional[str]) -> None:
+    global _last_wait  # pylint: disable=global-statement
+    _last_wait = WeclappWait(wait_ms=wait_ms, reason=reason, at=time.time())
 
 
 def _parse_wait_ms(raw: Optional[str]) -> Optional[int]:
@@ -374,6 +408,7 @@ class Weclapp:
             wait_ms = _parse_wait_ms(response.headers.get("X-Weclapp-Wait-Ms"))
             wait_reason = response.headers.get("X-Weclapp-Wait-Reason")
             if wait_ms is not None:
+                _record_wait(wait_ms, wait_reason)
                 _report_wait_to_rollbar(
                     method, url, response.status_code, wait_ms, wait_reason, attempt + 1
                 )
